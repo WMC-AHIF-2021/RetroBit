@@ -1,10 +1,12 @@
 # RetroBit
 
 A website about retro games before the 3D-era.
-We are heavily describing the limitations of the first games and the clever approaches to fix them.
+We are heavily describing the limitations of the first games and the clever approaches to fix them. our goal is to style the website like an NES or SNES game with menus looking like the iconic titlescreens of old games.
 
 ## Features
-- A playable version of Pong is included.
+- Shows in detail how games of the pre3D era worked and how they used technologies like sprites
+- Explains the technical limitations of this era in depth
+- A playable version of Pong is included
 
 ## Team
 - Vincent
