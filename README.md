@@ -9,8 +9,12 @@ We are heavily describing the limitations of the first games and the clever appr
 - A playable version of Pong is included
 
 ## Team
-- Vincent
-- Lorenz
-- Stefan
+- Vincent (Team-Leader + head of historic research)
+- Lorenz (HTML + Bootstrap)
+- Stefan (PONG implementation)
+
+## Technology
+- Static: HTML, CSS
+- Dynamic: TS
 
 ![Vaporwave](https://ak.picdn.net/shutterstock/videos/1018878754/thumb/1.jpg)
