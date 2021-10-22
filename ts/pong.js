@@ -28,7 +28,7 @@ var Game = /** @class */ (function () {
         this.gameLoop = function () {
             _this.redraw();
             _this.computerBat.update(_this.ball);
-            _this.ball.update(_this.canvas);
+            _this.ball.update(_this.canvas, _this);
             window.requestAnimationFrame(_this.gameLoop);
         };
         var canvas = document.getElementById('canvas');
@@ -69,8 +69,8 @@ var Game = /** @class */ (function () {
         this.context.stroke();
         this.context.setLineDash([]);
         this.context.font = "40px 'Press Start 2P'";
-        this.context.fillText(pad(this.pointsPlayer, 2, '0'), this.canvas.width / 2 - 100, 50);
-        this.context.fillText(pad(this.pointsComputer, 2, '0'), this.canvas.width / 2 + 10, 50);
+        this.context.fillText(pad(this.pointsPlayer, 2, '0'), this.canvas.width / 2 - 100, 55);
+        this.context.fillText(pad(this.pointsComputer, 2, '0'), this.canvas.width / 2 + 20, 55);
     };
     Game.prototype.clear = function () {
         this.context.fillStyle = 'black';
@@ -107,7 +107,8 @@ var ComputerBatEntity = /** @class */ (function (_super) {
     __extends(ComputerBatEntity, _super);
     function ComputerBatEntity() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.movementSpeed = 2;
+        _this.movementSpeed = 4;
+        _this.i = 0;
         return _this;
     }
     ComputerBatEntity.prototype.update = function (ball) {
@@ -116,6 +117,11 @@ var ComputerBatEntity = /** @class */ (function (_super) {
         }
         else if (ball.Y < this.Y) {
             this.Y -= this.movementSpeed;
+        }
+        this.i++;
+        if (this.i % 20 == 0) {
+            this.movementSpeed = getRandomArbitrary(5, 8);
+            this.i = 0;
         }
     };
     return ComputerBatEntity;
@@ -129,7 +135,7 @@ var BallEntity = /** @class */ (function (_super) {
         _this.movementSpeed = 7;
         return _this;
     }
-    BallEntity.prototype.update = function (canvas) {
+    BallEntity.prototype.update = function (canvas, game) {
         this.X += this.currentDirX * this.movementSpeed;
         this.Y += this.currentDirY * this.movementSpeed;
         if (this.Y >= canvas.height) {
@@ -138,6 +144,26 @@ var BallEntity = /** @class */ (function (_super) {
         if (this.Y <= 0) {
             this.currentDirY = 1;
         }
+        if (this.X >= canvas.width) {
+            this.lost(game, canvas);
+            game.pointsPlayer += 1;
+        }
+        if (this.X <= 0) {
+            this.lost(game, canvas);
+            game.pointsComputer += 1;
+        }
+        if ((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) {
+            this.currentDirX = -1;
+        }
+        if ((this.X <= game.playerBat.X + game.playerBat.SizeX && this.X >= game.playerBat.X) && (this.Y <= game.playerBat.Y + game.playerBat.SizeY && this.Y >= game.playerBat.Y)) {
+            this.currentDirX = 1;
+        }
+    };
+    BallEntity.prototype.lost = function (game, canvas) {
+        this.X = canvas.width / 2;
+        this.Y = canvas.height / 2;
+        this.currentDirX = getRandomIntWithoutZero(-1, 1);
+        this.currentDirY = getRandomIntWithoutZero(-1, 1);
     };
     return BallEntity;
 }(Entity));
@@ -146,5 +172,20 @@ function pad(n, width, z) {
     z = z || '0';
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function getRandomIntWithoutZero(min, max) {
+    var lastResult = 0;
+    while (lastResult == 0) {
+        lastResult = getRandomInt(min - 1, max + 1);
+    }
+    return lastResult;
 }
 //# sourceMappingURL=pong.js.map
