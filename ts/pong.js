@@ -15,6 +15,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Game = /** @class */ (function () {
     function Game() {
+        var _this = this;
+        this.keypressEventHandler = function (e) {
+            if (e.keyCode == 38) { // up
+                console.log("hi");
+                _this.playerBat.move(0, 50);
+            }
+            else if (e.keyCode == 40) {
+                _this.playerBat.move(0, -50);
+            }
+            _this.redraw();
+        };
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
         context.lineCap = 'round';
@@ -23,9 +34,9 @@ var Game = /** @class */ (function () {
         context.lineWidth = 1;
         this.canvas = canvas;
         this.context = context;
-        this.playerBat = new PlayerBatEntity(5, 50, 5, 20, "white");
-        this.computerBat = new ComputerBatEntity(60, 50, 5, 20, "green");
-        this.ball = new BallEntity(35, 50, 2, 2, "gray");
+        this.playerBat = new PlayerBatEntity(5, 50, 15, 100, "white");
+        this.computerBat = new ComputerBatEntity(700, 50, 15, 100, "green");
+        this.ball = new BallEntity(35, 50, 20, 20, "gray");
         this.redraw();
         this.createUserEvents();
     }
@@ -34,19 +45,14 @@ var Game = /** @class */ (function () {
         canvas.addEventListener("keyup", this.keypressEventHandler);
         //document.getElementById("clear").addEventListener("click", this.clearEventHandler);
     };
-    Game.prototype.keypressEventHandler = function (e) {
-        if (e.keyCode == 38) { // up
-            this.playerBat.move(0, 5);
-        }
-        else if (e.keyCode == 40) {
-            this.playerBat.move(0, -5);
-        }
-        this.redraw();
-    };
     Game.prototype.redraw = function () {
+        this.clear();
         this.playerBat.draw(this.context);
         this.computerBat.draw(this.context);
         this.ball.draw(this.context);
+    };
+    Game.prototype.clear = function () {
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     };
     return Game;
 }());
@@ -63,9 +69,8 @@ var Entity = /** @class */ (function () {
         this.Y += y;
     };
     Entity.prototype.draw = function (ctx) {
-        ctx.rect(this.X, this.Y, this.SizeX, this.SizeY);
         ctx.fillStyle = this.Color;
-        ctx.fill();
+        ctx.fillRect(this.X, this.Y, this.SizeX, this.SizeY);
     };
     return Entity;
 }());

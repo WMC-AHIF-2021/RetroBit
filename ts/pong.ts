@@ -18,9 +18,9 @@ class Game {
         this.canvas = canvas;
         this.context = context;
 
-        this.playerBat = new PlayerBatEntity(5, 500, 50, 200, "white");
-        this.computerBat = new ComputerBatEntity(600, 500, 50, 200, "green");
-        this.ball = new BallEntity(35, 50, 2, 2, "gray");
+        this.playerBat = new PlayerBatEntity(5, 50, 15, 100, "white");
+        this.computerBat = new ComputerBatEntity(700, 50, 15, 100, "green");
+        this.ball = new BallEntity(35, 50, 20, 20, "gray");
 
         this.redraw();
         this.createUserEvents();
@@ -33,19 +33,28 @@ class Game {
 
         //document.getElementById("clear").addEventListener("click", this.clearEventHandler);
     }
-    private keypressEventHandler(e) {
+    private keypressEventHandler = (e) => {
         if (e.keyCode == 38) { // up
-            this.playerBat.move(0, 5)
+            console.log("hi");
+            this.playerBat.move(0, -50)
         } else if (e.keyCode == 40) {
-            this.playerBat.move(0, -5);
+            this.playerBat.move(0, 50);
         }
         this.redraw();
     }
 
     private redraw() {
+        this.clear();
+
+
         this.playerBat.draw(this.context);
         this.computerBat.draw(this.context);
         this.ball.draw(this.context);
+    }
+
+    private clear() {
+        this.context.fillStyle = 'black';
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }
 
