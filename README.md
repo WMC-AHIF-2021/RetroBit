@@ -17,4 +17,21 @@ We are heavily describing the limitations of the first games and the clever appr
 - Static: HTML, CSS
 - Dynamic: TS
 
+## Goals
+### Static:
+- [ ] Homepage
+- [ ] History Page
+- [ ] Game Selection Page
+### Dynamic:
+- [ ] PONG
+- [ ] Tetris
+- [ ] Minesweeper
+- ...
+
+Goals are split up evenly
+
+## Risks (and solutions)
+- Demotivation (remember we have to get good marks to get a praktikum)
+- We remember at the last minute that we are missing something (accept our fate)
+
 ![Vaporwave](https://ak.picdn.net/shutterstock/videos/1018878754/thumb/1.jpg)
