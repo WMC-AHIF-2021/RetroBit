@@ -200,9 +200,10 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 function getRandomIntWithoutZero(min, max) {
     var lastResult = 0;
-    while (lastResult == 0) {
+    while(lastResult == 0) {
         lastResult = getRandomInt(min-1,max+1);
     }
     return lastResult;
