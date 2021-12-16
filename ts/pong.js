@@ -33,6 +33,7 @@ var Game = /** @class */ (function () {
         };
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
+        canvas.focus();
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.strokeStyle = 'black';
@@ -160,10 +161,15 @@ var BallEntity = /** @class */ (function (_super) {
         }
     };
     BallEntity.prototype.lost = function (game, canvas) {
-        this.X = canvas.width / 2;
+        this.currentDirX = getRandomIntWithoutZero(-0.5, 0.5);
+        this.currentDirY = getRandomIntWithoutZero(-0.5, 0.5);
         this.Y = canvas.height / 2;
-        this.currentDirX = getRandomIntWithoutZero(-1, 1);
-        this.currentDirY = getRandomIntWithoutZero(-1, 1);
+        if (this.currentDirX < 0) {
+            this.X = 3 * canvas.width / 4;
+        }
+        else {
+            this.X = canvas.width / 4;
+        }
     };
     return BallEntity;
 }(Entity));

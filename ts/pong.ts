@@ -2,16 +2,18 @@ class Game {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
 
+
     public playerBat: PlayerBatEntity;
     public computerBat: ComputerBatEntity;
     private ball: BallEntity;
-
+1
     public pointsPlayer: number;
     public pointsComputer: number;
 
     constructor() {
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
         let context = canvas.getContext("2d");
+        canvas.focus();
 
         context.lineCap = 'round';
         context.lineJoin = 'round';
@@ -174,11 +176,15 @@ class BallEntity extends Entity {
         }
     }
     private lost(game:Game, canvas:HTMLCanvasElement) {
-        this.X = canvas.width / 2;
+        this.currentDirX = getRandomIntWithoutZero(-0.5, 0.5);
+        this.currentDirY = getRandomIntWithoutZero(-0.5, 0.5);
         this.Y = canvas.height / 2;
-
-        this.currentDirX = getRandomIntWithoutZero(-1, 1);
-        this.currentDirY = getRandomIntWithoutZero(-1, 1);
+        if (this.currentDirX < 0){
+            this.X = 3 * canvas.width / 4;
+        }
+        else{
+            this.X = canvas.width / 4;
+        }
     }
 }
 
