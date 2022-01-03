@@ -2,8 +2,18 @@ body{
     background-color: black;
     color: white;
     font-family: 'Press Start 2P', cursive;
+    margin: 5%;
+}
+
+#index{
     text-align: center;
 }
+
+.historyimage{
+    width: 15%;
+    float: right;
+}
+
 #canvas{
     top: 0px;
     left: 0px;
