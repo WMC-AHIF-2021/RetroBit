@@ -25,6 +25,7 @@ body{
 a{
     text-decoration: none;
     color: white;
+    
 }
 
 #header{
@@ -37,6 +38,7 @@ a{
 
 h2{
     font-size: 200%;
+    color: red(231, 17, 17, 0.418);
 }
 
 #playPong{
@@ -46,4 +48,13 @@ h2{
 #nyanCat{
     width: 20%;
     height: auto;
+}
+
+#underline{
+    text-decoration: underline blue;
+}
+
+h3
+{
+    text-decoration: underline;
 }
