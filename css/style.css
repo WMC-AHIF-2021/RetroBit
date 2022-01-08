@@ -22,10 +22,27 @@ body{
     height:100%;
 }
 
-a{
-    text-decoration: none;
+#index a {
     color: white;
-    
+}
+#index a:hover {
+    text-decoration: none;
+}
+#index a:focus {
+    text-decoration: underline;
+}
+a {
+    color: blue;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:focus {
+    text-decoration: underline;
+}
+a:visited {
+    color: blue;
 }
 
 #header{

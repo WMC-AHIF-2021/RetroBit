@@ -1,0 +1,35 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    margin: 5%;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:visited {
+    color: blue;
+}
+
+h1 {
+    font-size: 400%;
+}
+h3 {
+    margin-top: 40px;
+}
+
+li a {
+    color: white;
+}
+li a:visited {
+    color: white;
+}
+
+img {
+    float: right;
+}
