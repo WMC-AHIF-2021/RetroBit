@@ -1,14 +1,16 @@
 class Game {
-    private canvas: HTMLCanvasElement;
-    private context: CanvasRenderingContext2D;
+    private readonly canvas: HTMLCanvasElement;
+    private readonly context: CanvasRenderingContext2D;
 
 
     public playerBat: PlayerBatEntity;
     public computerBat: ComputerBatEntity;
-    private ball: BallEntity;
-1
+    private readonly ball: BallEntity;
+
     public pointsPlayer: number;
     public pointsComputer: number;
+
+    private currentWinner: number;
 
     constructor() {
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -29,6 +31,7 @@ class Game {
 
         this.pointsPlayer = 0;
         this.pointsComputer = 0;
+        this.currentWinner = -1;
 
         this.redraw();
         this.createUserEvents();
@@ -48,16 +51,34 @@ class Game {
             this.playerBat.move(0, -50)
         } else if (e.keyCode == 40) {
             this.playerBat.move(0, 50);
+        } else if (e.keyCode == 32) {
+            // restart game if somebody has won and presses space
+            if (this.currentWinner != -1) {
+                this.restartGame();
+            }
         }
         this.redraw();
     }
 
+    private restartGame = () => {
+        this.pointsComputer = 0;
+        this.pointsPlayer = 0;
+        this.currentWinner = -1;
+    }
 
     private gameLoop = () => {
         this.redraw();
 
-        this.computerBat.update(this.ball);
-        this.ball.update(this.canvas, this);
+        if (this.currentWinner == -1) {
+            this.computerBat.update(this.ball);
+            this.ball.update(this.canvas, this);
+        }
+        if (this.pointsPlayer > 1) {
+            this.currentWinner = 0;
+        }
+        if (this.pointsComputer > 1) {
+            this.currentWinner = 1;
+        }
 
         window.requestAnimationFrame(this.gameLoop);
     }
@@ -82,9 +103,28 @@ class Game {
         this.context.stroke();
         this.context.setLineDash([]);
 
+        // score text
+        this.context.textAlign = "start";
         this.context.font = "40px 'Press Start 2P'";
         this.context.fillText(pad(this.pointsPlayer, 2, '0'), this.canvas.width / 2 - 100, 55);
         this.context.fillText(pad(this.pointsComputer, 2, '0'), this.canvas.width / 2 + 20, 55);
+
+        // draw winner text
+        this.context.font = "12px 'Press Start 2P'";
+        this.context.textAlign = "center";
+        if (this.currentWinner == 0) {
+            // the player won
+            this.context.fillText("You Won!", this.canvas.width / 4, this.canvas.height / 3);
+        } else if (this.currentWinner == 1) {
+            // the player won
+            this.context.fillText("Computer Won!", this.canvas.width / 1.5, this.canvas.height / 3);
+        }
+        // draw restart with space text
+        this.context.font = "7px 'Press Start 2P'";
+        this.context.fillStyle = "#aaaaaa";
+        if (this.currentWinner != -1) {
+            this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
+        }
     }
 
     private clear() {
@@ -120,9 +160,7 @@ class Entity {
     }
 }
 
-class PlayerBatEntity extends Entity {
-    
-}
+class PlayerBatEntity extends Entity {}
 
 class ComputerBatEntity extends Entity {
     private movementSpeed: number = 4;
@@ -160,11 +198,11 @@ class BallEntity extends Entity {
         }
 
         if (this.X >= canvas.width) {
-            this.lost(game, canvas);
+            this.lost(canvas);
             game.pointsPlayer += 1;
         }
         if (this.X <= 0) {
-            this.lost(game, canvas);
+            this.lost(canvas);
             game.pointsComputer += 1;
         }
 
@@ -175,7 +213,7 @@ class BallEntity extends Entity {
             this.currentDirX = 1;
         }
     }
-    private lost(game:Game, canvas:HTMLCanvasElement) {
+    private lost(canvas:HTMLCanvasElement) {
         this.currentDirX = getRandomIntWithoutZero(-0.5, 0.5);
         this.currentDirY = getRandomIntWithoutZero(-0.5, 0.5);
         this.Y = canvas.height / 2;
@@ -208,7 +246,7 @@ function getRandomInt(min, max) {
 }
 
 function getRandomIntWithoutZero(min, max) {
-    var lastResult = 0;
+    let lastResult = 0;
     while(lastResult == 0) {
         lastResult = getRandomInt(min-1,max+1);
     }

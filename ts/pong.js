@@ -23,12 +23,31 @@ var Game = /** @class */ (function () {
             else if (e.keyCode == 40) {
                 _this.playerBat.move(0, 50);
             }
+            else if (e.keyCode == 32) {
+                // restart game if somebody has won and presses space
+                if (_this.currentWinner != -1) {
+                    _this.restartGame();
+                }
+            }
             _this.redraw();
+        };
+        this.restartGame = function () {
+            _this.pointsComputer = 0;
+            _this.pointsPlayer = 0;
+            _this.currentWinner = -1;
         };
         this.gameLoop = function () {
             _this.redraw();
-            _this.computerBat.update(_this.ball);
-            _this.ball.update(_this.canvas, _this);
+            if (_this.currentWinner == -1) {
+                _this.computerBat.update(_this.ball);
+                _this.ball.update(_this.canvas, _this);
+            }
+            if (_this.pointsPlayer > 1) {
+                _this.currentWinner = 0;
+            }
+            if (_this.pointsComputer > 1) {
+                _this.currentWinner = 1;
+            }
             window.requestAnimationFrame(_this.gameLoop);
         };
         var canvas = document.getElementById('canvas');
@@ -45,6 +64,7 @@ var Game = /** @class */ (function () {
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
         this.pointsPlayer = 0;
         this.pointsComputer = 0;
+        this.currentWinner = -1;
         this.redraw();
         this.createUserEvents();
         window.requestAnimationFrame(this.gameLoop);
@@ -69,9 +89,28 @@ var Game = /** @class */ (function () {
         this.context.lineTo(this.canvas.width / 2, this.canvas.height);
         this.context.stroke();
         this.context.setLineDash([]);
+        // score text
+        this.context.textAlign = "start";
         this.context.font = "40px 'Press Start 2P'";
         this.context.fillText(pad(this.pointsPlayer, 2, '0'), this.canvas.width / 2 - 100, 55);
         this.context.fillText(pad(this.pointsComputer, 2, '0'), this.canvas.width / 2 + 20, 55);
+        // draw winner text
+        this.context.font = "12px 'Press Start 2P'";
+        this.context.textAlign = "center";
+        if (this.currentWinner == 0) {
+            // the player won
+            this.context.fillText("You Won!", this.canvas.width / 4, this.canvas.height / 3);
+        }
+        else if (this.currentWinner == 1) {
+            // the player won
+            this.context.fillText("Computer Won!", this.canvas.width / 1.5, this.canvas.height / 3);
+        }
+        // draw restart with space text
+        this.context.font = "7px 'Press Start 2P'";
+        this.context.fillStyle = "#aaaaaa";
+        if (this.currentWinner != -1) {
+            this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
+        }
     };
     Game.prototype.clear = function () {
         this.context.fillStyle = 'black';
