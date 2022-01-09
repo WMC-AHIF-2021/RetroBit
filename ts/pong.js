@@ -16,11 +16,14 @@ var __extends = (this && this.__extends) || (function () {
 var Options = /** @class */ (function () {
     function Options() {
     }
+    var _a;
+    _a = Options;
     Options.winningPoints = 11;
     // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
     Options.computerSpeedRange = [6, 8];
     Options.ballSpeedRange = [6, 8];
-    Options.setDifficulty = function () {
+    Options.setOptions = function () {
+        // set difficulty
         var difficulty = parseInt(document.getElementById("options_difficultySelect").value);
         switch (difficulty) {
             case 0:
@@ -44,6 +47,8 @@ var Options = /** @class */ (function () {
                 Options.ballSpeedRange = [16, 20];
                 break;
         }
+        // set other options
+        _a.isMouseControl = document.getElementById("options_enableMouseControl").checked;
     };
     return Options;
 }());
@@ -81,7 +86,7 @@ var Game = /** @class */ (function () {
             _this.restartGame();
         };
         this.startGame = function () {
-            Options.setDifficulty();
+            Options.setOptions();
             document.getElementById("options").style.visibility = "hidden";
             var canvasEl = document.getElementById("canvas");
             canvasEl.style.visibility = "visible";
@@ -108,6 +113,9 @@ var Game = /** @class */ (function () {
                 }
                 if (_this.pointsComputer >= Options.winningPoints) {
                     _this.currentWinner = 1;
+                }
+                if (Options.isMouseControl) {
+                    _this.playerBat.Y = (Cursor._instance.Y / window.screen.height) * _this.canvas.height;
                 }
             }
             window.requestAnimationFrame(_this.gameLoop);
@@ -283,6 +291,17 @@ var BallEntity = /** @class */ (function (_super) {
     return BallEntity;
 }(Entity));
 new Game();
+var Cursor = /** @class */ (function () {
+    function Cursor() {
+        var _this = this;
+        document.onmousemove = function (e) {
+            _this.X = e.pageX;
+            _this.Y = e.pageY;
+        };
+    }
+    Cursor._instance = new Cursor();
+    return Cursor;
+}());
 function pad(n, width, z) {
     z = z || '0';
     n = n + '';

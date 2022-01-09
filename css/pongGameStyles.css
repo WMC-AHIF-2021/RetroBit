@@ -21,6 +21,19 @@ input,select {
     margin-top: 10px;
     height: 40px;
 }
+input[type="checkbox"] {
+    background-color: black;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 2px solid white;
+    width: 30px;
+    height: 30px;
+}
+input[type=checkbox]:checked {
+    background-image: url(/img/mark.png);
+    background-size: cover;
+    border: 2px solid black;
+}
 
 #options {
     position: fixed;

@@ -4,7 +4,11 @@ class Options {
     public static computerSpeedRange = [6, 8];
     public static ballSpeedRange = [6, 8];
 
-    public static setDifficulty = () => {
+    public static isMouseControl: boolean;
+
+
+    public static setOptions = () => {
+        // set difficulty
         let difficulty : number = parseInt((<HTMLInputElement>document.getElementById("options_difficultySelect")).value);
         switch (difficulty) {
             case 0:
@@ -28,6 +32,8 @@ class Options {
                 Options.ballSpeedRange = [16, 20];
                 break;
         }
+        // set other options
+        this.isMouseControl = (<HTMLInputElement>document.getElementById("options_enableMouseControl")).checked;
     }
 }
 
@@ -113,7 +119,7 @@ class Game {
     }
 
     private startGame = () => {
-        Options.setDifficulty();
+        Options.setOptions();
         document.getElementById("options").style.visibility = "hidden";
         let canvasEl = document.getElementById("canvas");
         canvasEl.style.visibility = "visible";
@@ -143,6 +149,10 @@ class Game {
             }
             if (this.pointsComputer >= Options.winningPoints) {
                 this.currentWinner = 1;
+            }
+
+            if (Options.isMouseControl) {
+                this.playerBat.Y = (Cursor._instance.Y / window.screen.height) * this.canvas.height;
             }
 
         }
@@ -298,6 +308,20 @@ class BallEntity extends Entity {
 }
 
 new Game();
+
+class Cursor {
+    public static _instance : Cursor = new Cursor();
+
+    public X: number;
+    public Y: number;
+
+    constructor() {
+        document.onmousemove = (e) => {
+            this.X = e.pageX;
+            this.Y = e.pageY;
+        }
+    }
+}
 
 
 function pad(n, width, z) {
