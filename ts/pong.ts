@@ -1,7 +1,39 @@
+class Options {
+    public static winningPoints = 11;
+    // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
+    public static computerSpeedRange = [6, 8];
+    public static ballSpeedRange = [6, 8];
+
+    public static setDifficulty = () => {
+        let difficulty : number = parseInt((<HTMLInputElement>document.getElementById("options_difficultySelect")).value);
+        switch (difficulty) {
+            case 0:
+                Options.computerSpeedRange = [4,6];
+                Options.ballSpeedRange = [4,7];
+                break;
+            case 1:
+                Options.computerSpeedRange = [6,8];
+                Options.ballSpeedRange = [6,9];
+                break;
+            case 2:
+                Options.computerSpeedRange = [8,10];
+                Options.ballSpeedRange = [7, 10];
+                break;
+            case 3:
+                Options.computerSpeedRange = [12, 16];
+                Options.ballSpeedRange = [12, 16];
+                break;
+            case 4:
+                Options.computerSpeedRange = [16, 20];
+                Options.ballSpeedRange = [16, 20];
+                break;
+        }
+    }
+}
+
 class Game {
     private readonly canvas: HTMLCanvasElement;
     private readonly context: CanvasRenderingContext2D;
-
 
     public playerBat: PlayerBatEntity;
     public computerBat: ComputerBatEntity;
@@ -11,8 +43,11 @@ class Game {
     public pointsComputer: number;
 
     private currentWinner: number;
+    private isRunning: boolean;
 
     constructor() {
+
+
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
         let context = canvas.getContext("2d");
         canvas.focus();
@@ -41,23 +76,54 @@ class Game {
 
     private createUserEvents() {
         let canvas = this.canvas;
-
         canvas.addEventListener("keyup",this.keypressEventHandler);
 
-        //document.getElementById("clear").addEventListener("click", this.clearEventHandler);
+        document.getElementById("options_submitButton").addEventListener("click", () => {
+            this.startGame();
+        })
     }
     private keypressEventHandler = (e) => {
-        if (e.keyCode == 38) { // up
-            this.playerBat.move(0, -50)
-        } else if (e.keyCode == 40) {
-            this.playerBat.move(0, 50);
-        } else if (e.keyCode == 32) {
-            // restart game if somebody has won and presses space
-            if (this.currentWinner != -1) {
-                this.restartGame();
-            }
+        switch (e.keyCode) {
+            case 38:
+                this.playerBat.move(0, -50)
+                break;
+            case 40:
+                this.playerBat.move(0, 50);
+                break;
+            case 32:
+                // restart game if somebody has won and player presses space
+                if (this.currentWinner != -1) {
+                    this.restartGame();
+                }
+                break;
+            case 13:
+                // open difficulty window if somebody has won and player presses enter
+                if (this.currentWinner != -1) {
+                    this.stopGame();
+                }
+                break;
         }
         this.redraw();
+    }
+
+    private stopGame = () => {
+        document.getElementById("options").style.visibility = "visible";
+        let canvasEl = document.getElementById("canvas");
+        canvasEl.style.visibility = "hidden";
+        this.isRunning = false;
+        this.restartGame();
+    }
+
+    private startGame = () => {
+        Options.setDifficulty();
+        document.getElementById("options").style.visibility = "hidden";
+        let canvasEl = document.getElementById("canvas");
+        canvasEl.style.visibility = "visible";
+        setTimeout(() => {
+            canvasEl.focus();
+            this.ball.updateMovementSpeed();
+            this.isRunning = true;
+        }, 1000);
     }
 
     private restartGame = () => {
@@ -67,19 +133,21 @@ class Game {
     }
 
     private gameLoop = () => {
-        this.redraw();
+        if (this.isRunning) {
+            this.redraw();
 
-        if (this.currentWinner == -1) {
-            this.computerBat.update(this.ball);
-            this.ball.update(this.canvas, this);
-        }
-        if (this.pointsPlayer > 1) {
-            this.currentWinner = 0;
-        }
-        if (this.pointsComputer > 1) {
-            this.currentWinner = 1;
-        }
+            if (this.currentWinner == -1) {
+                this.computerBat.update(this.ball);
+                this.ball.update(this.canvas, this);
+            }
+            if (this.pointsPlayer >= Options.winningPoints) {
+                this.currentWinner = 0;
+            }
+            if (this.pointsComputer >= Options.winningPoints) {
+                this.currentWinner = 1;
+            }
 
+        }
         window.requestAnimationFrame(this.gameLoop);
     }
 
@@ -124,6 +192,7 @@ class Game {
         this.context.fillStyle = "#aaaaaa";
         if (this.currentWinner != -1) {
             this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
+            this.context.fillText("Press ENTER to CHANGE DIFFICULTY", this.canvas.width / 2, this.canvas.height - 150);
         }
     }
 
@@ -174,7 +243,7 @@ class ComputerBatEntity extends Entity {
         }
         this.i++;
         if (this.i % 20 == 0) {
-            this.movementSpeed = getRandomArbitrary(5, 8);
+            this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
             this.i = 0;
         }
     }
@@ -214,8 +283,9 @@ class BallEntity extends Entity {
         }
     }
     private lost(canvas:HTMLCanvasElement) {
-        this.currentDirX = getRandomIntWithoutZero(-0.5, 0.5);
-        this.currentDirY = getRandomIntWithoutZero(-0.5, 0.5);
+        this.currentDirX = getRandomIntWithoutZero(-1, 1);
+        this.currentDirY = getRandomIntWithoutZero(-1, 1);
+        this.updateMovementSpeed();
         this.Y = canvas.height / 2;
         if (this.currentDirX < 0){
             this.X = 3 * canvas.width / 4;
@@ -223,6 +293,9 @@ class BallEntity extends Entity {
         else{
             this.X = canvas.width / 4;
         }
+    }
+    public updateMovementSpeed() {
+        this.movementSpeed = getRandomInt(Options.ballSpeedRange[0], Options.ballSpeedRange[1]);
     }
 }
 

@@ -13,23 +13,83 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var Options = /** @class */ (function () {
+    function Options() {
+    }
+    Options.winningPoints = 11;
+    // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
+    Options.computerSpeedRange = [6, 8];
+    Options.ballSpeedRange = [6, 8];
+    Options.setDifficulty = function () {
+        var difficulty = parseInt(document.getElementById("options_difficultySelect").value);
+        switch (difficulty) {
+            case 0:
+                Options.computerSpeedRange = [4, 6];
+                Options.ballSpeedRange = [4, 7];
+                break;
+            case 1:
+                Options.computerSpeedRange = [6, 8];
+                Options.ballSpeedRange = [6, 9];
+                break;
+            case 2:
+                Options.computerSpeedRange = [8, 10];
+                Options.ballSpeedRange = [7, 10];
+                break;
+            case 3:
+                Options.computerSpeedRange = [12, 16];
+                Options.ballSpeedRange = [12, 16];
+                break;
+            case 4:
+                Options.computerSpeedRange = [16, 20];
+                Options.ballSpeedRange = [16, 20];
+                break;
+        }
+    };
+    return Options;
+}());
 var Game = /** @class */ (function () {
     function Game() {
         var _this = this;
         this.keypressEventHandler = function (e) {
-            if (e.keyCode == 38) { // up
-                _this.playerBat.move(0, -50);
-            }
-            else if (e.keyCode == 40) {
-                _this.playerBat.move(0, 50);
-            }
-            else if (e.keyCode == 32) {
-                // restart game if somebody has won and presses space
-                if (_this.currentWinner != -1) {
-                    _this.restartGame();
-                }
+            switch (e.keyCode) {
+                case 38:
+                    _this.playerBat.move(0, -50);
+                    break;
+                case 40:
+                    _this.playerBat.move(0, 50);
+                    break;
+                case 32:
+                    // restart game if somebody has won and player presses space
+                    if (_this.currentWinner != -1) {
+                        _this.restartGame();
+                    }
+                    break;
+                case 13:
+                    // open difficulty window if somebody has won and player presses enter
+                    if (_this.currentWinner != -1) {
+                        _this.stopGame();
+                    }
+                    break;
             }
             _this.redraw();
+        };
+        this.stopGame = function () {
+            document.getElementById("options").style.visibility = "visible";
+            var canvasEl = document.getElementById("canvas");
+            canvasEl.style.visibility = "hidden";
+            _this.isRunning = false;
+            _this.restartGame();
+        };
+        this.startGame = function () {
+            Options.setDifficulty();
+            document.getElementById("options").style.visibility = "hidden";
+            var canvasEl = document.getElementById("canvas");
+            canvasEl.style.visibility = "visible";
+            setTimeout(function () {
+                canvasEl.focus();
+                _this.ball.updateMovementSpeed();
+                _this.isRunning = true;
+            }, 1000);
         };
         this.restartGame = function () {
             _this.pointsComputer = 0;
@@ -37,16 +97,18 @@ var Game = /** @class */ (function () {
             _this.currentWinner = -1;
         };
         this.gameLoop = function () {
-            _this.redraw();
-            if (_this.currentWinner == -1) {
-                _this.computerBat.update(_this.ball);
-                _this.ball.update(_this.canvas, _this);
-            }
-            if (_this.pointsPlayer > 1) {
-                _this.currentWinner = 0;
-            }
-            if (_this.pointsComputer > 1) {
-                _this.currentWinner = 1;
+            if (_this.isRunning) {
+                _this.redraw();
+                if (_this.currentWinner == -1) {
+                    _this.computerBat.update(_this.ball);
+                    _this.ball.update(_this.canvas, _this);
+                }
+                if (_this.pointsPlayer >= Options.winningPoints) {
+                    _this.currentWinner = 0;
+                }
+                if (_this.pointsComputer >= Options.winningPoints) {
+                    _this.currentWinner = 1;
+                }
             }
             window.requestAnimationFrame(_this.gameLoop);
         };
@@ -70,9 +132,12 @@ var Game = /** @class */ (function () {
         window.requestAnimationFrame(this.gameLoop);
     }
     Game.prototype.createUserEvents = function () {
+        var _this = this;
         var canvas = this.canvas;
         canvas.addEventListener("keyup", this.keypressEventHandler);
-        //document.getElementById("clear").addEventListener("click", this.clearEventHandler);
+        document.getElementById("options_submitButton").addEventListener("click", function () {
+            _this.startGame();
+        });
     };
     Game.prototype.redraw = function () {
         this.clear();
@@ -110,6 +175,7 @@ var Game = /** @class */ (function () {
         this.context.fillStyle = "#aaaaaa";
         if (this.currentWinner != -1) {
             this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
+            this.context.fillText("Press ENTER to CHANGE DIFFICULTY", this.canvas.width / 2, this.canvas.height - 150);
         }
     };
     Game.prototype.clear = function () {
@@ -160,7 +226,7 @@ var ComputerBatEntity = /** @class */ (function (_super) {
         }
         this.i++;
         if (this.i % 20 == 0) {
-            this.movementSpeed = getRandomArbitrary(5, 8);
+            this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
             this.i = 0;
         }
     };
@@ -185,11 +251,11 @@ var BallEntity = /** @class */ (function (_super) {
             this.currentDirY = 1;
         }
         if (this.X >= canvas.width) {
-            this.lost(game, canvas);
+            this.lost(canvas);
             game.pointsPlayer += 1;
         }
         if (this.X <= 0) {
-            this.lost(game, canvas);
+            this.lost(canvas);
             game.pointsComputer += 1;
         }
         if (((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y))) {
@@ -199,9 +265,10 @@ var BallEntity = /** @class */ (function (_super) {
             this.currentDirX = 1;
         }
     };
-    BallEntity.prototype.lost = function (game, canvas) {
-        this.currentDirX = getRandomIntWithoutZero(-0.5, 0.5);
-        this.currentDirY = getRandomIntWithoutZero(-0.5, 0.5);
+    BallEntity.prototype.lost = function (canvas) {
+        this.currentDirX = getRandomIntWithoutZero(-1, 1);
+        this.currentDirY = getRandomIntWithoutZero(-1, 1);
+        this.updateMovementSpeed();
         this.Y = canvas.height / 2;
         if (this.currentDirX < 0) {
             this.X = 3 * canvas.width / 4;
@@ -209,6 +276,9 @@ var BallEntity = /** @class */ (function (_super) {
         else {
             this.X = canvas.width / 4;
         }
+    };
+    BallEntity.prototype.updateMovementSpeed = function () {
+        this.movementSpeed = getRandomInt(Options.ballSpeedRange[0], Options.ballSpeedRange[1]);
     };
     return BallEntity;
 }(Entity));

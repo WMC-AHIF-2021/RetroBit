@@ -1,0 +1,58 @@
+* {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+}
+
+canvas{
+    top: 0;
+    left: 0;
+    position:fixed;
+    width:100vw;
+    height:100vh;
+    visibility: hidden;
+}
+
+input,select {
+    background-color: black;
+    border: 2px solid white;
+}
+#options_difficultySelect {
+    width: 100%;
+    margin-top: 10px;
+    height: 40px;
+}
+
+#options {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: max-content;
+    height: max-content;
+    padding: 10px 30px 100px;
+
+    border: 3px solid white;
+    background-color: black;
+}
+#options_submitButton {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    background-color: black;
+    border: 3px solid black;
+}
+#options_submitButton:hover {
+    animation: 0.5s hover infinite step-end;
+}
+
+@keyframes hover {
+    0% {
+        border-bottom: 3px solid white;
+    }
+    50%
+    {
+        border-bottom: 3px solid black;
+    }
+}
