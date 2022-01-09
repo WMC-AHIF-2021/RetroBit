@@ -46,8 +46,6 @@ class Game {
     private isRunning: boolean;
 
     constructor() {
-
-
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
         let context = canvas.getContext("2d");
         canvas.focus();
@@ -61,7 +59,7 @@ class Game {
         this.context = context;
 
         this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "white");
-        this.computerBat = new ComputerBatEntity(700, 50, 15, 100, "green");
+        this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "green");
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
 
         this.pointsPlayer = 0;
@@ -173,12 +171,12 @@ class Game {
 
         // score text
         this.context.textAlign = "start";
-        this.context.font = "40px 'Press Start 2P'";
+        this.context.font = "50px 'Press Start 2P'";
         this.context.fillText(pad(this.pointsPlayer, 2, '0'), this.canvas.width / 2 - 100, 55);
         this.context.fillText(pad(this.pointsComputer, 2, '0'), this.canvas.width / 2 + 20, 55);
 
         // draw winner text
-        this.context.font = "12px 'Press Start 2P'";
+        this.context.font = "24px 'Press Start 2P'";
         this.context.textAlign = "center";
         if (this.currentWinner == 0) {
             // the player won
@@ -188,7 +186,7 @@ class Game {
             this.context.fillText("Computer Won!", this.canvas.width / 1.5, this.canvas.height / 3);
         }
         // draw restart with space text
-        this.context.font = "7px 'Press Start 2P'";
+        this.context.font = "14px 'Press Start 2P'";
         this.context.fillStyle = "#aaaaaa";
         if (this.currentWinner != -1) {
             this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
