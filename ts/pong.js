@@ -139,7 +139,7 @@ var BallEntity = /** @class */ (function (_super) {
     BallEntity.prototype.update = function (canvas, game) {
         this.X += this.currentDirX * this.movementSpeed;
         this.Y += this.currentDirY * this.movementSpeed;
-        if (this.Y >= canvas.height) {
+        if (this.Y + this.SizeY >= canvas.height) {
             this.currentDirY = -1;
         }
         if (this.Y <= 0) {
@@ -153,7 +153,7 @@ var BallEntity = /** @class */ (function (_super) {
             this.lost(game, canvas);
             game.pointsComputer += 1;
         }
-        if ((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) {
+        if (((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y))) {
             this.currentDirX = -1;
         }
         if ((this.X <= game.playerBat.X + game.playerBat.SizeX && this.X >= game.playerBat.X) && (this.Y <= game.playerBat.Y + game.playerBat.SizeY && this.Y >= game.playerBat.Y)) {
