@@ -8,6 +8,7 @@ class Options {
 
     public static isMouseControl: boolean;
 
+    public static difficultyIndex: number;
 
     public static setOptions = () => {
         // set difficulty
@@ -44,6 +45,7 @@ class Options {
                 Options.computerBatHeight = 300;
                 break;
         }
+        this.difficultyIndex = difficulty;
         // set other options
         this.isMouseControl = (<HTMLInputElement>document.getElementById("options_enableMouseControl")).checked;
     }
@@ -138,9 +140,14 @@ class Game {
         setTimeout(() => {
             canvasEl.focus();
             this.ball.updateMovementSpeed();
-            this.computerBat.updateMovementSpeed();
+            setTimeout(() => {
+                this.computerBat.updateMovementSpeed();
+            }, 500);
             this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, Options.computerBatHeight, "green");
             this.isRunning = true;
+            if (Options.difficultyIndex == 5) {
+                this.pointsPlayer = -9;
+            }
         }, 1000);
     }
 

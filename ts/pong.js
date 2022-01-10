@@ -58,6 +58,7 @@ var Options = /** @class */ (function () {
                 Options.computerBatHeight = 300;
                 break;
         }
+        _a.difficultyIndex = difficulty;
         // set other options
         _a.isMouseControl = document.getElementById("options_enableMouseControl").checked;
     };
@@ -104,9 +105,14 @@ var Game = /** @class */ (function () {
             setTimeout(function () {
                 canvasEl.focus();
                 _this.ball.updateMovementSpeed();
-                _this.computerBat.updateMovementSpeed();
+                setTimeout(function () {
+                    _this.computerBat.updateMovementSpeed();
+                }, 500);
                 _this.computerBat = new ComputerBatEntity(_this.canvas.width - 50, 50, 15, Options.computerBatHeight, "green");
                 _this.isRunning = true;
+                if (Options.difficultyIndex == 5) {
+                    _this.pointsPlayer = -9;
+                }
             }, 1000);
         };
         this.restartGame = function () {
