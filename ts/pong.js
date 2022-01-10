@@ -22,6 +22,7 @@ var Options = /** @class */ (function () {
     // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
     Options.computerSpeedRange = [6, 8];
     Options.ballSpeedRange = [6, 8];
+    Options.computerBatHeight = 100;
     Options.setOptions = function () {
         // set difficulty
         var difficulty = parseInt(document.getElementById("options_difficultySelect").value);
@@ -29,22 +30,32 @@ var Options = /** @class */ (function () {
             case 0:
                 Options.computerSpeedRange = [4, 6];
                 Options.ballSpeedRange = [4, 7];
+                Options.computerBatHeight = 100;
                 break;
             case 1:
                 Options.computerSpeedRange = [6, 8];
                 Options.ballSpeedRange = [6, 9];
+                Options.computerBatHeight = 100;
                 break;
             case 2:
                 Options.computerSpeedRange = [8, 10];
                 Options.ballSpeedRange = [7, 10];
+                Options.computerBatHeight = 100;
                 break;
             case 3:
                 Options.computerSpeedRange = [12, 16];
                 Options.ballSpeedRange = [12, 16];
+                Options.computerBatHeight = 150;
                 break;
             case 4:
                 Options.computerSpeedRange = [16, 20];
                 Options.ballSpeedRange = [16, 20];
+                Options.computerBatHeight = 200;
+                break;
+            case 5:
+                Options.computerSpeedRange = [70, 70];
+                Options.ballSpeedRange = [35, 35];
+                Options.computerBatHeight = 300;
                 break;
         }
         // set other options
@@ -93,6 +104,8 @@ var Game = /** @class */ (function () {
             setTimeout(function () {
                 canvasEl.focus();
                 _this.ball.updateMovementSpeed();
+                _this.computerBat.updateMovementSpeed();
+                _this.computerBat = new ComputerBatEntity(_this.canvas.width - 50, 50, 15, Options.computerBatHeight, "green");
                 _this.isRunning = true;
             }, 1000);
         };
@@ -233,10 +246,13 @@ var ComputerBatEntity = /** @class */ (function (_super) {
             this.Y -= this.movementSpeed;
         }
         this.i++;
-        if (this.i % 20 == 0) {
-            this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
+        if (this.i % 200 == 0) {
+            this.updateMovementSpeed();
             this.i = 0;
         }
+    };
+    ComputerBatEntity.prototype.updateMovementSpeed = function () {
+        this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
     };
     return ComputerBatEntity;
 }(Entity));
@@ -268,9 +284,12 @@ var BallEntity = /** @class */ (function (_super) {
         }
         if (((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y))) {
             this.currentDirX = -1;
+            this.updateMovementSpeed();
+            game.computerBat.updateMovementSpeed();
         }
         if ((this.X <= game.playerBat.X + game.playerBat.SizeX && this.X >= game.playerBat.X) && (this.Y <= game.playerBat.Y + game.playerBat.SizeY && this.Y >= game.playerBat.Y)) {
             this.currentDirX = 1;
+            this.updateMovementSpeed();
         }
     };
     BallEntity.prototype.lost = function (canvas) {

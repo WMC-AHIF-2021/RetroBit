@@ -4,6 +4,8 @@ class Options {
     public static computerSpeedRange = [6, 8];
     public static ballSpeedRange = [6, 8];
 
+    public static computerBatHeight = 100;
+
     public static isMouseControl: boolean;
 
 
@@ -14,22 +16,32 @@ class Options {
             case 0:
                 Options.computerSpeedRange = [4,6];
                 Options.ballSpeedRange = [4,7];
+                Options.computerBatHeight = 100;
                 break;
             case 1:
                 Options.computerSpeedRange = [6,8];
                 Options.ballSpeedRange = [6,9];
+                Options.computerBatHeight = 100;
                 break;
             case 2:
                 Options.computerSpeedRange = [8,10];
                 Options.ballSpeedRange = [7, 10];
+                Options.computerBatHeight = 100;
                 break;
             case 3:
                 Options.computerSpeedRange = [12, 16];
                 Options.ballSpeedRange = [12, 16];
+                Options.computerBatHeight = 150;
                 break;
             case 4:
                 Options.computerSpeedRange = [16, 20];
                 Options.ballSpeedRange = [16, 20];
+                Options.computerBatHeight = 200;
+                break;
+            case 5:
+                Options.computerSpeedRange = [70, 70];
+                Options.ballSpeedRange = [35, 35];
+                Options.computerBatHeight = 300;
                 break;
         }
         // set other options
@@ -126,6 +138,8 @@ class Game {
         setTimeout(() => {
             canvasEl.focus();
             this.ball.updateMovementSpeed();
+            this.computerBat.updateMovementSpeed();
+            this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, Options.computerBatHeight, "green");
             this.isRunning = true;
         }, 1000);
     }
@@ -250,10 +264,13 @@ class ComputerBatEntity extends Entity {
             this.Y -= this.movementSpeed;
         }
         this.i++;
-        if (this.i % 20 == 0) {
-            this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
+        if (this.i % 200 == 0) {
+            this.updateMovementSpeed();
             this.i = 0;
         }
+    }
+    public updateMovementSpeed() {
+        this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
     }
 }
 
@@ -285,9 +302,12 @@ class BallEntity extends Entity {
 
         if (((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y))) {
             this.currentDirX = -1;
+            this.updateMovementSpeed();
+            game.computerBat.updateMovementSpeed();
         }
         if ((this.X <= game.playerBat.X + game.playerBat.SizeX && this.X >= game.playerBat.X) && (this.Y <= game.playerBat.Y + game.playerBat.SizeY && this.Y >= game.playerBat.Y)) {
             this.currentDirX = 1;
+            this.updateMovementSpeed();
         }
     }
     private lost(canvas:HTMLCanvasElement) {
