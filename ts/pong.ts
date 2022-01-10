@@ -47,6 +47,7 @@ class Options {
         }
         this.difficultyIndex = difficulty;
         // set other options
+        // @ts-ignore
         this.isMouseControl = (<HTMLInputElement>document.getElementById("options_enableMouseControl")).checked;
     }
 }
