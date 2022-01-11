@@ -148,14 +148,19 @@ class Game {
             this.isRunning = true;
             if (Options.difficultyIndex == 5) {
                 this.pointsPlayer = -9;
+            } else {
+                this.pointsPlayer = 0;
             }
         }, 1000);
     }
 
     private restartGame = () => {
         this.pointsComputer = 0;
-        this.pointsPlayer = 0;
         this.currentWinner = -1;
+
+        if (Options.difficultyIndex == 5) {
+            this.pointsPlayer = -9;
+        }
     }
 
     private gameLoop = () => {

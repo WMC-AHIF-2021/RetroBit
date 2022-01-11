@@ -60,6 +60,7 @@ var Options = /** @class */ (function () {
         }
         _a.difficultyIndex = difficulty;
         // set other options
+        // @ts-ignore
         _a.isMouseControl = document.getElementById("options_enableMouseControl").checked;
     };
     return Options;
@@ -113,12 +114,17 @@ var Game = /** @class */ (function () {
                 if (Options.difficultyIndex == 5) {
                     _this.pointsPlayer = -9;
                 }
+                else {
+                    _this.pointsPlayer = 0;
+                }
             }, 1000);
         };
         this.restartGame = function () {
             _this.pointsComputer = 0;
-            _this.pointsPlayer = 0;
             _this.currentWinner = -1;
+            if (Options.difficultyIndex == 5) {
+                _this.pointsPlayer = -9;
+            }
         };
         this.gameLoop = function () {
             if (_this.isRunning) {
