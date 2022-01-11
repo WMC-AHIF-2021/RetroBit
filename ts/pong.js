@@ -122,6 +122,7 @@ var Game = /** @class */ (function () {
         this.restartGame = function () {
             _this.pointsComputer = 0;
             _this.currentWinner = -1;
+            _this.pointsPlayer = 0;
             if (Options.difficultyIndex == 5) {
                 _this.pointsPlayer = -9;
             }

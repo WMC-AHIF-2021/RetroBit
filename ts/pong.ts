@@ -157,6 +157,7 @@ class Game {
     private restartGame = () => {
         this.pointsComputer = 0;
         this.currentWinner = -1;
+        this.pointsPlayer = 0;
 
         if (Options.difficultyIndex == 5) {
             this.pointsPlayer = -9;
