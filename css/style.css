@@ -14,15 +14,6 @@ body{
     float: right;
 }
 
-#index a {
-    color: white;
-}
-#index a:hover {
-    text-decoration: none;
-}
-#index a:focus {
-    text-decoration: underline;
-}
 a {
     color: var(--color-synthwave-5);
     text-decoration: none;
@@ -65,7 +56,11 @@ h2{
     text-decoration: underline;
 }
 
-h3
-{
+h3{
     text-decoration: underline;
+    color: #ff901f;
+}
+
+h2{
+    color: var(--color-synthwave-2);
 }
