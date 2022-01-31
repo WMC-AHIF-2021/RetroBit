@@ -79,8 +79,8 @@ class Game {
         this.canvas = canvas;
         this.context = context;
 
-        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "white");
-        this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "green");
+        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#f222ff");
+        this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "#ff901f");
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
 
         this.pointsPlayer = 0;
@@ -144,7 +144,7 @@ class Game {
             setTimeout(() => {
                 this.computerBat.updateMovementSpeed();
             }, 500);
-            this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, Options.computerBatHeight, "green");
+            this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, Options.computerBatHeight, "#ff901f");
             this.isRunning = true;
             if (Options.difficultyIndex == 5) {
                 this.pointsPlayer = -9;

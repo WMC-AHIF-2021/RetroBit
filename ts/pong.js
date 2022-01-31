@@ -109,7 +109,7 @@ var Game = /** @class */ (function () {
                 setTimeout(function () {
                     _this.computerBat.updateMovementSpeed();
                 }, 500);
-                _this.computerBat = new ComputerBatEntity(_this.canvas.width - 50, 50, 15, Options.computerBatHeight, "green");
+                _this.computerBat = new ComputerBatEntity(_this.canvas.width - 50, 50, 15, Options.computerBatHeight, "#ff901f");
                 _this.isRunning = true;
                 if (Options.difficultyIndex == 5) {
                     _this.pointsPlayer = -9;
@@ -155,8 +155,8 @@ var Game = /** @class */ (function () {
         context.lineWidth = 1;
         this.canvas = canvas;
         this.context = context;
-        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "white");
-        this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "green");
+        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#f222ff");
+        this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "#ff901f");
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
         this.pointsPlayer = 0;
         this.pointsComputer = 0;

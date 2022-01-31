@@ -24,7 +24,7 @@ body{
     text-decoration: underline;
 }
 a {
-    color: blue;
+    color: var(--color-synthwave-5);
     text-decoration: none;
 }
 a:hover {
@@ -34,11 +34,14 @@ a:focus {
     text-decoration: underline;
 }
 a:visited {
-    color: blue;
+    color: var(--color-synthwave-5);
 }
 
 #header{
     font-size: 600%;
+}
+#smolHeader {
+    font-size: 150%;
 }
 
 #historyheader{
@@ -59,7 +62,7 @@ h2{
 }
 
 #underline{
-    text-decoration: underline blue;
+    text-decoration: underline;
 }
 
 h3
