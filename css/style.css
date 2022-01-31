@@ -14,6 +14,15 @@ body{
     float: right;
 }
 
+.ul-menu{
+    list-style: none;
+}
+
+.technologyimage{
+    width: 30%;
+    float: right;
+}
+
 a {
     color: var(--color-synthwave-5);
     text-decoration: none;
@@ -57,10 +66,16 @@ h2{
 }
 
 h3{
-    text-decoration: underline;
-    color: #ff901f;
+    color: var(--color-synthwave-2);
 }
 
 h2{
     color: var(--color-synthwave-2);
+}
+
+#index h3 a{
+    color: var(--color-synthwave-5)!important;
+}
+#index h2 a{
+    color: var(--color-synthwave-2)!important;
 }

@@ -13,11 +13,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var _this = this;
 var Options = /** @class */ (function () {
     function Options() {
     }
-    var _a;
-    _a = Options;
     Options.winningPoints = 11;
     // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
     Options.computerSpeedRange = [6, 8];
@@ -58,10 +57,10 @@ var Options = /** @class */ (function () {
                 Options.computerBatHeight = 300;
                 break;
         }
-        _a.difficultyIndex = difficulty;
+        Options.difficultyIndex = difficulty;
         // set other options
         // @ts-ignore
-        _a.isMouseControl = document.getElementById("options_enableMouseControl").checked;
+        _this.isMouseControl = document.getElementById("options_enableMouseControl").checked;
     };
     return Options;
 }());
@@ -155,7 +154,7 @@ var Game = /** @class */ (function () {
         context.lineWidth = 1;
         this.canvas = canvas;
         this.context = context;
-        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#f222ff");
+        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#8c1eff");
         this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "#ff901f");
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
         this.pointsPlayer = 0;

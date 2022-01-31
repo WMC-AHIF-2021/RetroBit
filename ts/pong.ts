@@ -45,7 +45,7 @@ class Options {
                 Options.computerBatHeight = 300;
                 break;
         }
-        this.difficultyIndex = difficulty;
+        Options.difficultyIndex = difficulty;
         // set other options
         // @ts-ignore
         this.isMouseControl = (<HTMLInputElement>document.getElementById("options_enableMouseControl")).checked;
@@ -79,7 +79,7 @@ class Game {
         this.canvas = canvas;
         this.context = context;
 
-        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#f222ff");
+        this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#8c1eff");
         this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "#ff901f");
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
 

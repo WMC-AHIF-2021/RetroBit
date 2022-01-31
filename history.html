@@ -6,6 +6,7 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <link href="img/favicon.ico" rel="shortcut icon">
         <link href="css/style.css" rel="stylesheet">
+        <link href="css/pongStyles.css" rel="stylesheet">
         <link href="css/colors.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com" rel="preconnect">
         <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
@@ -13,17 +14,17 @@
     </head>
     <body>
     <div id="navbar">
-        <a href="index.html" id="smolHeader">RetroBit</a> | History | <a href="tetris.html">Tetris</a> | <a href="pong.html">Pong</a>
+        <a href="index.html" id="smolHeader">RetroBit</a> | History | <a href="technology.html">Technology</a>
     </div>
 
         <h1 id="historyheader">History of retro games</h1>
         <p>Index</p>
-        <ul>
-            <li>1.) Pong</li>
-            <li>2.) Tetris</li>
-            <li>3.) Minesweeper</li>
+        <ul class="ul-menu">
+            <li><a href="#pong_header">1.) Pong</a></li>
+            <li><a href="#tetris_header">2.) Tetris</a></li>
+            <li><a href="#minesweeper_header">3.) Minesweeper</a></li>
         </ul>
-        <h2>Pong</h2>
+        <h2 id="pong_header">Pong</h2>
         <ul>
             <li>Released: 1972</li>
             <li>Developer: Atari</li>
@@ -39,6 +40,7 @@
             Pong is a two-dimensional game, which simulates table tennis. Every player controls a rectangle
             on the left or right side of the screen, which can move vertically. Players use the paddles to hit forth and back.
             If the ball reaches the end of the display, the side whereas ball comes from gets the point and the loser-side gets a free-kick.
+            It aims to replicate table tennis. The goal is to reach 11 points and if that is achieved, that player wins.
         </p>
         <h3>History</h3>
         <img alt="original pong console" class="historyimage" src="img/pongconsole.png">
@@ -58,7 +60,7 @@
         <p>
             2012, on the occasion of 40th birthday of Pong, Atari released a new version of pong, which was developed by independece developer.
         </p>
-        <h2>Tetris</h2>
+        <h2 id="tetris_header">Tetris</h2>
         <ul>
             <li>Released: 1984 </li>
             <li>Developer: Alexy Pajtnov and Vladimir Pokhilko </li>
@@ -70,6 +72,10 @@
         <h3>Gameplay</h3>
         <p>Tetris has a field of play, where different geometric forms (tetrominos) fall from the top of the field.
             The player can let the tetromino fall faster, rotate 90&deg; right or left and let it fall to right, left or center.
+            The goal of Tetris is to get as many points as possible.
+            You get more points the more rows you remove at once.
+            As the game goes on the speed of the blocks dropping in starts to rise.
+            This results in a healthy curve of difficulty.
         </p>
         <img alt="original tetris" class="historyimage" src="img/tetris.png">
         <h3>History</h3>
@@ -103,7 +109,7 @@
             December 2005, Electronic Arts bought a company, which managed the Tetris license on mobile platforms. 
             Following from this, Electronic Arts got the rights of Tetris on the mobile market.
         </p>
-        <h2>Minesweeper</h2>
+        <h2 id="minesweeper_header">Minesweeper</h2>
         <ul>
             <li>Release: 1990</li>
             <li>Developer: Microsoft</li>
