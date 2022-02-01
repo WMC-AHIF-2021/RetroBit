@@ -111,15 +111,39 @@ h2{
 
 .grid-container {
     display: grid;
-    grid-template: 100% / auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .grid-item {
     color: gray;
+    border-left: 3px dotted grey;
 }
+
 .grid-header {
     color: var(--color-synthwave-5);
+    display: flex;
 }
+
 .grid-item img {
-    width: 100%;
+    width: 70%;
+    float: left;
+    border-radius: 20%;
+    margin: 15%;
+    margin-top: 0;
+}
+
+#first{
+    border: none;
+}
+.grid-container h3 {
+    text-align: center;
+    color: var(--color-synthwave-2);
+}
+
+.grid-container p {
+    text-align: center;
+}
+
+#aboutusbody{
+    margin-bottom: 0;
 }
