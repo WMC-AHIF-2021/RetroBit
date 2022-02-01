@@ -79,3 +79,12 @@ h2{
 #index h2 a{
     color: var(--color-synthwave-2)!important;
 }
+
+.grid-container {
+    display: grid;
+    grid-template: 100% / auto auto auto;
+}
+
+.grid-item{
+    color: var(--color-synthwave-5);
+}

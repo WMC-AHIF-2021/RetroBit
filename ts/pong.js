@@ -57,7 +57,8 @@ var Options = /** @class */ (function () {
                 Options.computerBatHeight = 300;
                 break;
         }
-        Options.difficultyIndex = difficulty;
+        // @ts-ignore
+        _this.difficultyIndex = difficulty;
         // set other options
         // @ts-ignore
         _this.isMouseControl = document.getElementById("options_enableMouseControl").checked;
