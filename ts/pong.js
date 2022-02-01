@@ -81,12 +81,12 @@ var Game = /** @class */ (function () {
                         _this.restartGame();
                     }
                     break;
-                case 13:
+                /*case 13:
                     // open difficulty window if somebody has won and player presses enter
-                    if (_this.currentWinner != -1) {
-                        _this.stopGame();
+                    if (this.currentWinner != -1) {
+                        this.stopGame();
                     }
-                    break;
+                    break;*/
                 case 27:
                     // terminate current game
                     _this.stopGame();
@@ -211,7 +211,7 @@ var Game = /** @class */ (function () {
         this.context.fillStyle = "#aaaaaa";
         if (this.currentWinner != -1) {
             this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
-            this.context.fillText("Press ENTER to CHANGE DIFFICULTY", this.canvas.width / 2, this.canvas.height - 150);
+            this.context.fillText("Press ESCAPE to CHANGE DIFFICULTY", this.canvas.width / 2, this.canvas.height - 150);
         }
     };
     Game.prototype.clear = function () {

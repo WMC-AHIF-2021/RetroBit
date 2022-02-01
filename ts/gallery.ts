@@ -1,7 +1,8 @@
 class ImageSlider {
     private imageElements: ImageSliderElement[] = [
-        new ImageSliderElement("img/gallery/tetris.png", "Tetris", "1969"),
-        new ImageSliderElement("img/gallery/pong.png", "Pong", "ping pong pang pumm")
+        new ImageSliderElement("img/gallery/pong.png", "Pong", "Pong is a two-dimensional game, which simulates table tennis. <a href='history.html#pong_header'>More...</a>"),
+        new ImageSliderElement("img/gallery/tetris.png", "Tetris", "The goal is to remove as many rows as possible by filling entire rows with the falling Tetriminos. <a href='history.html#tetris_header'>More...</a>"),
+        new ImageSliderElement("img/gallery/minesweeper.png", "Minesweeper", "The player needs to open all fields without clicking on the mines while the opened fields show the count of fields with mines around them. <a href='history.html#minesweeper_header'>More...</a>")
     ];
     private currentImageIndex: number = 0;
 
@@ -13,6 +14,8 @@ class ImageSlider {
 
         this.htmlImage = <HTMLImageElement>document.getElementById("sliderImg");
         this.htmlTextContainer = <HTMLDivElement>document.getElementById("text");
+
+        this.update();
     }
     private registerUserEvents(): void {
         document.getElementById("nextButton").addEventListener("click", () => {

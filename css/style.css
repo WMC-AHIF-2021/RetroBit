@@ -118,6 +118,11 @@ h2{
 #nyanCat{
     width: 20%;
     height: auto;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+#nyanCat:hover {
+    transform: scale(1.2);
 }
 
 #underline{

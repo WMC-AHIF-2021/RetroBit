@@ -1,13 +1,15 @@
 var ImageSlider = /** @class */ (function () {
     function ImageSlider() {
         this.imageElements = [
-            new ImageSliderElement("img/gallery/tetris.png", "Tetris", "1969"),
-            new ImageSliderElement("img/gallery/pong.png", "Pong", "ping pong pang pumm")
+            new ImageSliderElement("img/gallery/pong.png", "Pong", "Pong is a two-dimensional game, which simulates table tennis. <a href='history.html#pong_header'>More...</a>"),
+            new ImageSliderElement("img/gallery/tetris.png", "Tetris", "The goal is to remove as many rows as possible by filling entire rows with the falling Tetriminos. <a href='history.html#tetris_header'>More...</a>"),
+            new ImageSliderElement("img/gallery/minesweeper.png", "Minesweeper", "The player needs to open all fields without clicking on the mines while the opened fields show the count of fields with mines around them. <a href='history.html#minesweeper_header'>More...</a>")
         ];
         this.currentImageIndex = 0;
         this.registerUserEvents();
         this.htmlImage = document.getElementById("sliderImg");
         this.htmlTextContainer = document.getElementById("text");
+        this.update();
     }
     ImageSlider.prototype.registerUserEvents = function () {
         var _this = this;

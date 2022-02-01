@@ -33,10 +33,10 @@
     margin-top: 0;
 }
 #nextButton {
-    right: 5px;
+    right: -25px;
 }
 #previousButton {
-    left: 5px;
+    left: -25px;
 }
 #viewport {
     overflow: hidden;
