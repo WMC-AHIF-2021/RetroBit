@@ -40,7 +40,7 @@ var MenuNavigator = /** @class */ (function () {
         this.updateArrow = function () {
             if (_this.arrowElement == null) {
                 _this.arrowElement = new Image();
-                _this.arrowElement.src = "/img/arrow.png";
+                _this.arrowElement.src = "img/arrow.png";
                 _this.arrowElement.id = "navbarArrow";
             }
             var selectedElement = _this.menuElements[_this.selectedIndex];

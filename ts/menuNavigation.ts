@@ -56,7 +56,7 @@ class MenuNavigator {
     private updateArrow = () => {
         if (this.arrowElement == null) {
             this.arrowElement = new Image();
-            this.arrowElement.src = "/img/arrow.png";
+            this.arrowElement.src = "img/arrow.png";
             this.arrowElement.id = "navbarArrow";
         }
         let selectedElement = this.menuElements[this.selectedIndex];
