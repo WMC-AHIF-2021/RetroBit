@@ -274,9 +274,9 @@ class ComputerBatEntity extends Entity {
 
     private i:number = 0;
     public update(ball:BallEntity) {
-        if (ball.Y > this.Y) {
+        if (ball.Y > this.Y + this.SizeY/2) {
             this.Y += this.movementSpeed;
-        } else if (ball.Y < this.Y) {
+        } else if (ball.Y < this.Y + this.SizeY/2) {
             this.Y -= this.movementSpeed;
         }
         this.i++;

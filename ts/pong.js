@@ -254,10 +254,10 @@ var ComputerBatEntity = /** @class */ (function (_super) {
         return _this;
     }
     ComputerBatEntity.prototype.update = function (ball) {
-        if (ball.Y > this.Y) {
+        if (ball.Y > this.Y + this.SizeY / 2) {
             this.Y += this.movementSpeed;
         }
-        else if (ball.Y < this.Y) {
+        else if (ball.Y < this.Y + this.SizeY / 2) {
             this.Y -= this.movementSpeed;
         }
         this.i++;
