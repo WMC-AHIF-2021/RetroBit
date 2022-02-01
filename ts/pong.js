@@ -87,6 +87,9 @@ var Game = /** @class */ (function () {
                         _this.stopGame();
                     }
                     break;
+                case 27:
+                    // terminate current game
+                    _this.stopGame();
             }
             _this.redraw();
         };

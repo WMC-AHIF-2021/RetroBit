@@ -27,6 +27,17 @@ body{
     }
 }
 
+#tipText {
+    position: fixed;
+    width: max-content;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gray;
+    font-size: 10px;
+    font-style: italic;
+}
+
 .historyimage{
     width: 15%;
     float: right;

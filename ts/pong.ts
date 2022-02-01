@@ -119,7 +119,10 @@ class Game {
                 if (this.currentWinner != -1) {
                     this.stopGame();
                 }
-                break;
+                break
+            case 27:
+                // terminate current game
+                this.stopGame();
         }
         this.redraw();
     }
