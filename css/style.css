@@ -114,6 +114,12 @@ h2{
     grid-template: 100% / auto auto auto;
 }
 
-.grid-item{
+.grid-item {
+    color: gray;
+}
+.grid-header {
     color: var(--color-synthwave-5);
+}
+.grid-item img {
+    width: 100%;
 }
