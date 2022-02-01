@@ -45,10 +45,8 @@ class Options {
                 Options.computerBatHeight = 300;
                 break;
         }
-        // @ts-ignore
         this.difficultyIndex = difficulty;
         // set other options
-        // @ts-ignore
         this.isMouseControl = (<HTMLInputElement>document.getElementById("options_enableMouseControl")).checked;
     }
 }
@@ -121,7 +119,10 @@ class Game {
                 if (this.currentWinner != -1) {
                     this.stopGame();
                 }
-                break;
+                break
+            case 27:
+                // terminate current game
+                this.stopGame();
         }
         this.redraw();
     }
@@ -273,9 +274,9 @@ class ComputerBatEntity extends Entity {
 
     private i:number = 0;
     public update(ball:BallEntity) {
-        if (ball.Y > this.Y) {
+        if (ball.Y > this.Y + this.SizeY/2) {
             this.Y += this.movementSpeed;
-        } else if (ball.Y < this.Y) {
+        } else if (ball.Y < this.Y + this.SizeY/2) {
             this.Y -= this.movementSpeed;
         }
         this.i++;

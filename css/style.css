@@ -9,6 +9,35 @@ body{
     text-align: center;
 }
 
+#navbarArrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45px;
+    height: 40px;
+    animation: 0.5s blink infinite step-end;
+}
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50%
+    {
+        opacity: 0;
+    }
+}
+
+#tipText {
+    position: fixed;
+    width: max-content;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gray;
+    font-size: 10px;
+    font-style: italic;
+}
+
 .historyimage{
     width: 15%;
     float: right;

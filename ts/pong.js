@@ -13,10 +13,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var _this = this;
 var Options = /** @class */ (function () {
     function Options() {
     }
+    var _a;
+    _a = Options;
     Options.winningPoints = 11;
     // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
     Options.computerSpeedRange = [6, 8];
@@ -57,11 +58,9 @@ var Options = /** @class */ (function () {
                 Options.computerBatHeight = 300;
                 break;
         }
-        // @ts-ignore
-        _this.difficultyIndex = difficulty;
+        _a.difficultyIndex = difficulty;
         // set other options
-        // @ts-ignore
-        _this.isMouseControl = document.getElementById("options_enableMouseControl").checked;
+        _a.isMouseControl = document.getElementById("options_enableMouseControl").checked;
     };
     return Options;
 }());
@@ -88,6 +87,9 @@ var Game = /** @class */ (function () {
                         _this.stopGame();
                     }
                     break;
+                case 27:
+                    // terminate current game
+                    _this.stopGame();
             }
             _this.redraw();
         };
@@ -252,10 +254,10 @@ var ComputerBatEntity = /** @class */ (function (_super) {
         return _this;
     }
     ComputerBatEntity.prototype.update = function (ball) {
-        if (ball.Y > this.Y) {
+        if (ball.Y > this.Y + this.SizeY / 2) {
             this.Y += this.movementSpeed;
         }
-        else if (ball.Y < this.Y) {
+        else if (ball.Y < this.Y + this.SizeY / 2) {
             this.Y -= this.movementSpeed;
         }
         this.i++;
