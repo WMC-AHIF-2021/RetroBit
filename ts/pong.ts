@@ -94,7 +94,7 @@ class Game {
 
     private createUserEvents() {
         let canvas = this.canvas;
-        canvas.addEventListener("keypress",this.keypressEventHandler);
+        canvas.addEventListener("keydown",this.keypressEventHandler);
 
         document.getElementById("options_submitButton").addEventListener("click", () => {
             this.startGame();
