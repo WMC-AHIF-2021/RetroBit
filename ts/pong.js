@@ -170,7 +170,7 @@ var Game = /** @class */ (function () {
     Game.prototype.createUserEvents = function () {
         var _this = this;
         var canvas = this.canvas;
-        canvas.addEventListener("keyup", this.keypressEventHandler);
+        canvas.addEventListener("keypress", this.keypressEventHandler);
         document.getElementById("options_submitButton").addEventListener("click", function () {
             _this.startGame();
         });
