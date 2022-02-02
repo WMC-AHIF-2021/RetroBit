@@ -1,3 +1,4 @@
+document.getElementById("warning").hidden = true;
 function enableNyanCat() {
     document.getElementById("header").innerHTML = "NYAN CAT!!!";
     var body = document.getElementsByTagName("body")[0];
@@ -7,7 +8,23 @@ function enableNyanCat() {
     Array.prototype.slice.call(body.children).forEach(function (el) {
         el.style.animation = randomInRange(0.2, 2) + "s rotate infinite linear";
     });
+    document.getElementById("warning").hidden = false;
 }
+function disableNyanCat() {
+    document.getElementById("header").innerHTML = "RETROBIT";
+    var body = document.getElementsByTagName("body")[0];
+    body.style.animation = "";
+    document.getElementById("nyanCatMusic").pause();
+    Array.prototype.slice.call(body.children).forEach(function (el) {
+        el.style.animation = "";
+    });
+    document.getElementById("warning").hidden = true;
+}
+document.addEventListener("keydown", function (e) {
+    if (e.key == "Escape") {
+        disableNyanCat();
+    }
+});
 function randomInRange(min, max) {
     return Math.random() < 0.5 ? ((1 - Math.random()) * (max - min) + min) : (Math.random() * (max - min) + min);
 }
