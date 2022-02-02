@@ -19,11 +19,11 @@ We are heavily describing the limitations of the first games and the clever appr
 
 ## Goals
 ### Static:
-- [ ] Homepage
-- [ ] History Page
+- [x] Homepage
+- [x] History Page
 - [ ] Game Selection Page
 ### Dynamic:
-- [ ] PONG
+- [x] PONG
 - [ ] Tetris
 - [ ] Minesweeper
 - ...
