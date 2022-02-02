@@ -24,8 +24,12 @@
 
     <div id="tipText">Press arrow keys for menu navigation (here and in pages)</div>
 
-    <img id="nyanCat" src="img/nyan-cat.gif" alt="Nyan Cat">
+    <img id="nyanCat" src="img/nyan-cat.gif" onclick="enableNyanCat();" alt="Nyan Cat">
+    <audio id="nyanCatMusic" loop>
+      <source src="audio/original.mp3" type="audio/mpeg">
+    </audio>
 
+    <script src="ts/nyanCat.js"></script>
     <script src="ts/menuNavigation.js"></script>
   </body>
 </html>

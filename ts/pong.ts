@@ -94,7 +94,7 @@ class Game {
 
     private createUserEvents() {
         let canvas = this.canvas;
-        canvas.addEventListener("keyup",this.keypressEventHandler);
+        canvas.addEventListener("keydown",this.keypressEventHandler);
 
         document.getElementById("options_submitButton").addEventListener("click", () => {
             this.startGame();
@@ -114,12 +114,12 @@ class Game {
                     this.restartGame();
                 }
                 break;
-            case 13:
+            /*case 13:
                 // open difficulty window if somebody has won and player presses enter
                 if (this.currentWinner != -1) {
                     this.stopGame();
                 }
-                break
+                break;*/
             case 27:
                 // terminate current game
                 this.stopGame();
@@ -230,7 +230,7 @@ class Game {
         this.context.fillStyle = "#aaaaaa";
         if (this.currentWinner != -1) {
             this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
-            this.context.fillText("Press ENTER to CHANGE DIFFICULTY", this.canvas.width / 2, this.canvas.height - 150);
+            this.context.fillText("Press ESCAPE to CHANGE DIFFICULTY", this.canvas.width / 2, this.canvas.height - 150);
         }
     }
 

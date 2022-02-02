@@ -7,6 +7,7 @@ body{
 
 #index{
     text-align: center;
+    overflow: hidden;
 }
 
 #navbarArrow {
@@ -24,6 +25,35 @@ body{
     50%
     {
         opacity: 0;
+    }
+}
+
+@keyframes rainbowBg {
+    16% {
+        background-color: red;
+    }
+    32% {
+        background-color: orange;
+    }
+    48% {
+        background-color: yellow;
+    }
+    64% {
+        background-color: green;
+    }
+    80% {
+        background-color: blue;
+    }
+    100% {
+        background-color: indigo;
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(359deg);
     }
 }
 
@@ -88,6 +118,11 @@ h2{
 #nyanCat{
     width: 20%;
     height: auto;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+#nyanCat:hover {
+    transform: scale(1.2);
 }
 
 #underline{
