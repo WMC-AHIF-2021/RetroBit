@@ -9,9 +9,9 @@ We are heavily describing the limitations of the first games and the clever appr
 - A playable version of Pong is included
 
 ## Team
-- Vincent (Team-Leader)
-- Lorenz
-- Stefan 
+- Vincent (History)
+- Lorenz (About-Us, Technology)
+- Stefan (Gallery, PONG implementation, MenuNavigation)
 
 ## Technology
 - Static: HTML, CSS
@@ -21,12 +21,12 @@ We are heavily describing the limitations of the first games and the clever appr
 ### Static:
 - [x] Homepage
 - [x] History Page
-- [ ] Game Selection Page
+- [x] Gallery Page
+- [x] About-Us Page
 ### Dynamic:
 - [x] PONG
 - [ ] Tetris
 - [ ] Minesweeper
-- ...
 
 ## Workload assistment:
 - Vincent (History page)
