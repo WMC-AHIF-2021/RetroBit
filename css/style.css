@@ -186,3 +186,7 @@ h2{
 #warning{
     color: black;
 }
+
+#mostleft{
+    border-left: none;
+}
