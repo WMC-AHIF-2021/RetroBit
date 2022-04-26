@@ -19,7 +19,6 @@ var Options = /** @class */ (function () {
     var _a;
     _a = Options;
     Options.winningPoints = 11;
-    // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
     Options.computerSpeedRange = [6, 8];
     Options.ballSpeedRange = [6, 8];
     Options.computerBatHeight = 100;
@@ -57,6 +56,15 @@ var Options = /** @class */ (function () {
                 Options.ballSpeedRange = [35, 35];
                 Options.computerBatHeight = 300;
                 break;
+            case 6:
+                Options.computerSpeedRange = [5, 10];
+                Options.ballSpeedRange = [10, 15];
+                Options.computerBatHeight = 150;
+                break;
+            case 7:
+                Options.computerSpeedRange = [70, 70];
+                Options.ballSpeedRange = [35, 35];
+                Options.computerBatHeight = 1000;
         }
         _a.difficultyIndex = difficulty;
         // set other options
@@ -105,9 +113,17 @@ var Game = /** @class */ (function () {
             document.getElementById("options").style.visibility = "hidden";
             var canvasEl = document.getElementById("canvas");
             canvasEl.style.visibility = "visible";
+            if (Options.difficultyIndex === 6 || Options.difficultyIndex === 7) {
+                _this.secondBall = new BallEntity(135, 150, 25, 25, "blue", true);
+            }
+            else {
+                _this.secondBall = null;
+            }
             setTimeout(function () {
                 canvasEl.focus();
                 _this.ball.updateMovementSpeed();
+                if (_this.secondBall)
+                    _this.secondBall.updateMovementSpeed();
                 setTimeout(function () {
                     _this.computerBat.updateMovementSpeed();
                 }, 500);
@@ -135,6 +151,8 @@ var Game = /** @class */ (function () {
                 if (_this.currentWinner == -1) {
                     _this.computerBat.update(_this.ball);
                     _this.ball.update(_this.canvas, _this);
+                    if (_this.secondBall)
+                        _this.secondBall.update(_this.canvas, _this);
                 }
                 if (_this.pointsPlayer >= Options.winningPoints) {
                     _this.currentWinner = 0;
@@ -160,6 +178,7 @@ var Game = /** @class */ (function () {
         this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#8c1eff");
         this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "#ff901f");
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
+        // second ball set in start game
         this.pointsPlayer = 0;
         this.pointsComputer = 0;
         this.currentWinner = -1;
@@ -183,6 +202,8 @@ var Game = /** @class */ (function () {
         this.playerBat.draw(this.context);
         this.computerBat.draw(this.context);
         this.ball.draw(this.context);
+        if (this.secondBall)
+            this.secondBall.draw(this.context);
         // center line
         this.context.setLineDash([5, 3]);
         this.context.beginPath();
@@ -221,12 +242,14 @@ var Game = /** @class */ (function () {
     return Game;
 }());
 var Entity = /** @class */ (function () {
-    function Entity(x, y, sizeX, sizeY, color) {
+    function Entity(x, y, sizeX, sizeY, color, isEvil) {
+        if (isEvil === void 0) { isEvil = false; }
         this.X = x;
         this.Y = y;
         this.SizeX = sizeX;
         this.SizeY = sizeY;
         this.Color = color;
+        this.IsEvil = isEvil;
     }
     Entity.prototype.move = function (x, y) {
         this.X += x;
@@ -281,8 +304,8 @@ var BallEntity = /** @class */ (function (_super) {
         return _this;
     }
     BallEntity.prototype.update = function (canvas, game) {
-        this.X += this.currentDirX * this.movementSpeed;
-        this.Y += this.currentDirY * this.movementSpeed;
+        this.X += this.currentDirX * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
+        this.Y += this.currentDirY * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
         if (this.Y + this.SizeY >= canvas.height) {
             this.currentDirY = -1;
         }
@@ -296,6 +319,9 @@ var BallEntity = /** @class */ (function (_super) {
         if (this.X <= 0) {
             this.lost(canvas);
             game.pointsComputer += 1;
+        }
+        if (this.IsEvil && this.X + 100 >= canvas.width) {
+            this.currentDirX = -1;
         }
         if (((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y)) || ((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y))) {
             this.currentDirX = -1;
