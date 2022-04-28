@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <title>RetroBit | TETRIS</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/pongGameStyles.css" rel="stylesheet">
+    <link href="css/colors.css" rel="stylesheet">
+</head>
+<body>
+
+<canvas tabindex="1" id="canvas" width="2000" height="1000"></canvas>
+<div id="options">
+    <br>
+    <div id="navbar">
+        <a href="index.html" style="padding-top: 20px;">&lt; Back</a>
+    </div>
+    <h2>Tetris</h2>
+    <label for="options_difficultySelect">Difficulty Selection</label>
+    <br>
+    <select id="options_difficultySelect">
+        <option value="0">Easy</option>
+        <option value="1">Medium</option>
+        <option value="2">Hard</option>
+        <option value="3">Unethical</option>
+    </select>
+    <br><br>
+    <label for="options_enableMouseControl">Enable Mouse Control?</label>
+    <input type="checkbox" id="options_enableMouseControl" checked>
+    <br>
+    <button id="options_submitButton">PLAY</button>
+</div>
+
+<script src="ts/tetris.js"></script>
+<script src="ts/menuNavigation.js"></script>
+</body>
+</html>

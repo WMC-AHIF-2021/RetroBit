@@ -43,7 +43,7 @@ var ImageSlider = /** @class */ (function () {
     ImageSlider.prototype.update = function () {
         var currentImgEl = this.imageElements[this.currentImageIndex];
         this.htmlImage.src = currentImgEl.imgSrc;
-        this.htmlTextContainer.innerHTML = "<h3>" + currentImgEl.title + "</h3><p>" + currentImgEl.text + "</p>";
+        this.htmlTextContainer.innerHTML = "<h3>".concat(currentImgEl.title, "</h3><p>").concat(currentImgEl.text, "</p>");
     };
     return ImageSlider;
 }());
