@@ -59,7 +59,7 @@ class TetrisGame{
         for (let t of block.tiles){
             this.context.beginPath();
             this.context.lineWidth = 10;
-            this.context.strokeStyle = "white";
+            this.context.fillStyle = `${block.color}`;
             this.context.fillRect(t.xPos, t.yPos, squareSize, squareSize);
             this.context.stroke();
         }
@@ -71,38 +71,49 @@ class TetrisGame{
 }
 
 class Tile{
-    constructor(public xPos: number, public yPos: number, public readonly b: BlockColor) {
+    constructor(public xPos: number, public yPos: number) {
 
     }
 }
 
 class Block{
     private static startpos = {xPos: 1000, yPos: 0};
+    public color: BlockColor = BlockColor.Blue;
     public tiles: Tile[] = [];
     constructor(private readonly block: TetrisBlock) {
         this.determineBlock(block);
     }
 
     private determineBlock(t: TetrisBlock): void{
-        let color: BlockColor = BlockColor.Blue;
         switch(t) {
             case TetrisBlock.LBlock:
-                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos, color));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos , color));
-                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos , color));
-                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos + Direction.Right.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos + Direction.Right.yPos, color));
+                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos + Direction.Right.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos + Direction.Right.yPos));
                 break;
             case TetrisBlock.JBlock:
-
+                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos + Direction.Left.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos + Direction.Left.yPos));
                 break;
             case TetrisBlock.IBlock:
-
+                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos));
                 break;
             case TetrisBlock.OBlock:
-
+                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos, Block.startpos.yPos + Direction.Down.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Right.xPos, Block.startpos.yPos + Direction.Right.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos + Direction.Right.xPos, Block.startpos.yPos + Direction.Down.yPos + Direction.Right.yPos));
                 break;
             case TetrisBlock.TBlock:
-
+                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Right.xPos,Block.startpos.yPos + Direction.Right.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Left.xPos,Block.startpos.yPos + Direction.Left.yPos));
+                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
                 break;
             case TetrisBlock.ZBlock:
 
@@ -143,5 +154,5 @@ class Direction{
     public static readonly Down = {xPos: 0, yPos: 42};
 }
 let t = new TetrisGame();
-t.addBlock(TetrisBlock.LBlock)
+t.addBlock(TetrisBlock.TBlock)
 t.start(0);
