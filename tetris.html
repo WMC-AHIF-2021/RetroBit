@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <title>RetroBit | PONG</title>
+    <title>RetroBit | TETRIS</title>
 
     <link href="css/style.css" rel="stylesheet">
     <link href="css/pongGameStyles.css" rel="stylesheet">
@@ -17,24 +17,20 @@
 </head>
 <body>
 
-<canvas tabindex="1" id="canvas" width="1500" height="1000"></canvas>
+<canvas tabindex="1" id="canvas" width="2000" height="1000"></canvas>
 <div id="options">
     <br>
     <div id="navbar">
-        <a href="gameSelection.html" style="padding-top: 20px;">&lt; Back</a>
+        <a href="index.html" style="padding-top: 20px;">&lt; Back</a>
     </div>
-    <h2>PONG</h2>
+    <h2>Tetris</h2>
     <label for="options_difficultySelect">Difficulty Selection</label>
     <br>
     <select id="options_difficultySelect">
         <option value="0">Easy</option>
         <option value="1">Medium</option>
         <option value="2">Hard</option>
-        <option value="3">Extreme</option>
-        <option value="4">Impossible</option>
-        <option value="5">Hell</option>
-        <option value="6">Double Trouble</option>
-        <option value="7">Just. Don't. Even. Try.</option>
+        <option value="3">Unethical</option>
     </select>
     <br><br>
     <label for="options_enableMouseControl">Enable Mouse Control?</label>
@@ -43,7 +39,7 @@
     <button id="options_submitButton">PLAY</button>
 </div>
 
-<script src="ts/pong.js"></script>
+<script src="ts/tetris.js"></script>
 <script src="ts/menuNavigation.js"></script>
 </body>
 </html>
