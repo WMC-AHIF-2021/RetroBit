@@ -1,6 +1,6 @@
 class Options {
     public static winningPoints = 11;
-    // computerSpeedRange should NOT BE FASTER than ballSpeedRange because then the bat becomes jittery
+
     public static computerSpeedRange = [6, 8];
     public static ballSpeedRange = [6, 8];
 
@@ -44,6 +44,15 @@ class Options {
                 Options.ballSpeedRange = [35, 35];
                 Options.computerBatHeight = 300;
                 break;
+            case 6:
+                Options.computerSpeedRange = [5, 10];
+                Options.ballSpeedRange = [10, 15];
+                Options.computerBatHeight = 150;
+                break;
+            case 7:
+                Options.computerSpeedRange = [70, 70];
+                Options.ballSpeedRange = [35, 35];
+                Options.computerBatHeight = 1000;
         }
         this.difficultyIndex = difficulty;
         // set other options
@@ -58,6 +67,7 @@ class Game {
     public playerBat: PlayerBatEntity;
     public computerBat: ComputerBatEntity;
     private readonly ball: BallEntity;
+    private secondBall: BallEntity;
 
     public pointsPlayer: number;
     public pointsComputer: number;
@@ -81,6 +91,7 @@ class Game {
         this.playerBat = new PlayerBatEntity(35, 50, 15, 100, "#8c1eff");
         this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, 100, "#ff901f");
         this.ball = new BallEntity(35, 50, 20, 20, "gray");
+        // second ball set in start game
 
         this.pointsPlayer = 0;
         this.pointsComputer = 0;
@@ -140,9 +151,15 @@ class Game {
         document.getElementById("options").style.visibility = "hidden";
         let canvasEl = document.getElementById("canvas");
         canvasEl.style.visibility = "visible";
+        if (Options.difficultyIndex === 6 || Options.difficultyIndex === 7) {
+            this.secondBall = new BallEntity(135, 150, 25, 25, "blue", true);
+        } else {
+            this.secondBall = null;
+        }
         setTimeout(() => {
             canvasEl.focus();
             this.ball.updateMovementSpeed();
+            if (this.secondBall) this.secondBall.updateMovementSpeed();
             setTimeout(() => {
                 this.computerBat.updateMovementSpeed();
             }, 500);
@@ -173,6 +190,7 @@ class Game {
             if (this.currentWinner == -1) {
                 this.computerBat.update(this.ball);
                 this.ball.update(this.canvas, this);
+                if (this.secondBall) this.secondBall.update(this.canvas, this);
             }
             if (this.pointsPlayer >= Options.winningPoints) {
                 this.currentWinner = 0;
@@ -200,6 +218,7 @@ class Game {
         this.playerBat.draw(this.context);
         this.computerBat.draw(this.context);
         this.ball.draw(this.context);
+        if (this.secondBall) this.secondBall.draw(this.context);
 
         // center line
         this.context.setLineDash([5, 3]);
@@ -248,12 +267,15 @@ class Entity {
 
     public Color: string;
 
-    constructor(x:number, y:number, sizeX:number, sizeY:number, color:string) {
+    public IsEvil: boolean;
+
+    constructor(x:number, y:number, sizeX:number, sizeY:number, color:string, isEvil:boolean = false) {
         this.X = x;
         this.Y = y;
         this.SizeX = sizeX;
         this.SizeY = sizeY;
         this.Color = color;
+        this.IsEvil = isEvil;
     }
 
     public move(x:number, y:number) {
@@ -297,8 +319,8 @@ class BallEntity extends Entity {
     private movementSpeed: number = 7;
 
     public update(canvas:HTMLCanvasElement, game:Game) {
-        this.X += this.currentDirX * this.movementSpeed;
-        this.Y += this.currentDirY * this.movementSpeed;
+        this.X += this.currentDirX * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
+        this.Y += this.currentDirY * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
 
         if (this.Y + this.SizeY >= canvas.height) {
             this.currentDirY = -1;
@@ -314,6 +336,10 @@ class BallEntity extends Entity {
         if (this.X <= 0) {
             this.lost(canvas);
             game.pointsComputer += 1;
+        }
+
+        if (this.IsEvil && this.X + 100 >= canvas.width) {
+            this.currentDirX = -1;
         }
 
         if (((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y)) || ((this.X <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y + this.SizeY <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y)) || ((this.X + this.SizeX <= game.computerBat.X + game.computerBat.SizeX && this.X + this.SizeX >= game.computerBat.X) && (this.Y <= game.computerBat.Y + game.computerBat.SizeY && this.Y + this.SizeY >= game.computerBat.Y))) {

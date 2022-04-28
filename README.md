@@ -9,9 +9,9 @@ We are heavily describing the limitations of the first games and the clever appr
 - A playable version of Pong is included
 
 ## Team
-- Vincent (History)
-- Lorenz (About-Us, Technology)
-- Stefan (Gallery, PONG implementation, MenuNavigation)
+- Vincent Eichinger
+- Lorenz Holzbauer
+- Stefan Werner
 
 ## Technology
 - Static: HTML, CSS
@@ -29,9 +29,9 @@ We are heavily describing the limitations of the first games and the clever appr
 - [ ] Minesweeper
 
 ## Workload assistment:
-- Vincent (History page)
-- Lorenz (Tetris page + implementation)
-- Stefan (PONG page + implementation)
+- Vincent (History)
+- Lorenz (About-Us, Technology)
+- Stefan (Gallery, PONG implementation, MenuNavigation)
 
 ## Risks (and solutions)
 - Demotivation (remember we have to get good marks to get a praktikum)
