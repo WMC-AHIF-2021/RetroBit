@@ -1,20 +1,50 @@
 class TetrisGame{
-    private blockList: Block[] = [];
+    public blockList: Block[] = [];
+    public speed: number = 500;
 
     constructor() {
-        document.getElementById("options_submitButton").addEventListener("click", () => {
-            this.start(parseInt((<HTMLInputElement>document.getElementById("options_difficultySelect")).value))
+        this.addBlock();
+        this.start();
+    }
+
+    public start(): void{
+        document.getElementById("options").style.visibility = "hidden";
+        document.addEventListener("keydown", (e) => {
+            for(let b of this.blockList){
+                if (e.code === "ArrowLeft"){
+                    b.moveDirection("Left");
+                }
+                if (e.code === "ArrowRight"){
+                    b.moveDirection("Right");
+                }
+            }
         })
     }
 
+    public addBlock(): void{
+        this.blockList.push(new Block(TetrisBlock.TBlock));
+    }
+}
+
+class Renderer{
     private canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement;
     private context = this.canvas.getContext("2d");
-
-    public start(difficulty: number): void{
-        document.getElementById("options").style.visibility = "hidden";
+    public constructor(){
         this.canvas.style.visibility = "visible";
         this.canvas.focus();
-        this.render()
+        this.startGameLoop();
+    }
+
+    private startGameLoop(): void {
+        setInterval(() => {
+            this.clearCanvas();
+            this.render();
+        }, 16);
+        setInterval(() => {
+            for (let b of t.blockList){
+                b.nextFrame();
+            }
+        }, t.speed);
     }
 
     private render(): void{
@@ -28,10 +58,10 @@ class TetrisGame{
         this.context.moveTo(500, 0);
         this.context.lineTo(500, 1000);
         this.context.strokeStyle = "#fff";
-        this.context.lineWidth = 5;
+        this.context.lineWidth = 10;
         this.context.stroke();
         this.context.fillStyle = "white";
-        this.context.font ="42px 'Press Start 2P'";
+        this.context.font = "42px 'Press Start 2P'";
         this.context.fillText("Highscores", 34,48);
     }
 
@@ -40,16 +70,16 @@ class TetrisGame{
         this.context.moveTo(1500, 0);
         this.context.lineTo(1500, 1000);
         this.context.strokeStyle = "#fff";
-        this.context.lineWidth = 5;
+        this.context.lineWidth = 10;
         this.context.stroke();
     }
 
-    private renderGame(): void{
-        this.renderBlocks();
+    private clearCanvas(): void{
+        this.context.clearRect(0, 0, 2000, 1000);
     }
 
-    private renderBlocks(): void{
-        for(let b of this.blockList){
+    private renderGame(): void{
+        for(let b of t.blockList){
             this.renderBlock(b);
         }
     }
@@ -59,18 +89,15 @@ class TetrisGame{
         for (let t of block.tiles){
             this.context.beginPath();
             this.context.lineWidth = 10;
-            this.context.fillStyle = `${block.color}`;
+            this.context.fillStyle = block.color;
             this.context.fillRect(t.xPos, t.yPos, squareSize, squareSize);
             this.context.stroke();
         }
     }
-
-    public addBlock(b: TetrisBlock): void{
-        this.blockList.push(new Block(b));
-    }
 }
 
 class Tile{
+    public isFalling: boolean = true;
     constructor(public xPos: number, public yPos: number) {
 
     }
@@ -85,44 +112,102 @@ class Block{
     }
 
     private determineBlock(t: TetrisBlock): void{
+        const pushNewTile = (xPos: number, yPos: number) => this.tiles.push(new Tile(xPos, yPos));
+        const startX: number = Block.startpos.xPos;
+        const startY: number = Block.startpos.yPos;
+        const downX: number = Direction.Down.xPos;
+        const downY: number = Direction.Down.yPos;
+        const rightX: number = Direction.Right.xPos;
+        const rightY: number = Direction.Right.yPos;
+        const leftX: number = Direction.Left.xPos;
+        const leftY: number = Direction.Left.yPos;
+        pushNewTile(startX, startY);
         switch(t) {
             case TetrisBlock.LBlock:
-                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos + Direction.Right.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos + Direction.Right.yPos));
+                this.color = BlockColor.Blue;
+                pushNewTile(startX + downX,startY + downY);
+                pushNewTile(startX + 2 * downX,startY + 2 * downY);
+                pushNewTile(startX + 2 * downX + rightX,startY + 2 * downY + rightY);
                 break;
             case TetrisBlock.JBlock:
-                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos + Direction.Left.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos + Direction.Left.yPos));
+                this.color = BlockColor.Red;
+                pushNewTile(startX + downX,startY + downY);
+                pushNewTile(startX + 2 * downX,startY + 2 * downY);
+                pushNewTile(startX + 2 * downX + leftX,startY + 2 * downY + leftY);
                 break;
             case TetrisBlock.IBlock:
-                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + 2 * Direction.Down.xPos,Block.startpos.yPos + 2 * Direction.Down.yPos));
+                this.color = BlockColor.Cyan;
+                pushNewTile(startX + downX,startY + downY);
+                pushNewTile(startX + 2 * downX,startY + 2 * downY);
                 break;
             case TetrisBlock.OBlock:
-                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos, Block.startpos.yPos + Direction.Down.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Right.xPos, Block.startpos.yPos + Direction.Right.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos + Direction.Right.xPos, Block.startpos.yPos + Direction.Down.yPos + Direction.Right.yPos));
+                this.color = BlockColor.Green;
+                pushNewTile(startX + downX, startY + downY);
+                pushNewTile(startX + rightX, startY + rightY);
+                pushNewTile(startX + downX + rightX, startY + downY + rightY);
                 break;
             case TetrisBlock.TBlock:
-                this.tiles.push(new Tile(Block.startpos.xPos, Block.startpos.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Right.xPos,Block.startpos.yPos + Direction.Right.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Left.xPos,Block.startpos.yPos + Direction.Left.yPos));
-                this.tiles.push(new Tile(Block.startpos.xPos + Direction.Down.xPos,Block.startpos.yPos + Direction.Down.yPos));
+                this.color = BlockColor.Orange;
+                pushNewTile(startX + rightX,startY + rightY);
+                pushNewTile(startX + leftX,startY + leftY);
+                pushNewTile(startX + downX,startY + downY);
                 break;
             case TetrisBlock.ZBlock:
-
+                this.color = BlockColor.Purple;
+                pushNewTile(startX + leftX, startY + leftY);
+                pushNewTile(startX + downX, startY + downY);
+                pushNewTile(startX + downX + rightX, startY + downY + rightY);
                 break;
             case TetrisBlock.SBlock:
-
+                this.color = BlockColor.Yellow;
+                pushNewTile(startX + rightX, startY + rightY);
+                pushNewTile(startX + downX, startY + downY);
+                pushNewTile(startX + downX + leftX, startY + downY + leftY);
                 break;
             default:
                 break;
+        }
+    }
+
+    public nextFrame(): void{
+        for (let t of this.tiles){
+            t.yPos += Direction.Down.yPos;
+            t.xPos += Direction.Down.xPos;
+        }
+    }
+
+    public moveDirection(d: String): void{
+        let stopRight: boolean = false;
+        let stopLeft: boolean = false;
+        for(let t of this.tiles) {
+            if (t.xPos < 500 + 41){
+                stopLeft = true;
+                break;
+            }
+            if (t.xPos > 1500 - 82){
+                stopRight = true;
+                break;
+            }
+        }
+        for(let t of this.tiles) {
+            if (t.isFalling) {
+                switch (d) {
+                    case "Left":
+                        if (!stopLeft){
+                            t.xPos += Direction.Left.xPos;
+                            t.yPos += Direction.Left.yPos;
+                        }
+                        break;
+                    case "Right":
+                        if (!stopRight){
+                            t.xPos += Direction.Right.xPos;
+                            t.yPos += Direction.Right.yPos;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }
@@ -148,11 +233,8 @@ enum TetrisBlock{
 }
 
 class Direction{
-    public static readonly Right = {xPos: 42, yPos: 0};
-    public static readonly Left = {xPos: -42, yPos: 0};
-    public static readonly Up = {xPos: 0, yPos: -42};
-    public static readonly Down = {xPos: 0, yPos: 42};
+    public static readonly Right = {xPos: 41, yPos: 0};
+    public static readonly Left = {xPos: -41, yPos: 0};
+    public static readonly Down = {xPos: 0, yPos: 41};
 }
 let t = new TetrisGame();
-t.addBlock(TetrisBlock.TBlock)
-t.start(0);
