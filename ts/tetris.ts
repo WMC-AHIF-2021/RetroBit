@@ -1,6 +1,7 @@
 class TetrisGame{
     public blockList: Block[] = [];
-    public speed: number = 500;
+    public static speed: number = 500;
+    private renderer: Renderer = new Renderer();
 
     constructor() {
         this.addBlock();
@@ -22,7 +23,7 @@ class TetrisGame{
     }
 
     public addBlock(): void{
-        this.blockList.push(new Block(TetrisBlock.TBlock));
+        this.blockList.push(new Block(TetrisBlock.ZBlock));
     }
 }
 
@@ -44,7 +45,7 @@ class Renderer{
             for (let b of t.blockList){
                 b.nextFrame();
             }
-        }, t.speed);
+        }, TetrisGame.speed);
     }
 
     private render(): void{
@@ -85,7 +86,7 @@ class Renderer{
     }
 
     private renderBlock(block: Block): void{
-        let squareSize: number = 40;
+        let squareSize: number = 39;
         for (let t of block.tiles){
             this.context.beginPath();
             this.context.lineWidth = 10;
@@ -97,9 +98,9 @@ class Renderer{
 }
 
 class Tile{
-    public isFalling: boolean = true;
+    public isFalling: boolean;
     constructor(public xPos: number, public yPos: number) {
-
+        this.isFalling = true;
     }
 }
 
@@ -180,11 +181,11 @@ class Block{
         let stopRight: boolean = false;
         let stopLeft: boolean = false;
         for(let t of this.tiles) {
-            if (t.xPos < 500 + 41){
+            if (t.xPos < 500 + 39){
                 stopLeft = true;
                 break;
             }
-            if (t.xPos > 1500 - 82){
+            if (t.xPos > 1500 - 78){
                 stopRight = true;
                 break;
             }
@@ -233,8 +234,9 @@ enum TetrisBlock{
 }
 
 class Direction{
-    public static readonly Right = {xPos: 41, yPos: 0};
-    public static readonly Left = {xPos: -41, yPos: 0};
-    public static readonly Down = {xPos: 0, yPos: 41};
+    public static readonly Right = {xPos: 40, yPos: 0};
+    public static readonly Left = {xPos: -40, yPos: 0};
+    public static readonly Down = {xPos: 0, yPos: 40};
 }
-let t = new TetrisGame();
+
+let t: TetrisGame = new TetrisGame();
