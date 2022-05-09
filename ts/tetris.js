@@ -1,3 +1,4 @@
+var t;
 var TetrisGame = /** @class */ (function () {
     function TetrisGame() {
         this.blockList = [];
@@ -17,11 +18,14 @@ var TetrisGame = /** @class */ (function () {
                 if (e.code === "ArrowRight") {
                     b.moveDirection("Right");
                 }
+                if (e.code === "ArrowDown") {
+                    b.moveDirection("Down");
+                }
             }
         });
     };
     TetrisGame.prototype.addBlock = function () {
-        this.blockList.push(new Block(TetrisBlock.ZBlock));
+        this.blockList.push(new Block(TetrisBlock.LBlock));
     };
     TetrisGame.speed = 500;
     return TetrisGame;
@@ -39,7 +43,7 @@ var Renderer = /** @class */ (function () {
         setInterval(function () {
             _this.clearCanvas();
             _this.render();
-        }, 16);
+        }, 1000 / 60);
         setInterval(function () {
             for (var _i = 0, _a = t.blockList; _i < _a.length; _i++) {
                 var b = _a[_i];
@@ -166,11 +170,23 @@ var Block = /** @class */ (function () {
                 break;
         }
     };
-    Block.prototype.nextFrame = function () {
+    Block.prototype.isAbleToMoveDown = function () {
         for (var _i = 0, _a = this.tiles; _i < _a.length; _i++) {
-            var t_2 = _a[_i];
-            t_2.yPos += Direction.Down.yPos;
-            t_2.xPos += Direction.Down.xPos;
+            var f = _a[_i];
+            if (this.getLowestPoint() > 1000 - 42) {
+                t.addBlock();
+                return false;
+            }
+        }
+        return true;
+    };
+    Block.prototype.nextFrame = function () {
+        if (this.isAbleToMoveDown()) {
+            for (var _i = 0, _a = this.tiles; _i < _a.length; _i++) {
+                var t_2 = _a[_i];
+                t_2.yPos += Direction.Down.yPos;
+                t_2.xPos += Direction.Down.xPos;
+            }
         }
     };
     Block.prototype.moveDirection = function (d) {
@@ -187,9 +203,9 @@ var Block = /** @class */ (function () {
                 break;
             }
         }
-        for (var _b = 0, _c = this.tiles; _b < _c.length; _b++) {
-            var t_4 = _c[_b];
-            if (t_4.isFalling) {
+        if (this.isAbleToMoveDown()) {
+            for (var _b = 0, _c = this.tiles; _b < _c.length; _b++) {
+                var t_4 = _c[_b];
                 switch (d) {
                     case "Left":
                         if (!stopLeft) {
@@ -203,11 +219,25 @@ var Block = /** @class */ (function () {
                             t_4.yPos += Direction.Right.yPos;
                         }
                         break;
+                    case "Down":
+                        t_4.xPos += Direction.Down.xPos;
+                        t_4.yPos += Direction.Down.yPos;
+                        break;
                     default:
                         break;
                 }
             }
         }
+    };
+    Block.prototype.getLowestPoint = function () {
+        var highestY = 0;
+        for (var _i = 0, _a = this.tiles; _i < _a.length; _i++) {
+            var i = _a[_i];
+            if (i.yPos > highestY) {
+                highestY = i.yPos;
+            }
+        }
+        return highestY;
     };
     Block.startpos = { xPos: 1000, yPos: 0 };
     return Block;
@@ -240,5 +270,5 @@ var Direction = /** @class */ (function () {
     Direction.Down = { xPos: 0, yPos: 40 };
     return Direction;
 }());
-var t = new TetrisGame();
+t = new TetrisGame();
 //# sourceMappingURL=tetris.js.map

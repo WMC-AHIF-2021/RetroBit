@@ -1,3 +1,4 @@
+let t: TetrisGame;
 class TetrisGame{
     public blockList: Block[] = [];
     public static speed: number = 500;
@@ -18,12 +19,15 @@ class TetrisGame{
                 if (e.code === "ArrowRight"){
                     b.moveDirection("Right");
                 }
+                if (e.code === "ArrowDown"){
+                    b.moveDirection("Down");
+                }
             }
         })
     }
 
     public addBlock(): void{
-        this.blockList.push(new Block(TetrisBlock.ZBlock));
+        this.blockList.push(new Block(TetrisBlock.LBlock));
     }
 }
 
@@ -40,7 +44,7 @@ class Renderer{
         setInterval(() => {
             this.clearCanvas();
             this.render();
-        }, 16);
+        }, 1000 / 60);
         setInterval(() => {
             for (let b of t.blockList){
                 b.nextFrame();
@@ -170,10 +174,22 @@ class Block{
         }
     }
 
+    public isAbleToMoveDown(): boolean{
+        for(let f of this.tiles){
+            if (this.getLowestPoint() > 1000 - 42){
+                t.addBlock();
+                return false;
+            }
+        }
+        return true;
+    }
+
     public nextFrame(): void{
-        for (let t of this.tiles){
-            t.yPos += Direction.Down.yPos;
-            t.xPos += Direction.Down.xPos;
+        if (this.isAbleToMoveDown()) {
+            for (let t of this.tiles) {
+                t.yPos += Direction.Down.yPos;
+                t.xPos += Direction.Down.xPos;
+            }
         }
     }
 
@@ -190,26 +206,40 @@ class Block{
                 break;
             }
         }
-        for(let t of this.tiles) {
-            if (t.isFalling) {
+        if (this.isAbleToMoveDown()) {
+            for (let t of this.tiles) {
                 switch (d) {
                     case "Left":
-                        if (!stopLeft){
+                        if (!stopLeft) {
                             t.xPos += Direction.Left.xPos;
                             t.yPos += Direction.Left.yPos;
                         }
                         break;
                     case "Right":
-                        if (!stopRight){
+                        if (!stopRight) {
                             t.xPos += Direction.Right.xPos;
                             t.yPos += Direction.Right.yPos;
                         }
+                        break;
+                    case "Down":
+                        t.xPos += Direction.Down.xPos;
+                        t.yPos += Direction.Down.yPos;
                         break;
                     default:
                         break;
                 }
             }
         }
+    }
+
+    private getLowestPoint(): number{
+        let highestY: number = 0;
+        for(let i of this.tiles){
+            if (i.yPos > highestY){
+                highestY = i.yPos;
+            }
+        }
+        return  highestY;
     }
 }
 
@@ -239,4 +269,4 @@ class Direction{
     public static readonly Down = {xPos: 0, yPos: 40};
 }
 
-let t: TetrisGame = new TetrisGame();
+t = new TetrisGame();
