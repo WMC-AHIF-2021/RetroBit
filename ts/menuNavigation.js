@@ -1,64 +1,63 @@
-var MenuNavigator = /** @class */ (function () {
-    function MenuNavigator() {
-        var _this = this;
+class MenuNavigator {
+    constructor() {
         this.isVertical = false;
-        this.registerUserEvents = function () {
-            document.addEventListener("keydown", function (e) {
-                if (!_this.isVertical) {
+        this.registerUserEvents = () => {
+            document.addEventListener("keydown", e => {
+                if (!this.isVertical) {
                     if (e.key == "ArrowRight") {
-                        _this.selectNext();
+                        this.selectNext();
                     }
                     else if (e.key == "ArrowLeft") {
-                        _this.selectPrevious();
+                        this.selectPrevious();
                     }
                 }
                 else {
                     if (e.key == "ArrowDown") {
-                        _this.selectNext();
+                        this.selectNext();
                     }
                     else if (e.key == "ArrowUp") {
-                        _this.selectPrevious();
+                        this.selectPrevious();
                     }
                 }
                 if (e.key == "Enter") {
-                    _this.clickOnElement();
+                    this.clickOnElement();
                 }
             });
         };
-        this.selectNext = function () {
-            if (_this.selectedIndex + 1 < _this.menuElements.length) {
-                _this.selectedIndex++;
+        this.selectNext = () => {
+            if (this.selectedIndex + 1 < this.menuElements.length) {
+                this.selectedIndex++;
             }
-            _this.updateArrow();
+            this.updateArrow();
         };
-        this.selectPrevious = function () {
-            if (_this.selectedIndex - 1 >= 0) {
-                _this.selectedIndex--;
+        this.selectPrevious = () => {
+            if (this.selectedIndex - 1 >= 0) {
+                this.selectedIndex--;
             }
-            _this.updateArrow();
+            this.updateArrow();
         };
-        this.updateArrow = function () {
-            if (_this.arrowElement == null) {
-                _this.arrowElement = new Image();
-                _this.arrowElement.src = "img/arrow.png";
-                _this.arrowElement.id = "navbarArrow";
+        this.updateArrow = () => {
+            if (this.arrowElement == null) {
+                this.arrowElement = new Image();
+                this.arrowElement.src = "img/arrow.png";
+                this.arrowElement.id = "navbarArrow";
             }
-            var selectedElement = _this.menuElements[_this.selectedIndex];
-            if (_this.isVertical) {
-                _this.arrowElement.style.transform = "rotate(270deg)";
-                _this.arrowElement.style.left = (selectedElement.children[0].offsetLeft - 60) + "px";
-                _this.arrowElement.style.top = (selectedElement.offsetTop) + "px";
+            let selectedElement = this.menuElements[this.selectedIndex];
+            if (this.isVertical) {
+                this.arrowElement.style.transform = "rotate(270deg)";
+                this.arrowElement.style.left = (selectedElement.children[0].offsetLeft - 60) + "px";
+                this.arrowElement.style.top = (selectedElement.offsetTop) + "px";
             }
             else {
-                _this.arrowElement.style.left = (selectedElement.offsetLeft + selectedElement.offsetWidth / 2 - 27.5) + "px";
-                _this.arrowElement.style.top = (selectedElement.offsetTop - 50) + "px";
+                this.arrowElement.style.left = (selectedElement.offsetLeft + selectedElement.offsetWidth / 2 - 27.5) + "px";
+                this.arrowElement.style.top = (selectedElement.offsetTop - 50) + "px";
             }
-            _this.navbar.append(_this.arrowElement);
+            this.navbar.append(this.arrowElement);
         };
-        this.clickOnElement = function () {
-            var selectedElement = _this.menuElements[_this.selectedIndex];
+        this.clickOnElement = () => {
+            let selectedElement = this.menuElements[this.selectedIndex];
             if (selectedElement != null) {
-                if (_this.isVertical) {
+                if (this.isVertical) {
                     window.location.href = selectedElement.children[0].href;
                 }
                 else {
@@ -75,7 +74,6 @@ var MenuNavigator = /** @class */ (function () {
         this.selectedIndex = 0;
         this.registerUserEvents();
     }
-    return MenuNavigator;
-}());
+}
 new MenuNavigator();
 //# sourceMappingURL=menuNavigation.js.map

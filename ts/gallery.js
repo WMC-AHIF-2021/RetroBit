@@ -1,5 +1,5 @@
-var ImageSlider = /** @class */ (function () {
-    function ImageSlider() {
+class ImageSlider {
+    constructor() {
         this.imageElements = [
             new ImageSliderElement("img/gallery/pong.png", "Pong", "Pong is a two-dimensional game, which simulates table tennis. <a href='history.html#pong_header'>More...</a>"),
             new ImageSliderElement("img/gallery/tetris.png", "Tetris", "The goal is to remove as many rows as possible by filling entire rows with the falling Tetriminos. <a href='history.html#tetris_header'>More...</a>"),
@@ -15,16 +15,15 @@ var ImageSlider = /** @class */ (function () {
         this.htmlTextContainer = document.getElementById("text");
         this.update();
     }
-    ImageSlider.prototype.registerUserEvents = function () {
-        var _this = this;
-        document.getElementById("nextButton").addEventListener("click", function () {
-            _this.next();
+    registerUserEvents() {
+        document.getElementById("nextButton").addEventListener("click", () => {
+            this.next();
         });
-        document.getElementById("previousButton").addEventListener("click", function () {
-            _this.previous();
+        document.getElementById("previousButton").addEventListener("click", () => {
+            this.previous();
         });
-    };
-    ImageSlider.prototype.next = function () {
+    }
+    next() {
         if (this.currentImageIndex + 1 < this.imageElements.length) {
             this.currentImageIndex++;
         }
@@ -32,8 +31,8 @@ var ImageSlider = /** @class */ (function () {
             this.currentImageIndex = 0;
         }
         this.update();
-    };
-    ImageSlider.prototype.previous = function () {
+    }
+    previous() {
         if (this.currentImageIndex > 0) {
             this.currentImageIndex--;
         }
@@ -41,21 +40,19 @@ var ImageSlider = /** @class */ (function () {
             this.currentImageIndex = this.imageElements.length - 1;
         }
         this.update();
-    };
-    ImageSlider.prototype.update = function () {
-        var currentImgEl = this.imageElements[this.currentImageIndex];
+    }
+    update() {
+        let currentImgEl = this.imageElements[this.currentImageIndex];
         this.htmlImage.src = currentImgEl.imgSrc;
-        this.htmlTextContainer.innerHTML = "<h3>".concat(currentImgEl.title, "</h3><p>").concat(currentImgEl.text, "</p>");
-    };
-    return ImageSlider;
-}());
-var ImageSliderElement = /** @class */ (function () {
-    function ImageSliderElement(imgSrc, title, text) {
+        this.htmlTextContainer.innerHTML = `<h3>${currentImgEl.title}</h3><p>${currentImgEl.text}</p>`;
+    }
+}
+class ImageSliderElement {
+    constructor(imgSrc, title, text) {
         this.imgSrc = imgSrc;
         this.title = title;
         this.text = text;
     }
-    return ImageSliderElement;
-}());
+}
 new ImageSlider();
 //# sourceMappingURL=gallery.js.map

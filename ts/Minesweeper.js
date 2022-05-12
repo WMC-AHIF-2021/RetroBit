@@ -10,18 +10,17 @@
         this.canvas.focus();
     }
 }*/
-var DrawBlocks = /** @class */ (function () {
-    function DrawBlocks() {
+class DrawBlocks {
+    constructor() {
         this.canvas = document.getElementById("myCanvas");
         this.context = this.canvas.getContext("2d");
     }
-    DrawBlocks.prototype.draw = function (x, y) {
+    draw(x, y) {
         this.context.beginPath();
         this.context.rect(x, y, 50, 50);
         this.context.stroke();
-    };
-    return DrawBlocks;
-}());
+    }
+}
 var BlocksType;
 (function (BlocksType) {
     BlocksType[BlocksType["hidden"] = 0] = "hidden";
@@ -29,11 +28,11 @@ var BlocksType;
     BlocksType[BlocksType["explosive"] = 2] = "explosive";
     BlocksType[BlocksType["harmless"] = 3] = "harmless";
 })(BlocksType || (BlocksType = {}));
-var cringe = new DrawBlocks();
-var x = 0;
-var y = 0;
-for (var d = 0; d < 10; d++) {
-    for (var i = 0; i < 10; i++) {
+let cringe = new DrawBlocks();
+let x = 0;
+let y = 0;
+for (let d = 0; d < 10; d++) {
+    for (let i = 0; i < 10; i++) {
         cringe.draw(x, y);
         x = x + 50;
     }

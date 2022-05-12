@@ -1,92 +1,73 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Options = /** @class */ (function () {
-    function Options() {
+var _a;
+class Options {
+}
+_a = Options;
+Options.winningPoints = 11;
+Options.computerSpeedRange = [6, 8];
+Options.ballSpeedRange = [6, 8];
+Options.computerBatHeight = 100;
+Options.setOptions = () => {
+    // set difficulty
+    let difficulty = parseInt(document.getElementById("options_difficultySelect").value);
+    switch (difficulty) {
+        case 0:
+            Options.computerSpeedRange = [4, 6];
+            Options.ballSpeedRange = [4, 7];
+            Options.computerBatHeight = 100;
+            break;
+        case 1:
+            Options.computerSpeedRange = [6, 8];
+            Options.ballSpeedRange = [6, 9];
+            Options.computerBatHeight = 100;
+            break;
+        case 2:
+            Options.computerSpeedRange = [8, 10];
+            Options.ballSpeedRange = [7, 10];
+            Options.computerBatHeight = 100;
+            break;
+        case 3:
+            Options.computerSpeedRange = [12, 16];
+            Options.ballSpeedRange = [12, 16];
+            Options.computerBatHeight = 150;
+            break;
+        case 4:
+            Options.computerSpeedRange = [16, 20];
+            Options.ballSpeedRange = [16, 20];
+            Options.computerBatHeight = 200;
+            break;
+        case 5:
+            Options.computerSpeedRange = [70, 70];
+            Options.ballSpeedRange = [35, 35];
+            Options.computerBatHeight = 300;
+            break;
+        case 6:
+            Options.computerSpeedRange = [5, 10];
+            Options.ballSpeedRange = [10, 15];
+            Options.computerBatHeight = 150;
+            break;
+        case 7:
+            Options.computerSpeedRange = [70, 70];
+            Options.ballSpeedRange = [35, 35];
+            Options.computerBatHeight = 1000;
     }
-    var _a;
-    _a = Options;
-    Options.winningPoints = 11;
-    Options.computerSpeedRange = [6, 8];
-    Options.ballSpeedRange = [6, 8];
-    Options.computerBatHeight = 100;
-    Options.setOptions = function () {
-        // set difficulty
-        var difficulty = parseInt(document.getElementById("options_difficultySelect").value);
-        switch (difficulty) {
-            case 0:
-                Options.computerSpeedRange = [4, 6];
-                Options.ballSpeedRange = [4, 7];
-                Options.computerBatHeight = 100;
-                break;
-            case 1:
-                Options.computerSpeedRange = [6, 8];
-                Options.ballSpeedRange = [6, 9];
-                Options.computerBatHeight = 100;
-                break;
-            case 2:
-                Options.computerSpeedRange = [8, 10];
-                Options.ballSpeedRange = [7, 10];
-                Options.computerBatHeight = 100;
-                break;
-            case 3:
-                Options.computerSpeedRange = [12, 16];
-                Options.ballSpeedRange = [12, 16];
-                Options.computerBatHeight = 150;
-                break;
-            case 4:
-                Options.computerSpeedRange = [16, 20];
-                Options.ballSpeedRange = [16, 20];
-                Options.computerBatHeight = 200;
-                break;
-            case 5:
-                Options.computerSpeedRange = [70, 70];
-                Options.ballSpeedRange = [35, 35];
-                Options.computerBatHeight = 300;
-                break;
-            case 6:
-                Options.computerSpeedRange = [5, 10];
-                Options.ballSpeedRange = [10, 15];
-                Options.computerBatHeight = 150;
-                break;
-            case 7:
-                Options.computerSpeedRange = [70, 70];
-                Options.ballSpeedRange = [35, 35];
-                Options.computerBatHeight = 1000;
-        }
-        _a.difficultyIndex = difficulty;
-        // set other options
-        _a.isMouseControl = document.getElementById("options_enableMouseControl").checked;
-    };
-    return Options;
-}());
-var Game = /** @class */ (function () {
-    function Game() {
-        var _this = this;
-        this.keypressEventHandler = function (e) {
+    _a.difficultyIndex = difficulty;
+    // set other options
+    _a.isMouseControl = document.getElementById("options_enableMouseControl").checked;
+};
+class Game {
+    constructor() {
+        this.keypressEventHandler = (e) => {
             switch (e.keyCode) {
                 case 38:
-                    _this.playerBat.move(0, -50);
+                    this.playerBat.move(0, -50);
                     break;
                 case 40:
-                    _this.playerBat.move(0, 50);
+                    this.playerBat.move(0, 50);
                     break;
                 case 32:
                     // restart game if somebody has won and player presses space
-                    if (_this.currentWinner != -1) {
-                        _this.restartGame();
+                    if (this.currentWinner != -1) {
+                        this.restartGame();
                     }
                     break;
                 /*case 13:
@@ -97,77 +78,77 @@ var Game = /** @class */ (function () {
                     break;*/
                 case 27:
                     // terminate current game
-                    _this.stopGame();
+                    this.stopGame();
             }
-            _this.redraw();
+            this.redraw();
         };
-        this.stopGame = function () {
+        this.stopGame = () => {
             document.getElementById("options").style.visibility = "visible";
-            var canvasEl = document.getElementById("canvas");
+            let canvasEl = document.getElementById("canvas");
             canvasEl.style.visibility = "hidden";
-            _this.isRunning = false;
-            _this.restartGame();
+            this.isRunning = false;
+            this.restartGame();
         };
-        this.startGame = function () {
+        this.startGame = () => {
             Options.setOptions();
             document.getElementById("options").style.visibility = "hidden";
-            var canvasEl = document.getElementById("canvas");
+            let canvasEl = document.getElementById("canvas");
             canvasEl.style.visibility = "visible";
             if (Options.difficultyIndex === 6 || Options.difficultyIndex === 7) {
-                _this.secondBall = new BallEntity(135, 150, 25, 25, "blue", true);
+                this.secondBall = new BallEntity(135, 150, 25, 25, "blue", true);
             }
             else {
-                _this.secondBall = null;
+                this.secondBall = null;
             }
-            setTimeout(function () {
+            setTimeout(() => {
                 canvasEl.focus();
-                _this.ball.updateMovementSpeed();
-                if (_this.secondBall)
-                    _this.secondBall.updateMovementSpeed();
-                setTimeout(function () {
-                    _this.computerBat.updateMovementSpeed();
+                this.ball.updateMovementSpeed();
+                if (this.secondBall)
+                    this.secondBall.updateMovementSpeed();
+                setTimeout(() => {
+                    this.computerBat.updateMovementSpeed();
                 }, 500);
-                _this.computerBat = new ComputerBatEntity(_this.canvas.width - 50, 50, 15, Options.computerBatHeight, "#ff901f");
-                _this.isRunning = true;
+                this.computerBat = new ComputerBatEntity(this.canvas.width - 50, 50, 15, Options.computerBatHeight, "#ff901f");
+                this.isRunning = true;
                 if (Options.difficultyIndex == 5) {
-                    _this.pointsPlayer = -9;
+                    this.pointsPlayer = -9;
                 }
                 else {
-                    _this.pointsPlayer = 0;
+                    this.pointsPlayer = 0;
                 }
             }, 1000);
         };
-        this.restartGame = function () {
-            _this.pointsComputer = 0;
-            _this.currentWinner = -1;
-            _this.pointsPlayer = 0;
+        this.restartGame = () => {
+            this.pointsComputer = 0;
+            this.currentWinner = -1;
+            this.pointsPlayer = 0;
             if (Options.difficultyIndex == 5) {
-                _this.pointsPlayer = -9;
+                this.pointsPlayer = -9;
             }
         };
-        this.gameLoop = function () {
-            if (_this.isRunning) {
-                _this.redraw();
-                if (_this.currentWinner == -1) {
-                    _this.computerBat.update(_this.ball);
-                    _this.ball.update(_this.canvas, _this);
-                    if (_this.secondBall)
-                        _this.secondBall.update(_this.canvas, _this);
+        this.gameLoop = () => {
+            if (this.isRunning) {
+                this.redraw();
+                if (this.currentWinner == -1) {
+                    this.computerBat.update(this.ball);
+                    this.ball.update(this.canvas, this);
+                    if (this.secondBall)
+                        this.secondBall.update(this.canvas, this);
                 }
-                if (_this.pointsPlayer >= Options.winningPoints) {
-                    _this.currentWinner = 0;
+                if (this.pointsPlayer >= Options.winningPoints) {
+                    this.currentWinner = 0;
                 }
-                if (_this.pointsComputer >= Options.winningPoints) {
-                    _this.currentWinner = 1;
+                if (this.pointsComputer >= Options.winningPoints) {
+                    this.currentWinner = 1;
                 }
                 if (Options.isMouseControl) {
-                    _this.playerBat.Y = (Cursor._instance.Y / window.screen.height) * _this.canvas.height;
+                    this.playerBat.Y = (Cursor._instance.Y / window.screen.height) * this.canvas.height;
                 }
             }
-            window.requestAnimationFrame(_this.gameLoop);
+            window.requestAnimationFrame(this.gameLoop);
         };
-        var canvas = document.getElementById('canvas');
-        var context = canvas.getContext("2d");
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext("2d");
         canvas.focus();
         context.lineCap = 'round';
         context.lineJoin = 'round';
@@ -186,15 +167,14 @@ var Game = /** @class */ (function () {
         this.createUserEvents();
         window.requestAnimationFrame(this.gameLoop);
     }
-    Game.prototype.createUserEvents = function () {
-        var _this = this;
-        var canvas = this.canvas;
+    createUserEvents() {
+        let canvas = this.canvas;
         canvas.addEventListener("keydown", this.keypressEventHandler);
-        document.getElementById("options_submitButton").addEventListener("click", function () {
-            _this.startGame();
+        document.getElementById("options_submitButton").addEventListener("click", () => {
+            this.startGame();
         });
-    };
-    Game.prototype.redraw = function () {
+    }
+    redraw() {
         this.clear();
         this.context.strokeStyle = "white";
         this.context.strokeRect(5, 5, this.canvas.width - 10, this.canvas.height - 10);
@@ -234,16 +214,14 @@ var Game = /** @class */ (function () {
             this.context.fillText("Press SPACE to RESTART", this.canvas.width / 2, this.canvas.height - 200);
             this.context.fillText("Press ESCAPE to CHANGE DIFFICULTY", this.canvas.width / 2, this.canvas.height - 150);
         }
-    };
-    Game.prototype.clear = function () {
+    }
+    clear() {
         this.context.fillStyle = 'black';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    };
-    return Game;
-}());
-var Entity = /** @class */ (function () {
-    function Entity(x, y, sizeX, sizeY, color, isEvil) {
-        if (isEvil === void 0) { isEvil = false; }
+    }
+}
+class Entity {
+    constructor(x, y, sizeX, sizeY, color, isEvil = false) {
         this.X = x;
         this.Y = y;
         this.SizeX = sizeX;
@@ -251,32 +229,24 @@ var Entity = /** @class */ (function () {
         this.Color = color;
         this.IsEvil = isEvil;
     }
-    Entity.prototype.move = function (x, y) {
+    move(x, y) {
         this.X += x;
         this.Y += y;
-    };
-    Entity.prototype.draw = function (ctx) {
+    }
+    draw(ctx) {
         ctx.fillStyle = this.Color;
         ctx.fillRect(this.X, this.Y, this.SizeX, this.SizeY);
-    };
-    return Entity;
-}());
-var PlayerBatEntity = /** @class */ (function (_super) {
-    __extends(PlayerBatEntity, _super);
-    function PlayerBatEntity() {
-        return _super !== null && _super.apply(this, arguments) || this;
     }
-    return PlayerBatEntity;
-}(Entity));
-var ComputerBatEntity = /** @class */ (function (_super) {
-    __extends(ComputerBatEntity, _super);
-    function ComputerBatEntity() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.movementSpeed = 4;
-        _this.i = 0;
-        return _this;
+}
+class PlayerBatEntity extends Entity {
+}
+class ComputerBatEntity extends Entity {
+    constructor() {
+        super(...arguments);
+        this.movementSpeed = 4;
+        this.i = 0;
     }
-    ComputerBatEntity.prototype.update = function (ball) {
+    update(ball) {
         if (ball.Y > this.Y + this.SizeY / 2) {
             this.Y += this.movementSpeed;
         }
@@ -288,22 +258,19 @@ var ComputerBatEntity = /** @class */ (function (_super) {
             this.updateMovementSpeed();
             this.i = 0;
         }
-    };
-    ComputerBatEntity.prototype.updateMovementSpeed = function () {
-        this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
-    };
-    return ComputerBatEntity;
-}(Entity));
-var BallEntity = /** @class */ (function (_super) {
-    __extends(BallEntity, _super);
-    function BallEntity() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.currentDirX = 1;
-        _this.currentDirY = 1;
-        _this.movementSpeed = 7;
-        return _this;
     }
-    BallEntity.prototype.update = function (canvas, game) {
+    updateMovementSpeed() {
+        this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
+    }
+}
+class BallEntity extends Entity {
+    constructor() {
+        super(...arguments);
+        this.currentDirX = 1;
+        this.currentDirY = 1;
+        this.movementSpeed = 7;
+    }
+    update(canvas, game) {
         this.X += this.currentDirX * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
         this.Y += this.currentDirY * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
         if (this.Y + this.SizeY >= canvas.height) {
@@ -332,8 +299,8 @@ var BallEntity = /** @class */ (function (_super) {
             this.currentDirX = 1;
             this.updateMovementSpeed();
         }
-    };
-    BallEntity.prototype.lost = function (canvas) {
+    }
+    lost(canvas) {
         this.currentDirX = getRandomIntWithoutZero(-1, 1);
         this.currentDirY = getRandomIntWithoutZero(-1, 1);
         this.updateMovementSpeed();
@@ -344,24 +311,21 @@ var BallEntity = /** @class */ (function (_super) {
         else {
             this.X = canvas.width / 4;
         }
-    };
-    BallEntity.prototype.updateMovementSpeed = function () {
+    }
+    updateMovementSpeed() {
         this.movementSpeed = getRandomInt(Options.ballSpeedRange[0], Options.ballSpeedRange[1]);
-    };
-    return BallEntity;
-}(Entity));
+    }
+}
 new Game();
-var Cursor = /** @class */ (function () {
-    function Cursor() {
-        var _this = this;
-        document.onmousemove = function (e) {
-            _this.X = e.pageX;
-            _this.Y = e.pageY;
+class Cursor {
+    constructor() {
+        document.onmousemove = (e) => {
+            this.X = e.pageX;
+            this.Y = e.pageY;
         };
     }
-    Cursor._instance = new Cursor();
-    return Cursor;
-}());
+}
+Cursor._instance = new Cursor();
 function pad(n, width, z) {
     z = z || '0';
     n = n + '';
@@ -376,7 +340,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function getRandomIntWithoutZero(min, max) {
-    var lastResult = 0;
+    let lastResult = 0;
     while (lastResult == 0) {
         lastResult = getRandomInt(min - 1, max + 1);
     }
