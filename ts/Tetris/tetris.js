@@ -10,18 +10,19 @@ class TetrisGame {
     start() {
         document.addEventListener("keydown", (e) => {
             if (e.code === "ArrowLeft") {
-                this.currentBlock.move("Left");
+                this.currentBlock.move(Direction.Left);
             }
             if (e.code === "ArrowRight") {
-                this.currentBlock.move("Right");
+                this.currentBlock.move(Direction.Right);
             }
             if (e.code === "ArrowDown") {
-                this.currentBlock.move("Down");
+                this.currentBlock.move(Direction.Down);
             }
         });
         this.startGameLoop();
     }
     addBlock() {
+        this.currentBlock = new OBlock();
     }
     initGameArray() {
         for (let col = 0; col < 25; col++) {
@@ -32,6 +33,7 @@ class TetrisGame {
         }
     }
     nextFrame() {
+        this.currentBlock.move(Direction.Down);
     }
     startGameLoop() {
         setInterval(() => {
@@ -74,9 +76,6 @@ class Renderer {
         this.context.lineWidth = 10;
         this.context.stroke();
     }
-    clearCanvas() {
-        this.context.clearRect(0, 0, 2000, 1000);
-    }
     renderGame() {
         for (let col = 0; col < 25; col++) {
             for (let row = 0; row < 25; row++) {
@@ -89,12 +88,15 @@ class Renderer {
         }
         this.renderBlock(tetris.currentBlock);
     }
+    clearCanvas() {
+        this.context.clearRect(0, 0, 2000, 1000);
+    }
     renderBlock(block) {
-        for (let ti of block.tiles) {
+        for (let t of block.tiles) {
             this.context.beginPath();
             this.context.lineWidth = 10;
             this.context.fillStyle = block.color;
-            this.context.fillRect(ti.row * Renderer.SCALINGFACTOR, ti.col * Renderer.SCALINGFACTOR, 40, 40);
+            this.context.fillRect(t.col * Renderer.SCALINGFACTOR, t.row * Renderer.SCALINGFACTOR, 40, 40);
             this.context.stroke();
         }
     }
@@ -106,23 +108,6 @@ class Tile {
         this.col = col;
     }
 }
-var BlockColor;
-(function (BlockColor) {
-    BlockColor["Blue"] = "#0000ff";
-    /*
-    Cyan = "#00ffff",
-    Yellow = "#ffff00",
-    Purple = "#800080",
-    Green = "#00ff00",
-    Red = "#ff0000",
-    Orange = "#ff7f00"
-     */
-})(BlockColor || (BlockColor = {}));
-class Direction {
-}
-Direction.Right = { xPos: 40, yPos: 0 };
-Direction.Left = { xPos: -40, yPos: 0 };
-Direction.Down = { xPos: 0, yPos: 40 };
 class Block {
     constructor() {
         this.orientation = 0;
@@ -156,10 +141,16 @@ class OBlock extends Block {
     constructor() {
         super();
         this.color = BlockColor.Blue;
+        this.rotate();
     }
     rotate() {
         switch (this.orientation) {
             case 0:
+                this.tiles.push(new Tile(OBlock._startpos.row, OBlock._startpos.col));
+                this.mainTile = this.tiles[0];
+                this.tiles.push(new Tile(OBlock._startpos.row, OBlock._startpos.col + 1));
+                this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col));
+                this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col + 1));
                 break;
             case 90:
                 break;
@@ -170,5 +161,23 @@ class OBlock extends Block {
         }
     }
 }
+var BlockColor;
+(function (BlockColor) {
+    BlockColor["Blue"] = "#0000ff";
+    /*
+    Cyan = "#00ffff",
+    Yellow = "#ffff00",
+    Purple = "#800080",
+    Green = "#00ff00",
+    Red = "#ff0000",
+    Orange = "#ff7f00"
+     */
+})(BlockColor || (BlockColor = {}));
+var Direction;
+(function (Direction) {
+    Direction[Direction["Down"] = 0] = "Down";
+    Direction[Direction["Left"] = 1] = "Left";
+    Direction[Direction["Right"] = 2] = "Right";
+})(Direction || (Direction = {}));
 tetris = new TetrisGame();
 //# sourceMappingURL=tetris.js.map

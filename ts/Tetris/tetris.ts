@@ -13,20 +13,20 @@ class TetrisGame{
     public start(): void{
         document.addEventListener("keydown", (e) => {
             if (e.code === "ArrowLeft"){
-                this.currentBlock.move("Left");
+                this.currentBlock.move(Direction.Left);
             }
             if (e.code === "ArrowRight"){
-                this.currentBlock.move("Right");
+                this.currentBlock.move(Direction.Right);
             }
             if (e.code === "ArrowDown"){
-                this.currentBlock.move("Down");
+                this.currentBlock.move(Direction.Down);
             }
         })
         this.startGameLoop();
     }
 
     public addBlock(): void{
-
+        this.currentBlock = new OBlock();
     }
 
     private initGameArray(): void{
@@ -39,7 +39,7 @@ class TetrisGame{
     }
 
     public nextFrame(): void{
-
+        this.currentBlock.move(Direction.Down);
     }
 
     private startGameLoop(): void {
@@ -90,10 +90,6 @@ class Renderer{
         this.context.stroke();
     }
 
-    public clearCanvas(): void{
-        this.context.clearRect(0, 0, 2000, 1000);
-    }
-
     private renderGame(): void{
         for (let col = 0; col < 25; col++) {
             for (let row = 0; row < 25; row++) {
@@ -107,12 +103,16 @@ class Renderer{
         this.renderBlock(tetris.currentBlock);
     }
 
+    public clearCanvas(): void{
+        this.context.clearRect(0, 0, 2000, 1000);
+    }
+
     private renderBlock(block: Block): void{
-        for (let ti of block.tiles){
+        for (let t of block.tiles){
             this.context.beginPath();
             this.context.lineWidth = 10;
             this.context.fillStyle = block.color;
-            this.context.fillRect(ti.row * Renderer.SCALINGFACTOR, ti.col * Renderer.SCALINGFACTOR, 40, 40);
+            this.context.fillRect(t.col * Renderer.SCALINGFACTOR,t.row * Renderer.SCALINGFACTOR,40, 40);
             this.context.stroke();
         }
     }
@@ -124,29 +124,11 @@ class Tile{
     }
 }
 
-enum BlockColor{
-    Blue = "#0000ff",
-    /*
-    Cyan = "#00ffff",
-    Yellow = "#ffff00",
-    Purple = "#800080",
-    Green = "#00ff00",
-    Red = "#ff0000",
-    Orange = "#ff7f00"
-     */
-}
-
-
-class Direction{
-    public static readonly Right = {xPos: 40, yPos: 0};
-    public static readonly Left = {xPos: -40, yPos: 0};
-    public static readonly Down = {xPos: 0, yPos: 40};
-}
-
 abstract class Block{
     protected static _startpos = {row: 0, col: 23};
     protected orientation: number = 0;
     protected isMoving: boolean = true;
+    protected mainTile: Tile;
     public color: BlockColor;
     public tiles: Tile[] = [];
 
@@ -172,19 +154,24 @@ abstract class Block{
         }
     }
 
-    public abstract rotate(): void;
+    abstract rotate(): void;
 }
 
 class OBlock extends Block{
     constructor() {
         super();
         this.color = BlockColor.Blue;
+        this.rotate();
     }
 
-    rotate(): void {
+    public rotate(): void {
         switch (this.orientation) {
             case 0:
-
+                    this.tiles.push(new Tile(OBlock._startpos.row, OBlock._startpos.col));
+                    this.mainTile = this.tiles[0];
+                    this.tiles.push(new Tile(OBlock._startpos.row , OBlock._startpos.col + 1));
+                    this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col));
+                    this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col + 1));
                 break;
             case 90:
 
@@ -199,13 +186,22 @@ class OBlock extends Block{
     }
 }
 
+enum BlockColor{
+    Blue = "#0000ff",
+    /*
+    Cyan = "#00ffff",
+    Yellow = "#ffff00",
+    Purple = "#800080",
+    Green = "#00ff00",
+    Red = "#ff0000",
+    Orange = "#ff7f00"
+     */
+}
 
-
-
-
-
-
-
-
+enum Direction{
+    Down,
+    Left,
+    Right
+}
 
 tetris = new TetrisGame();
