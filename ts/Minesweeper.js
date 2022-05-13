@@ -5,25 +5,24 @@ var BlocksType;
     BlocksType[BlocksType["explosive"] = 2] = "explosive";
     BlocksType[BlocksType["flagged"] = 3] = "flagged";
 })(BlocksType || (BlocksType = {}));
-var DrawBlocks = /** @class */ (function () {
-    function DrawBlocks() {
+class DrawBlocks {
+    constructor() {
         this.canvas = document.getElementById("myCanvas");
         this.context = this.canvas.getContext("2d");
     }
-    DrawBlocks.prototype.drawRoster = function (x, y) {
+    drawRoster(x, y) {
         this.context.beginPath();
         this.context.rect(x, y, 50, 50);
         this.context.stroke();
-    };
-    DrawBlocks.prototype.MakeBlocHidden = function (x, y) {
+    }
+    MakeBlocHidden(x, y) {
         this.context.fillStyle = "#888888";
         this.context.fillRect(x, y, 50, 50);
         this.context.stroke();
-    };
-    return DrawBlocks;
-}());
-var DefineBlocks = /** @class */ (function () {
-    function DefineBlocks() {
+    }
+}
+class DefineBlocks {
+    constructor() {
         this.blocks = [
             { Type: BlocksType.hidden, color: "grey" },
             { Type: BlocksType.explosive, color: "red" },
@@ -31,13 +30,12 @@ var DefineBlocks = /** @class */ (function () {
             { Type: BlocksType.detect, color: "blue" }
         ];
     }
-    return DefineBlocks;
-}());
-var cringe = new DrawBlocks();
-var x = 0;
-var y = 0;
-for (var d = 0; d < 10; d++) {
-    for (var i = 0; i < 10; i++) {
+}
+let cringe = new DrawBlocks();
+let x = 0;
+let y = 0;
+for (let d = 0; d < 10; d++) {
+    for (let i = 0; i < 10; i++) {
         cringe.drawRoster(x, y);
         cringe.MakeBlocHidden(x, y);
         x = x + 50;

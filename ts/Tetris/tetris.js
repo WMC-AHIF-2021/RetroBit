@@ -33,7 +33,16 @@ class TetrisGame {
         }
     }
     nextFrame() {
-        this.currentBlock.move(Direction.Down);
+        if (this.currentBlock.isAbleToMove()) {
+            this.currentBlock.move(Direction.Down);
+        }
+        else {
+            for (let t of this.currentBlock.tiles) {
+                this.game[t.col][t.row].containsBlock = true;
+                this.game[t.col][t.row].color = this.currentBlock.color;
+            }
+            this.addBlock();
+        }
     }
     startGameLoop() {
         setInterval(() => {
@@ -81,7 +90,7 @@ class Renderer {
             for (let row = 0; row < 25; row++) {
                 this.context.beginPath();
                 this.context.lineWidth = 15;
-                this.context.fillStyle = "black";
+                this.context.fillStyle = tetris.game[col][row].color;
                 this.context.fillRect(col * Renderer.SCALINGFACTOR + 500, row * Renderer.SCALINGFACTOR, 40, 40);
                 this.context.stroke();
             }
@@ -96,7 +105,7 @@ class Renderer {
             this.context.beginPath();
             this.context.lineWidth = 10;
             this.context.fillStyle = block.color;
-            this.context.fillRect(t.col * Renderer.SCALINGFACTOR, t.row * Renderer.SCALINGFACTOR, 40, 40);
+            this.context.fillRect(t.col * Renderer.SCALINGFACTOR + 500, t.row * Renderer.SCALINGFACTOR, 40, 40);
             this.context.stroke();
         }
     }
@@ -106,16 +115,17 @@ class Tile {
     constructor(row, col) {
         this.row = row;
         this.col = col;
+        this.containsBlock = false;
+        this.color = BlockColor.Black;
     }
 }
 class Block {
     constructor() {
         this.orientation = 0;
-        this.isMoving = true;
         this.tiles = [];
     }
     move(dir) {
-        if (this.isMoving) {
+        if (this.isAbleToMove()) {
             switch (dir) {
                 case Direction.Down:
                     for (let t of this.tiles) {
@@ -124,19 +134,50 @@ class Block {
                     break;
                 case Direction.Left:
                     for (let t of this.tiles) {
+                        if (t.col - 1 < 0) {
+                            return;
+                        }
+                    }
+                    for (let t of this.tiles) {
                         t.col--;
                     }
                     break;
                 case Direction.Right:
+                    for (let t of this.tiles) {
+                        if (t.col + 1 >= 25) {
+                            return;
+                        }
+                    }
                     for (let t of this.tiles) {
                         t.col++;
                     }
                     break;
             }
         }
+        else {
+            console.log("false");
+        }
+    }
+    isAbleToMove() {
+        let game = tetris.game;
+        for (let t of this.tiles) {
+            if (t.row == 24) {
+                return false;
+            }
+        }
+        for (let col = 0; col < 25; col++) {
+            for (let row = 0; row < 24; row++) {
+                for (let t of this.tiles) {
+                    if (game[col][row + 1].containsBlock && game[col][row].col == t.col && game[col][row].row + 1 == t.row) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
-Block._startpos = { row: 0, col: 23 };
+Block._startpos = { row: 0, col: 12 };
 class OBlock extends Block {
     constructor() {
         super();
@@ -164,6 +205,7 @@ class OBlock extends Block {
 var BlockColor;
 (function (BlockColor) {
     BlockColor["Blue"] = "#0000ff";
+    BlockColor["Black"] = "#000000";
     /*
     Cyan = "#00ffff",
     Yellow = "#ffff00",
