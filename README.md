@@ -29,7 +29,7 @@ We are heavily describing the limitations of the first games and the clever appr
 - [ ] Minesweeper
 
 ## Workload assistment:
-- Vincent (History)
+- Vincent (History, Minesweeper)
 - Lorenz (About-Us, Technology)
 - Stefan (Gallery, PONG implementation, MenuNavigation)
 
