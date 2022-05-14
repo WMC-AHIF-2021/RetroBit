@@ -59,7 +59,6 @@ class TetrisGame{
     private initGameArray(): void{
         for (let col = 0; col < 25; col++){
             this.game[col] = [];
-
             for (let row = 0; row < 25; row++){
                 this.game[col].push(new Tile(row, col));
             }

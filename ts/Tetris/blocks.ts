@@ -9,34 +9,34 @@ export abstract class Block{
 
 
     public move(dir: Direction): void{
-        if (this.isAbleToMove()) {
-            switch (dir) {
-                case Direction.Down:
+        switch (dir) {
+            case Direction.Down:
+                if (this.isAbleToMove()) {
                     for (let t of this.tiles) {
                         t.row++;
                     }
-                    return;
-                case Direction.Left:
-                    for (let t of this.tiles) {
-                        if (t.col - 1 < 0 || tetris.game[t.col - 1][t.row].containsBlock) {
-                            return;
-                        }
+                }
+                return;
+            case Direction.Left:
+                for (let t of this.tiles) {
+                    if (t.col - 1 < 0 || tetris.game[t.col - 1][t.row].containsBlock) {
+                        return;
                     }
-                    for (let t of this.tiles) {
-                        t.col--;
+                }
+                for (let t of this.tiles) {
+                    t.col--;
+                }
+                return;
+            case Direction.Right:
+                for (let t of this.tiles) {
+                    if (t.col + 1 > 24 || tetris.game[t.col + 1][t.row].containsBlock) {
+                        return;
                     }
-                    return;
-                case Direction.Right:
-                    for (let t of this.tiles) {
-                        if (t.col + 1 >= 25 || tetris.game[t.col + 1][t.row].containsBlock) {
-                            return;
-                        }
-                    }
-                    for (let t of this.tiles) {
-                        t.col++;
-                    }
-                    return;
-            }
+                }
+                for (let t of this.tiles) {
+                    t.col++;
+                }
+                return;
         }
     }
 
