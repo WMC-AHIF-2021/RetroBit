@@ -21,12 +21,15 @@ class TetrisGame{
             if (e.code === "ArrowDown"){
                 this.currentBlock.move(Direction.Down);
             }
+            if (e.code === "ArrowUp"){
+                this.currentBlock.rotate();
+            }
         })
         this.startGameLoop();
     }
 
     public addBlock(): void{
-        this.currentBlock = new OBlock();
+        this.currentBlock = new TBlock();
     }
 
     private initGameArray(): void{
@@ -130,67 +133,55 @@ class Renderer{
 class Tile{
     public containsBlock: boolean = false;
     public color: BlockColor = BlockColor.Black;
-    constructor(public row: number, public col: number) {
+    constructor(public col: number, public row: number) {
 
     }
 }
 
 abstract class Block{
     protected static _startpos = {row: 0, col: 12};
-    protected orientation: number = 0;
+    protected orientation: number = -90;
     protected mainTile: Tile;
     public color: BlockColor;
     public tiles: Tile[] = [];
 
+
     public move(dir: Direction): void{
-        if (this.isAbleToMove()){
-            switch(dir){
+        if (this.isAbleToMove()) {
+            switch (dir) {
                 case Direction.Down:
-                    for (let t of this.tiles){
+                    for (let t of this.tiles) {
                         t.row++;
                     }
-                    break;
+                    return;
                 case Direction.Left:
-                    for (let t of this.tiles){
-                        if (t.col - 1 < 0){
+                    for (let t of this.tiles) {
+                        if (t.col - 1 < 0 || tetris.game[t.col - 1][t.row].containsBlock) {
                             return;
                         }
                     }
-                    for (let t of this.tiles){
+                    for (let t of this.tiles) {
                         t.col--;
                     }
-                    break;
+                    return;
                 case Direction.Right:
-                    for (let t of this.tiles){
-                        if (t.col + 1 >= 25){
+                    for (let t of this.tiles) {
+                        if (t.col + 1 >= 25 || tetris.game[t.col + 1][t.row].containsBlock) {
                             return;
                         }
                     }
-                    for (let t of this.tiles){
+                    for (let t of this.tiles) {
                         t.col++;
                     }
-                    break;
+                    return;
             }
-        }
-        else {
-            console.log("false")
         }
     }
 
     public isAbleToMove(): boolean{
-        let game = tetris.game;
         for (let t of this.tiles){
-            if (t.row == 24){
+            if (t.row == 24 || tetris.game[t.col][t.row + 1].containsBlock){
                 return false;
-            }
-        }
-        for (let col = 0; col < 25; col++){
-            for (let row = 0; row < 24; row++){
-                for (let t of this.tiles){
-                    if (game[col][row + 1].containsBlock && game[col][row].col == t.col && game[col][row].row + 1 == t.row){
-                        return false;
-                    }
-                }
             }
         }
         return true;
@@ -202,6 +193,7 @@ abstract class Block{
 class OBlock extends Block{
     constructor() {
         super();
+        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row);
         this.color = BlockColor.Blue;
         this.rotate();
     }
@@ -209,20 +201,63 @@ class OBlock extends Block{
     public rotate(): void {
         switch (this.orientation) {
             case 0:
-                    this.tiles.push(new Tile(OBlock._startpos.row, OBlock._startpos.col));
-                    this.mainTile = this.tiles[0];
-                    this.tiles.push(new Tile(OBlock._startpos.row , OBlock._startpos.col + 1));
-                    this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col));
-                    this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col + 1));
+                this.tiles.push(this.mainTile);
+                this.tiles.push(new Tile(this.mainTile.col , this.mainTile.row + 1));
+                this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
+                this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
                 break;
             case 90:
-
                 break;
             case 180:
-
                 break;
             case 270:
+                break;
+        }
+    }
+}
 
+class TBlock extends Block{
+    constructor() {
+        super();
+        this.color = BlockColor.Red;
+        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row);
+
+        this.rotate();
+    }
+
+    public rotate(): void {
+        this.orientation += 90;
+        if (this.orientation == 360){
+            this.orientation = 0;
+        }
+        switch (this.orientation) {
+            case 0:
+                this.tiles = [];
+                this.tiles.push(this.mainTile);
+                this.tiles.push(new Tile(this.mainTile.col , this.mainTile.row + 1));
+                this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
+                this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
+                break;
+            case 90:
+                this.tiles = [];
+                this.tiles.push(this.mainTile);
+                this.tiles.push(new Tile(this.mainTile.col - 1 , this.mainTile.row));
+                this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
+                this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
+                break;
+            case 180:
+                this.tiles = [];
+                this.tiles.push(this.mainTile);
+                this.tiles.push(new Tile(this.mainTile.col , this.mainTile.row - 1));
+                this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
+                this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
+                break;
+            case 270:
+                this.tiles = [];
+                this.tiles.push(this.mainTile);
+                this.tiles.push(new Tile(this.mainTile.col + 1 , this.mainTile.row));
+                this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
+                this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 break;
         }
     }
@@ -230,15 +265,13 @@ class OBlock extends Block{
 
 enum BlockColor{
     Blue = "#0000ff",
-    Black ="#000000"
-    /*
+    Black ="#000000",
     Cyan = "#00ffff",
     Yellow = "#ffff00",
     Purple = "#800080",
     Green = "#00ff00",
     Red = "#ff0000",
     Orange = "#ff7f00"
-     */
 }
 
 enum Direction{
