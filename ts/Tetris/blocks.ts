@@ -1,7 +1,7 @@
-import tetris from "./tetris.js";
+import tetris, {GAMESIZE} from "./tetris.js";
 
 export abstract class Block{
-    protected static _startpos = {row: 0, col: 12};
+    protected static _startpos = {row: 0, col: 5};
     protected orientation: number = -90;
     protected mainTile: Tile;
     public color: BlockColor;
@@ -29,7 +29,7 @@ export abstract class Block{
                 return;
             case Direction.Right:
                 for (let t of this.tiles) {
-                    if (t.col + 1 > 24 || tetris.game[t.col + 1][t.row].containsBlock) {
+                    if (t.col + 1 > GAMESIZE.width - 1 || tetris.game[t.col + 1][t.row].containsBlock) {
                         return;
                     }
                 }
@@ -42,7 +42,7 @@ export abstract class Block{
 
     public isAbleToMove(): boolean{
         for (let t of this.tiles){
-            if (t.row == 24 || tetris.game[t.col][t.row + 1].containsBlock){
+            if (t.row == GAMESIZE.height - 1 || tetris.game[t.col][t.row + 1].containsBlock){
                 return false;
             }
         }

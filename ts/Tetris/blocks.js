@@ -1,4 +1,4 @@
-import tetris from "./tetris.js";
+import tetris, { GAMESIZE } from "./tetris.js";
 export class Block {
     constructor() {
         this.orientation = -90;
@@ -25,7 +25,7 @@ export class Block {
                 return;
             case Direction.Right:
                 for (let t of this.tiles) {
-                    if (t.col + 1 > 24 || tetris.game[t.col + 1][t.row].containsBlock) {
+                    if (t.col + 1 > GAMESIZE.width - 1 || tetris.game[t.col + 1][t.row].containsBlock) {
                         return;
                     }
                 }
@@ -37,14 +37,14 @@ export class Block {
     }
     isAbleToMove() {
         for (let t of this.tiles) {
-            if (t.row == 24 || tetris.game[t.col][t.row + 1].containsBlock) {
+            if (t.row == GAMESIZE.height - 1 || tetris.game[t.col][t.row + 1].containsBlock) {
                 return false;
             }
         }
         return true;
     }
 }
-Block._startpos = { row: 0, col: 12 };
+Block._startpos = { row: 0, col: 5 };
 export class OBlock extends Block {
     constructor() {
         super();
