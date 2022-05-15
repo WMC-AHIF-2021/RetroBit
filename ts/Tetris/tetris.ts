@@ -1,4 +1,5 @@
 import {Block, Direction, IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, Tile, ZBlock} from "./blocks.js";
+import {Renderer} from "./renderer.js";
 
 let tetris: TetrisGame;
 class TetrisGame{
@@ -27,7 +28,12 @@ class TetrisGame{
                 this.currentBlock.rotate();
             }
         })
-        this.startGameLoop();
+        setInterval(() => {
+            this.renderer.render();
+        }, 1000 / 60);
+        setInterval(() => {
+            this.nextFrame();
+        }, 500);
     }
 
     public addBlock(): void{
@@ -66,6 +72,29 @@ class TetrisGame{
     }
 
     public nextFrame(): void{
+        let rowIntact: boolean = false;
+        let lastRow: number = 0;
+        for (let row = 0; row < 25; row++){
+            for (let col = 0; col < 25; col++){
+                lastRow = row;
+                rowIntact = true;
+                if(!this.game[col][row].containsBlock){
+                    rowIntact = false;
+                    break;
+                }
+            }
+            if (rowIntact) break;
+            rowIntact = false;
+        }
+        if (rowIntact){
+            for (let row = lastRow; row > 0; row--){
+                for (let col = 0; col < 25; col++){
+                    this.game[col][row].containsBlock = this.game[col][row - 1].containsBlock;
+                    this.game[col][row].color = this.game[col][row - 1].color;
+                }
+            }
+        }
+
         if (this.currentBlock.isAbleToMove()){
             this.currentBlock.move(Direction.Down);
         }
@@ -75,81 +104,6 @@ class TetrisGame{
                 this.game[t.col][t.row].color = this.currentBlock.color;
             }
             this.addBlock();
-        }
-    }
-
-    private startGameLoop(): void {
-        setInterval(() => {
-            this.renderer.clearCanvas();
-            this.renderer.render();
-        }, 1000 / 60);
-        setInterval(() => {
-            this.nextFrame();
-        }, 500);
-    }
-}
-
-
-class Renderer{
-    private static SCALINGFACTOR: number = 40;
-    private canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement;
-    private context = this.canvas.getContext("2d");
-    public constructor(){
-        this.canvas.style.visibility = "visible";
-        this.canvas.focus();
-    }
-
-    public render(): void{
-        this.renderLeft();
-        this.renderRight();
-        this.renderGame();
-    }
-
-    private renderLeft(): void{
-        this.context.beginPath();
-        this.context.moveTo(500, 0);
-        this.context.lineTo(500, 1000);
-        this.context.strokeStyle = "#fff";
-        this.context.lineWidth = 10;
-        this.context.stroke();
-        this.context.fillStyle = "white";
-        this.context.font = "42px 'Press Start 2P'";
-        this.context.fillText("Highscores", 34,48);
-    }
-
-    private renderRight(): void{
-        this.context.beginPath();
-        this.context.moveTo(1500, 0);
-        this.context.lineTo(1500, 1000);
-        this.context.strokeStyle = "#fff";
-        this.context.lineWidth = 10;
-        this.context.stroke();
-    }
-
-    private renderGame(): void{
-        for (let col = 0; col < 25; col++) {
-            for (let row = 0; row < 25; row++) {
-                this.context.beginPath();
-                this.context.lineWidth = 15;
-                this.context.fillStyle = tetris.game[col][row].color;
-                this.context.fillRect(col * Renderer.SCALINGFACTOR + 500, row * Renderer.SCALINGFACTOR, 40, 40);
-                this.context.stroke();
-            }
-        }
-        this.renderBlock(tetris.currentBlock);
-    }
-
-    public clearCanvas(): void{
-        this.context.clearRect(0, 0, 2000, 1000);
-    }
-
-    private renderBlock(block: Block): void{
-        for (let t of block.tiles){
-            this.context.beginPath();
-            this.context.lineWidth = 10;
-            this.context.fillStyle = block.color;
-            this.context.fillRect(t.col * Renderer.SCALINGFACTOR + 500,t.row * Renderer.SCALINGFACTOR,40, 40);
-            this.context.stroke();
         }
     }
 }
