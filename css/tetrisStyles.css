@@ -9,6 +9,7 @@
 canvas {
     display: block;
     width: 33.33vw;
+    outline: none;
 }
 
 .grid-container {

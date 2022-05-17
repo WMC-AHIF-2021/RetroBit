@@ -4,12 +4,13 @@ export const GAMESIZE = { height: 20, width: 14 };
 // Todo: Add Gameover
 // Todo: Add Music
 // Todo: Add Scoring System
-// Todo: Smooth Up Gameplay
+// Todo: Add better random System and Preview
 let tetris;
 class TetrisGame {
     constructor() {
         this.game = [];
         this.renderer = new Renderer();
+        this.queue = [];
         this.initGameArray();
         this.addBlock();
         this.start();
@@ -44,29 +45,20 @@ class TetrisGame {
         }, 500);
     }
     addBlock() {
-        switch (Math.floor(Math.random() * 7)) {
-            case 0:
-                this.currentBlock = new TBlock();
-                break;
-            case 1:
-                this.currentBlock = new OBlock();
-                break;
-            case 2:
-                this.currentBlock = new IBlock();
-                break;
-            case 3:
-                this.currentBlock = new LBlock();
-                break;
-            case 4:
-                this.currentBlock = new JBlock();
-                break;
-            case 5:
-                this.currentBlock = new SBlock();
-                break;
-            case 6:
-                this.currentBlock = new ZBlock();
-                break;
+        if (this.queue.length === 0) {
+            this.queue.push(new TBlock());
+            this.queue.push(new LBlock());
+            this.queue.push(new JBlock());
+            this.queue.push(new SBlock());
+            this.queue.push(new ZBlock());
+            this.queue.push(new OBlock());
+            this.queue.push(new IBlock());
+            for (let i = this.queue.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [this.queue[i], this.queue[j]] = [this.queue[j], this.queue[i]];
+            }
         }
+        this.currentBlock = this.queue.pop();
     }
     initGameArray() {
         for (let col = 0; col < GAMESIZE.width; col++) {
