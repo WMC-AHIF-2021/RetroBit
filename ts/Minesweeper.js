@@ -1,18 +1,3 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var BlocksType;
 (function (BlocksType) {
     BlocksType[BlocksType["hidden"] = 0] = "hidden";
@@ -25,86 +10,129 @@ var BlocksType;
     bombCount: number;
     Bomb: Boolean;
 }*/
-var Field = /** @class */ (function () {
-    function Field(status) {
+class Field {
+    constructor(status) {
         if (status != BlocksType.explosive) {
             this.Status = status;
+            this.BombCount = 0;
         }
         this.Symbol = this.getSymbol();
     }
-    Field.prototype.getSymbol = function () {
+    getSymbol() {
         if (this.Status == BlocksType.explosive) {
             return '💣';
         }
         else if (this.Status == BlocksType.Flagged) {
             return '🏴';
         }
-    };
-    return Field;
-}());
-var Mine = /** @class */ (function (_super) {
-    __extends(Mine, _super);
-    function Mine(status) {
-        var _this = _super.call(this, status) || this;
-        _this.Symbol = _this.getSymbol();
-        return _this;
     }
-    return Mine;
-}(Field));
-var DrawBlocks = /** @class */ (function () {
-    function DrawBlocks() {
+}
+class Mine extends Field {
+    constructor(status) {
+        super(status);
+        status = BlocksType.explosive;
+        this.Status = status;
+        this.Symbol = this.getSymbol();
+    }
+}
+class DrawBlocks {
+    constructor() {
         this.canvas = document.getElementById("myCanvas");
         this.context = this.canvas.getContext("2d");
     }
-    DrawBlocks.prototype.drawRoster = function (x, y) {
+    drawRoster(x, y) {
         this.context.beginPath();
         this.context.rect(x, y, 50, 50);
         this.context.stroke();
-    };
-    DrawBlocks.prototype.MakeBlocHidden = function (x, y) {
+    }
+    MakeBlocHidden(x, y) {
         this.context.fillStyle = "#888888";
         this.context.fillRect(x, y, 50, 50);
         this.context.stroke();
-    };
-    return DrawBlocks;
-}());
-var MinesweeperGame = /** @class */ (function () {
-    function MinesweeperGame() {
     }
-    MinesweeperGame.prototype.Create2dArray = function (fieldCount, bombCount) {
-        for (var i = 0; i < fieldCount; i++) {
-            this.Blocks[i] = new Array();
-            for (var j = 0; j < fieldCount; j++) {
-                var random = Math.floor(Math.random() * 10);
-                if (random % 2 != 0 && bombCount > 0) {
-                    this.Blocks[i][j] = new Mine(BlocksType.explosive);
-                    bombCount--;
+    RevealField(Fields) {
+        let x = 0;
+        let y = 0;
+        for (let i = 0; i < Fields.length; i++) {
+            x = 0;
+            for (let j = 0; j < Fields[i].length; j++) {
+                let text;
+                if (Fields[i][j].Status == BlocksType.explosive) {
+                    text = Fields[i][j].Symbol;
                 }
                 else {
-                    this.Blocks[i][j] = new Field(BlocksType.hidden);
+                    text = Fields[i][j].BombCount.toString();
                 }
+                this.context.font = '50px serif';
+                this.context.fillText(text, x, y, 20);
+                this.context.stroke();
+                x = x + 500;
+            }
+            y = y + 500;
+        }
+    }
+}
+function Create2dArray(fieldCount, bombCount) {
+    let Blocks = [];
+    for (let i = 0; i < fieldCount; i++) {
+        Blocks.push([]);
+        for (let j = 0; j < fieldCount; j++) {
+            let random = Math.floor(Math.random() * 10);
+            if (random % 2 != 0 && bombCount > 0) {
+                let field = new Mine(BlocksType.explosive);
+                Blocks[i][j] = field;
+                bombCount--;
+            }
+            else {
+                let field = new Field(BlocksType.hidden);
+                Blocks[i][j] = field;
             }
         }
-        return this.Blocks;
-    };
-    return MinesweeperGame;
-}());
-/*class Create2DArray {
-    private things: BlocksType[][];
-    this.things = [];
-
-    for(let i: number = 0; i < 10; i++) {
-        this.things[i] = [];
-            for(let j: number = 0; j< 10; j++) {
-                this.things[i][j] = new BlocksType();
-            }
     }
-}*/
-var cringe = new DrawBlocks();
-var x = 0;
-var y = 0;
-for (var d = 0; d < 10; d++) {
-    for (var i = 0; i < 10; i++) {
+    return Blocks;
+}
+function GiveBlocksNumbers(Fields) {
+    for (let i = 0; i < Fields.length; i++) {
+        for (let j = 0; j < Fields[i].length; j++) {
+            if (Fields[i][j].Status != BlocksType.explosive) {
+                Fields[i][j] = CheckBombsAround(Fields, y, x);
+            }
+        }
+    }
+    return Fields;
+}
+function CheckBombsAround(Fields, y, x) {
+    let XCoordinate = x - 1;
+    let YCoordinate = y - 1;
+    let XMax = x + 1;
+    let YMax = y + 1;
+    if (XCoordinate < 0) {
+        XCoordinate = x;
+    }
+    if (YCoordinate < 0) {
+        YCoordinate = y;
+    }
+    if (XMax >= Fields[0].length) {
+        XMax = x;
+    }
+    if (YMax >= Fields.length) {
+        YMax = y;
+    }
+    for (let i = YCoordinate; i < YMax; i++) {
+        for (let j = XCoordinate; j < XMax; j++) {
+            if (Fields[i][j].Status === BlocksType.explosive) {
+                Fields[x][y].BombCount++;
+                Fields[x][y].Status = BlocksType.detect;
+            }
+        }
+    }
+    return Fields[x][y];
+}
+let cringe = new DrawBlocks();
+let x = 0;
+let y = 0;
+for (let d = 0; d < 10; d++) {
+    for (let i = 0; i < 10; i++) {
         cringe.drawRoster(x, y);
         cringe.MakeBlocHidden(x, y);
         x = x + 50;
@@ -112,4 +140,7 @@ for (var d = 0; d < 10; d++) {
     y = y + 50;
     x = 0;
 }
+let field = Create2dArray(10, 6);
+field = GiveBlocksNumbers(field);
+cringe.RevealField(field);
 //# sourceMappingURL=Minesweeper.js.map
