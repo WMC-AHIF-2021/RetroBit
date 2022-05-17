@@ -1,5 +1,5 @@
 import tetris, {GAMESIZE} from "./tetris.js";
-import {Block} from "./blocks.js";
+import {Block, Direction} from "./blocks.js";
 
 export class Renderer{
     private static SCALINGFACTOR: number = 50;
@@ -40,5 +40,20 @@ export class Renderer{
             this.context.fillRect(t.col * Renderer.SCALINGFACTOR,t.row * Renderer.SCALINGFACTOR,49, 49);
             this.context.stroke();
         }
+    }
+
+    public gameOver(): void{
+        this.clearCanvas();
+        this.context.fillStyle = "white";
+        this.context.font = "98px 'Press Start 2P'";
+        this.context.fillText("Game", 0, 300);
+        this.context.fillText("Over", 0, 400);
+        this.context.fillText("Press", 0, 500);
+        this.context.fillText("Enter", 0, 600);
+        this.context.fillText("To", 0, 700);
+        this.context.fillText("Restart", 0, 800);
+        document.addEventListener("keydown", (e) => {
+            location.reload();
+        });
     }
 }

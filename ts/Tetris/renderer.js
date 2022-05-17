@@ -34,6 +34,20 @@ export class Renderer {
             this.context.stroke();
         }
     }
+    gameOver() {
+        this.clearCanvas();
+        this.context.fillStyle = "white";
+        this.context.font = "98px 'Press Start 2P'";
+        this.context.fillText("Game", 0, 300);
+        this.context.fillText("Over", 0, 400);
+        this.context.fillText("Press", 0, 500);
+        this.context.fillText("Enter", 0, 600);
+        this.context.fillText("To", 0, 700);
+        this.context.fillText("Restart", 0, 800);
+        document.addEventListener("keydown", (e) => {
+            location.reload();
+        });
+    }
 }
 Renderer.SCALINGFACTOR = 50;
 //# sourceMappingURL=renderer.js.map

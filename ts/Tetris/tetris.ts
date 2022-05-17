@@ -6,7 +6,6 @@ export const GAMESIZE = { height: 20, width: 14};
 // Todo: Add Gameover
 // Todo: Add Music
 // Todo: Add Scoring System
-// Todo: Add better random System and Preview
 
 let tetris: TetrisGame;
 class TetrisGame{
@@ -14,6 +13,7 @@ class TetrisGame{
     public currentBlock: Block;
     private renderer: Renderer = new Renderer();
     private queue: Block[] = [];
+    private intervals: number[] = [];
 
     constructor() {
         this.initGameArray();
@@ -43,12 +43,12 @@ class TetrisGame{
                     break;
             }
         })
-        setInterval(() => {
+        this.intervals.push(setInterval(() => {
             this.renderer.render();
-        }, 1000 / 60);
-        setInterval(() => {
+        }, 1000 / 60));
+        this.intervals.push(setInterval(() => {
             this.nextFrame();
-        }, 500);
+        }, 500));
     }
 
     public addBlock(): void{
@@ -108,6 +108,12 @@ class TetrisGame{
             for (let t of this.currentBlock.tiles){
                 this.game[t.col][t.row].containsBlock = true;
                 this.game[t.col][t.row].color = this.currentBlock.color;
+            }
+            if (this.game[6][1].containsBlock){
+                clearInterval(this.intervals.pop());
+                clearInterval(this.intervals.pop());
+                this.renderer.gameOver();
+                return;
             }
             this.addBlock();
         }

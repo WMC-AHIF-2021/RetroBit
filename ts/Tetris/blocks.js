@@ -3,6 +3,8 @@ export class Block {
     constructor() {
         this.orientation = -90;
         this.tiles = [];
+        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row);
+        this.rotate();
     }
     move(dir) {
         switch (dir) {
@@ -50,13 +52,11 @@ export class Block {
         return true;
     }
 }
-Block._startpos = { row: 0, col: 6 };
+Block._startpos = { row: 1, col: 6 };
 export class OBlock extends Block {
     constructor() {
         super();
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row);
         this.color = BlockColor.Yellow;
-        this.rotate();
     }
     rotate() {
         if (!this.isAbleToRotate()) {
@@ -96,8 +96,6 @@ export class TBlock extends Block {
     constructor() {
         super();
         this.color = BlockColor.Purple;
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row);
-        this.rotate();
     }
     rotate() {
         if (!this.isAbleToRotate()) {
@@ -137,8 +135,6 @@ export class IBlock extends Block {
     constructor() {
         super();
         this.color = BlockColor.Cyan;
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row + 1);
-        this.rotate();
     }
     rotate() {
         if (!this.isAbleToRotate()) {
@@ -178,8 +174,6 @@ export class LBlock extends Block {
     constructor() {
         super();
         this.color = BlockColor.Orange;
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row + 1);
-        this.rotate();
     }
     rotate() {
         if (!this.isAbleToRotate()) {
@@ -219,8 +213,6 @@ export class JBlock extends Block {
     constructor() {
         super();
         this.color = BlockColor.Blue;
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row + 1);
-        this.rotate();
     }
     rotate() {
         if (!this.isAbleToRotate()) {
@@ -260,8 +252,6 @@ export class SBlock extends Block {
     constructor() {
         super();
         this.color = BlockColor.Red;
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row + 1);
-        this.rotate();
     }
     rotate() {
         if (!this.isAbleToRotate()) {
@@ -301,8 +291,6 @@ export class ZBlock extends Block {
     constructor() {
         super();
         this.color = BlockColor.Green;
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row + 1);
-        this.rotate();
     }
     rotate() {
         if (!this.isAbleToRotate()) {
