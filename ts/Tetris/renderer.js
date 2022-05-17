@@ -3,7 +3,6 @@ export class Renderer {
     constructor() {
         this.canvas = document.getElementById("canvas");
         this.context = this.canvas.getContext("2d");
-        this.canvas.style.visibility = "visible";
         this.canvas.focus();
     }
     render() {
@@ -44,7 +43,7 @@ export class Renderer {
         this.context.fillText("Enter", 0, 600);
         this.context.fillText("To", 0, 700);
         this.context.fillText("Restart", 0, 800);
-        document.addEventListener("keydown", (e) => {
+        document.addEventListener("keydown", () => {
             location.reload();
         });
     }

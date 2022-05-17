@@ -1,7 +1,6 @@
 import { Direction, IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, Tile, ZBlock } from "./blocks.js";
 import { Renderer } from "./renderer.js";
 export const GAMESIZE = { height: 20, width: 14 };
-// Todo: Add Gameover
 // Todo: Add Music
 // Todo: Add Scoring System
 let tetris;

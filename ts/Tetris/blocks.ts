@@ -54,10 +54,7 @@ export abstract class Block{
     }
 
     protected isAbleToRotate(): boolean{
-        if (this.mainTile.col - 1 < 0 || this.mainTile.col + 1 >= GAMESIZE.width){
-            return false;
-        }
-        return true;
+        return !(this.mainTile.col - 1 < 0 || this.mainTile.col + 1 >= GAMESIZE.width);
     }
 
     abstract rotate(): void;

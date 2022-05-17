@@ -46,10 +46,7 @@ export class Block {
         return true;
     }
     isAbleToRotate() {
-        if (this.mainTile.col - 1 < 0 || this.mainTile.col + 1 >= GAMESIZE.width) {
-            return false;
-        }
-        return true;
+        return !(this.mainTile.col - 1 < 0 || this.mainTile.col + 1 >= GAMESIZE.width);
     }
 }
 Block._startpos = { row: 1, col: 6 };
