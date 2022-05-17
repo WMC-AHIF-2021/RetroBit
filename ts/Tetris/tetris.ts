@@ -1,8 +1,18 @@
+import {Block, Direction, IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, Tile, ZBlock} from "./blocks.js";
+import {Renderer} from "./renderer.js";
+
+export const GAMESIZE = { height: 20, width: 14};
+
+// Todo: Add Music
+// Todo: Add Scoring System
+
 let tetris: TetrisGame;
 class TetrisGame{
-    private renderer: Renderer = new Renderer();
     public game: Tile[][] = [];
     public currentBlock: Block;
+    private renderer: Renderer = new Renderer();
+    private queue: Block[] = [];
+    private intervals: number[] = [];
 
     constructor() {
         this.initGameArray();
@@ -12,33 +22,84 @@ class TetrisGame{
 
     public start(): void{
         document.addEventListener("keydown", (e) => {
-            if (e.code === "ArrowLeft"){
-                this.currentBlock.move(Direction.Left);
-            }
-            if (e.code === "ArrowRight"){
-                this.currentBlock.move(Direction.Right);
-            }
-            if (e.code === "ArrowDown"){
-                this.currentBlock.move(Direction.Down);
+            switch (e.code){
+                case "ArrowLeft":
+                    this.currentBlock.move(Direction.Left);
+                    break;
+                case "ArrowRight":
+                    this.currentBlock.move(Direction.Right);
+                    break;
+                case "ArrowUp":
+                    this.currentBlock.rotate();
+                    break;
+                case "ArrowDown":
+                    this.currentBlock.move(Direction.Down);
+                    break;
+                case "Space":
+                    while(this.currentBlock.isAbleToMove()){
+                        this.currentBlock.move(Direction.Down);
+                    }
+                    break;
             }
         })
-        this.startGameLoop();
+        this.intervals.push(setInterval(() => {
+            this.renderer.render();
+        }, 1000 / 60));
+        this.intervals.push(setInterval(() => {
+            this.nextFrame();
+        }, 500));
     }
 
     public addBlock(): void{
-        this.currentBlock = new OBlock();
+        if (this.queue.length === 0){
+            this.queue.push(new TBlock());
+            this.queue.push(new LBlock());
+            this.queue.push(new JBlock());
+            this.queue.push(new SBlock());
+            this.queue.push(new ZBlock());
+            this.queue.push(new OBlock());
+            this.queue.push(new IBlock());
+            for (let i = this.queue.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [this.queue[i], this.queue[j]] = [this.queue[j], this.queue[i]];
+            }
+        }
+        this.currentBlock = this.queue.pop();
     }
 
     private initGameArray(): void{
-        for (let col = 0; col < 25; col++){
+        for (let col = 0; col < GAMESIZE.width; col++){
             this.game[col] = [];
-            for (let row = 0; row < 25; row++){
+            for (let row = 0; row < GAMESIZE.height; row++){
                 this.game[col].push(new Tile(row, col));
             }
         }
     }
 
     public nextFrame(): void{
+        let rowIntact: boolean = false;
+        let lastRow: number = 0;
+        for (let row = 0; row < GAMESIZE.height; row++){
+            for (let col = 0; col < GAMESIZE.width; col++){
+                lastRow = row;
+                rowIntact = true;
+                if(!this.game[col][row].containsBlock){
+                    rowIntact = false;
+                    break;
+                }
+            }
+            if (rowIntact) break;
+            rowIntact = false;
+        }
+        if (rowIntact){
+            for (let row = lastRow; row > 0; row--){
+                for (let col = 0; col < GAMESIZE.width; col++){
+                    this.game[col][row].containsBlock = this.game[col][row - 1].containsBlock;
+                    this.game[col][row].color = this.game[col][row - 1].color;
+                }
+            }
+        }
+
         if (this.currentBlock.isAbleToMove()){
             this.currentBlock.move(Direction.Down);
         }
@@ -47,204 +108,15 @@ class TetrisGame{
                 this.game[t.col][t.row].containsBlock = true;
                 this.game[t.col][t.row].color = this.currentBlock.color;
             }
+            if (this.game[6][1].containsBlock){
+                clearInterval(this.intervals.pop());
+                clearInterval(this.intervals.pop());
+                this.renderer.gameOver();
+                return;
+            }
             this.addBlock();
         }
     }
-
-    private startGameLoop(): void {
-        setInterval(() => {
-            this.renderer.clearCanvas();
-            this.renderer.render();
-        }, 1000 / 60);
-        setInterval(() => {
-            this.nextFrame();
-        }, 500);
-    }
 }
 
-
-class Renderer{
-    private static SCALINGFACTOR: number = 40;
-    private canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement;
-    private context = this.canvas.getContext("2d");
-    public constructor(){
-        this.canvas.style.visibility = "visible";
-        this.canvas.focus();
-    }
-
-    public render(): void{
-        this.renderLeft();
-        this.renderRight();
-        this.renderGame();
-    }
-
-    private renderLeft(): void{
-        this.context.beginPath();
-        this.context.moveTo(500, 0);
-        this.context.lineTo(500, 1000);
-        this.context.strokeStyle = "#fff";
-        this.context.lineWidth = 10;
-        this.context.stroke();
-        this.context.fillStyle = "white";
-        this.context.font = "42px 'Press Start 2P'";
-        this.context.fillText("Highscores", 34,48);
-    }
-
-    private renderRight(): void{
-        this.context.beginPath();
-        this.context.moveTo(1500, 0);
-        this.context.lineTo(1500, 1000);
-        this.context.strokeStyle = "#fff";
-        this.context.lineWidth = 10;
-        this.context.stroke();
-    }
-
-    private renderGame(): void{
-        for (let col = 0; col < 25; col++) {
-            for (let row = 0; row < 25; row++) {
-                this.context.beginPath();
-                this.context.lineWidth = 15;
-                this.context.fillStyle = tetris.game[col][row].color;
-                this.context.fillRect(col * Renderer.SCALINGFACTOR + 500, row * Renderer.SCALINGFACTOR, 40, 40);
-                this.context.stroke();
-            }
-        }
-        this.renderBlock(tetris.currentBlock);
-    }
-
-    public clearCanvas(): void{
-        this.context.clearRect(0, 0, 2000, 1000);
-    }
-
-    private renderBlock(block: Block): void{
-        for (let t of block.tiles){
-            this.context.beginPath();
-            this.context.lineWidth = 10;
-            this.context.fillStyle = block.color;
-            this.context.fillRect(t.col * Renderer.SCALINGFACTOR + 500,t.row * Renderer.SCALINGFACTOR,40, 40);
-            this.context.stroke();
-        }
-    }
-}
-
-class Tile{
-    public containsBlock: boolean = false;
-    public color: BlockColor = BlockColor.Black;
-    constructor(public row: number, public col: number) {
-
-    }
-}
-
-abstract class Block{
-    protected static _startpos = {row: 0, col: 12};
-    protected orientation: number = 0;
-    protected mainTile: Tile;
-    public color: BlockColor;
-    public tiles: Tile[] = [];
-
-    public move(dir: Direction): void{
-        if (this.isAbleToMove()){
-            switch(dir){
-                case Direction.Down:
-                    for (let t of this.tiles){
-                        t.row++;
-                    }
-                    break;
-                case Direction.Left:
-                    for (let t of this.tiles){
-                        if (t.col - 1 < 0){
-                            return;
-                        }
-                    }
-                    for (let t of this.tiles){
-                        t.col--;
-                    }
-                    break;
-                case Direction.Right:
-                    for (let t of this.tiles){
-                        if (t.col + 1 >= 25){
-                            return;
-                        }
-                    }
-                    for (let t of this.tiles){
-                        t.col++;
-                    }
-                    break;
-            }
-        }
-        else {
-            console.log("false")
-        }
-    }
-
-    public isAbleToMove(): boolean{
-        let game = tetris.game;
-        for (let t of this.tiles){
-            if (t.row == 24){
-                return false;
-            }
-        }
-        for (let col = 0; col < 25; col++){
-            for (let row = 0; row < 24; row++){
-                for (let t of this.tiles){
-                    if (game[col][row + 1].containsBlock && game[col][row].col == t.col && game[col][row].row + 1 == t.row){
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    abstract rotate(): void;
-}
-
-class OBlock extends Block{
-    constructor() {
-        super();
-        this.color = BlockColor.Blue;
-        this.rotate();
-    }
-
-    public rotate(): void {
-        switch (this.orientation) {
-            case 0:
-                    this.tiles.push(new Tile(OBlock._startpos.row, OBlock._startpos.col));
-                    this.mainTile = this.tiles[0];
-                    this.tiles.push(new Tile(OBlock._startpos.row , OBlock._startpos.col + 1));
-                    this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col));
-                    this.tiles.push(new Tile(OBlock._startpos.row + 1, OBlock._startpos.col + 1));
-                break;
-            case 90:
-
-                break;
-            case 180:
-
-                break;
-            case 270:
-
-                break;
-        }
-    }
-}
-
-enum BlockColor{
-    Blue = "#0000ff",
-    Black ="#000000"
-    /*
-    Cyan = "#00ffff",
-    Yellow = "#ffff00",
-    Purple = "#800080",
-    Green = "#00ff00",
-    Red = "#ff0000",
-    Orange = "#ff7f00"
-     */
-}
-
-enum Direction{
-    Down,
-    Left,
-    Right
-}
-
-tetris = new TetrisGame();
+export default tetris = new TetrisGame();

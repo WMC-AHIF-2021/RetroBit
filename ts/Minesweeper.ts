@@ -93,13 +93,14 @@ function Create2dArray(fieldCount: number, bombCount: number) : Field[][] {
         for (let j = 0; j < fieldCount; j++) {
 
             let random: number = Math.floor(Math.random() * 10);
+            let field: Field;
             if (random %2 != 0 && bombCount > 0){
-                let field: Mine = new Mine(BlocksType.explosive);
+                field = new Mine(BlocksType.explosive);
                 Blocks[i][j] = field;
                 bombCount--;
             }
             else{
-                let field: Field = new Field(BlocksType.hidden)
+                field = new Field(BlocksType.hidden)
                 Blocks[i][j] = field;
             }
         }

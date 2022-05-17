@@ -1,0 +1,23 @@
+* {
+    font-family: 'Press Start 2P', cursive;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    display: block;
+    width: 33.33vw;
+    outline: none;
+}
+
+.grid-container {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+}
+
+.grid-container {
+    display: inline-grid;
+}
