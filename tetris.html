@@ -11,13 +11,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <title>RetroBit | TETRIS</title>
-
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/pongGameStyles.css" rel="stylesheet">
+    <link href="css/tetrisStyles.css" rel="stylesheet">
     <link href="css/colors.css" rel="stylesheet">
 </head>
     <body>
-        <canvas tabindex="1" id="canvas" width="2000" height="1000"></canvas>
+
+        <div class="grid-container">
+            <div class="grid-item">1</div>
+            <canvas tabindex="1" class="grid-item" id="canvas" width="695" height="1000"></canvas>
+            <div class="grid-item">3</div>
+        </div>
+
 
         <script type="module" src="ts/Tetris/tetris.js"></script>
     </body>

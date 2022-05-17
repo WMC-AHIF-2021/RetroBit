@@ -1,14 +1,12 @@
 import {Block, Direction, IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, Tile, ZBlock} from "./blocks.js";
 import {Renderer} from "./renderer.js";
 
-export const GAMESIZE = { height: 20, width: 10};
+export const GAMESIZE = { height: 20, width: 14};
 
-// Todo: Fix Blocks Glitching Out When Turning On An Edge
 // Todo: Add Gameover
 // Todo: Add Music
 // Todo: Add Scoring System
 // Todo: Smooth Up Gameplay
-// Todo: Split up canvas for better mobile experience
 
 let tetris: TetrisGame;
 class TetrisGame{
@@ -24,17 +22,24 @@ class TetrisGame{
 
     public start(): void{
         document.addEventListener("keydown", (e) => {
-            if (e.code === "ArrowLeft"){
-                this.currentBlock.move(Direction.Left);
-            }
-            if (e.code === "ArrowRight"){
-                this.currentBlock.move(Direction.Right);
-            }
-            if (e.code === "ArrowDown"){
-                this.currentBlock.move(Direction.Down);
-            }
-            if (e.code === "ArrowUp"){
-                this.currentBlock.rotate();
+            switch (e.code){
+                case "ArrowLeft":
+                    this.currentBlock.move(Direction.Left);
+                    break;
+                case "ArrowRight":
+                    this.currentBlock.move(Direction.Right);
+                    break;
+                case "ArrowUp":
+                    this.currentBlock.rotate();
+                    break;
+                case "ArrowDown":
+                    this.currentBlock.move(Direction.Down);
+                    break;
+                case "Space":
+                    while(this.currentBlock.isAbleToMove()){
+                        this.currentBlock.move(Direction.Down);
+                    }
+                    break;
             }
         })
         setInterval(() => {

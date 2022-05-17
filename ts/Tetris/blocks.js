@@ -43,8 +43,14 @@ export class Block {
         }
         return true;
     }
+    isAbleToRotate() {
+        if (this.mainTile.col - 1 < 0 || this.mainTile.col + 1 >= GAMESIZE.width) {
+            return false;
+        }
+        return true;
+    }
 }
-Block._startpos = { row: 0, col: 5 };
+Block._startpos = { row: 0, col: 6 };
 export class OBlock extends Block {
     constructor() {
         super();
@@ -53,35 +59,32 @@ export class OBlock extends Block {
         this.rotate();
     }
     rotate() {
+        if (!this.isAbleToRotate()) {
+            return;
+        }
         this.orientation += 90;
         if (this.orientation == 360) {
             this.orientation = 0;
         }
+        this.tiles = [];
+        this.tiles.push(this.mainTile);
         switch (this.orientation) {
             case 0:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
                 break;
             case 90:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
                 break;
             case 180:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
                 break;
             case 270:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
@@ -97,35 +100,32 @@ export class TBlock extends Block {
         this.rotate();
     }
     rotate() {
+        if (!this.isAbleToRotate()) {
+            return;
+        }
         this.orientation += 90;
         if (this.orientation == 360) {
             this.orientation = 0;
         }
+        this.tiles = [];
+        this.tiles.push(this.mainTile);
         switch (this.orientation) {
             case 0:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 break;
             case 90:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 break;
             case 180:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 break;
             case 270:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
@@ -141,35 +141,32 @@ export class IBlock extends Block {
         this.rotate();
     }
     rotate() {
+        if (!this.isAbleToRotate()) {
+            return;
+        }
         this.orientation += 90;
         if (this.orientation == 360) {
             this.orientation = 0;
         }
+        this.tiles = [];
+        this.tiles.push(this.mainTile);
         switch (this.orientation) {
             case 0:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 2));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 break;
             case 90:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 2, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 break;
             case 180:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 2));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 break;
             case 270:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 2, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
@@ -185,35 +182,32 @@ export class LBlock extends Block {
         this.rotate();
     }
     rotate() {
+        if (!this.isAbleToRotate()) {
+            return;
+        }
         this.orientation += 90;
         if (this.orientation == 360) {
             this.orientation = 0;
         }
+        this.tiles = [];
+        this.tiles.push(this.mainTile);
         switch (this.orientation) {
             case 0:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
                 break;
             case 90:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row + 1));
                 break;
             case 180:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 break;
             case 270:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row - 1));
@@ -229,35 +223,32 @@ export class JBlock extends Block {
         this.rotate();
     }
     rotate() {
+        if (!this.isAbleToRotate()) {
+            return;
+        }
         this.orientation += 90;
         if (this.orientation == 360) {
             this.orientation = 0;
         }
+        this.tiles = [];
+        this.tiles.push(this.mainTile);
         switch (this.orientation) {
             case 0:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 break;
             case 90:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row - 1));
                 break;
             case 180:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row - 1));
                 break;
             case 270:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
@@ -273,35 +264,32 @@ export class SBlock extends Block {
         this.rotate();
     }
     rotate() {
+        if (!this.isAbleToRotate()) {
+            return;
+        }
         this.orientation += 90;
         if (this.orientation == 360) {
             this.orientation = 0;
         }
+        this.tiles = [];
+        this.tiles.push(this.mainTile);
         switch (this.orientation) {
             case 0:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 break;
             case 90:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
                 break;
             case 180:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row));
                 break;
             case 270:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row + 1));
@@ -317,35 +305,32 @@ export class ZBlock extends Block {
         this.rotate();
     }
     rotate() {
+        if (!this.isAbleToRotate()) {
+            return;
+        }
         this.orientation += 90;
         if (this.orientation == 360) {
             this.orientation = 0;
         }
+        this.tiles = [];
+        this.tiles.push(this.mainTile);
         switch (this.orientation) {
             case 0:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 break;
             case 90:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row - 1));
                 break;
             case 180:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col - 1, this.mainTile.row - 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 break;
             case 270:
-                this.tiles = [];
-                this.tiles.push(this.mainTile);
                 this.tiles.push(new Tile(this.mainTile.col, this.mainTile.row + 1));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row));
                 this.tiles.push(new Tile(this.mainTile.col + 1, this.mainTile.row - 1));
