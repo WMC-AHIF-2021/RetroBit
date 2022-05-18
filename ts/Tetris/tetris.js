@@ -1,7 +1,6 @@
 import { Direction, IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, Tile, ZBlock } from "./blocks.js";
 import { Renderer } from "./renderer.js";
 export const GAMESIZE = { height: 20, width: 14 };
-// Todo: Add Music
 // Todo: Add Scoring System
 let tetris;
 class TetrisGame {
@@ -10,6 +9,7 @@ class TetrisGame {
         this.renderer = new Renderer();
         this.queue = [];
         this.intervals = [];
+        this.score = 0;
         this.initGameArray();
         this.addBlock();
         this.start();
@@ -90,6 +90,7 @@ class TetrisGame {
                     this.game[col][row].color = this.game[col][row - 1].color;
                 }
             }
+            this.score += 100;
         }
         if (this.currentBlock.isAbleToMove()) {
             this.currentBlock.move(Direction.Down);
@@ -100,8 +101,14 @@ class TetrisGame {
                 this.game[t.col][t.row].color = this.currentBlock.color;
             }
             if (this.game[6][1].containsBlock) {
-                clearInterval(this.intervals.pop());
-                clearInterval(this.intervals.pop());
+                for (let i of this.intervals) {
+                    clearInterval(i);
+                }
+                // Todo: Push score to server here
+                $.post("http://localhost:3000/scores", {
+                    "score": this.score,
+                    "time": new Date()
+                });
                 this.renderer.gameOver();
                 return;
             }

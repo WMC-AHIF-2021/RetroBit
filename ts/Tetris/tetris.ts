@@ -3,7 +3,6 @@ import {Renderer} from "./renderer.js";
 
 export const GAMESIZE = { height: 20, width: 14};
 
-// Todo: Add Music
 // Todo: Add Scoring System
 
 let tetris: TetrisGame;
@@ -13,6 +12,7 @@ class TetrisGame{
     private renderer: Renderer = new Renderer();
     private queue: Block[] = [];
     private intervals: number[] = [];
+    private score: number = 0;
 
     constructor() {
         this.initGameArray();
@@ -98,6 +98,7 @@ class TetrisGame{
                     this.game[col][row].color = this.game[col][row - 1].color;
                 }
             }
+            this.score += 100;
         }
 
         if (this.currentBlock.isAbleToMove()){
@@ -109,8 +110,14 @@ class TetrisGame{
                 this.game[t.col][t.row].color = this.currentBlock.color;
             }
             if (this.game[6][1].containsBlock){
-                clearInterval(this.intervals.pop());
-                clearInterval(this.intervals.pop());
+                for (let i of this.intervals){
+                    clearInterval(i);
+                }
+                // Todo: Push score to server here
+                $.post("http://localhost:3000/scores", {
+                    "score": this.score,
+                    "time": new Date()
+                });
                 this.renderer.gameOver();
                 return;
             }
