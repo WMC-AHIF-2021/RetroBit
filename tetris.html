@@ -19,9 +19,19 @@
         <div class="grid-container">
             <div class="grid-item">
                 <h1>Highscores</h1>
+                <table id="scoreboard">
+                    <tr>
+                        <th>Number</th>
+                        <th>Score</th>
+                        <th>Time</th>
+                    </tr>
+                </table>
             </div>
             <canvas tabindex="1" class="grid-item" id="canvas" width="695" height="1000"></canvas>
-            <div class="grid-item"></div>
+            <div class="grid-item">
+                <h1>Score</h1>
+                <h2 id="currentScore"></h2>
+            </div>
         </div>
 
         <audio autoplay loop>
