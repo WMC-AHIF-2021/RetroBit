@@ -9,6 +9,7 @@ body {
 
 p, ul {
     font-family: 'Lato', sans-serif;
+    font-size: x-large;
 }
 
 #index{
@@ -24,6 +25,30 @@ p, ul {
     height: 40px;
     animation: 0.5s blink infinite step-end;
 }
+
+.fixedNavbar{
+    overflow: hidden;
+    background-color: #808080;
+    position: fixed;
+    top: 0;
+    width: 89%;
+    height: 50px;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-bottom-width: 5px;
+    border-right-width: 5px;
+    border-left-width: 5px ;
+    text-align: center;
+    font-size: x-large;
+}
+
+.fixedNavbar a{
+    display: inline-block;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
 @keyframes blink {
     0% {
         opacity: 1;
@@ -81,6 +106,7 @@ p, ul {
 
 .ul-menu{
     list-style: none;
+    color: #ff901f;
 }
 
 .technologyimage{
@@ -156,8 +182,9 @@ h2{
 }
 
 .grid-item {
-    color: gray;
+    color: white;
     border-left: 3px dotted grey;
+    font-size: 20px;
 }
 
 .grid-header {

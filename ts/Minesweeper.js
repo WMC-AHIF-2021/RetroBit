@@ -123,9 +123,9 @@ function CheckBombsAround(y, x) {
     if (YMax >= field.length) {
         YMax = y;
     }
-    for (let i = YCoordinate; i < YMax; i++) {
-        for (let j = XCoordinate; j < XMax; j++) {
-            if (field[i][j].Status === BlocksType.explosive) {
+    for (let i = YCoordinate; i <= YMax; i++) {
+        for (let j = XCoordinate; j <= XMax; j++) {
+            if (field[i][j].Status == BlocksType.explosive) {
                 field[y][x].BombCount++;
                 field[y][x].Status = BlocksType.detect;
             }
