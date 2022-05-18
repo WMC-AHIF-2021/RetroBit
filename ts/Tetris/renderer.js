@@ -22,7 +22,7 @@ export class Renderer {
         this.renderBlock(tetris.currentBlock);
     }
     clearCanvas() {
-        this.context.clearRect(0, 0, 666, 1000);
+        this.context.clearRect(0, 0, 695, 1000);
     }
     renderBlock(block) {
         for (let t of block.tiles) {

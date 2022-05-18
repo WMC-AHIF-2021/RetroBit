@@ -1,11 +1,11 @@
 import {Block, Direction, IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, Tile, ZBlock} from "./blocks.js";
 import {Renderer} from "./renderer.js";
+import {InfoRenderer} from "./inforenderer.js";
 
 export const GAMESIZE = { height: 20, width: 14};
 
-// Todo: Add Scoring System
-
 let tetris: TetrisGame;
+let inforenderer: InfoRenderer;
 class TetrisGame{
     public game: Tile[][] = [];
     public currentBlock: Block;
@@ -18,6 +18,7 @@ class TetrisGame{
         this.initGameArray();
         this.addBlock();
         this.start();
+        inforenderer.renderCurrentScore(this.score);
     }
 
     public start(): void{
@@ -65,6 +66,7 @@ class TetrisGame{
             }
         }
         this.currentBlock = this.queue.pop();
+        inforenderer.renderNextBlock(this.queue[this.queue.length - 1]);
     }
 
     private initGameArray(): void{
@@ -99,6 +101,7 @@ class TetrisGame{
                 }
             }
             this.score += 100;
+            inforenderer.renderCurrentScore(this.score);
         }
 
         if (this.currentBlock.isAbleToMove()){
@@ -113,11 +116,13 @@ class TetrisGame{
                 for (let i of this.intervals){
                     clearInterval(i);
                 }
-                // Todo: Push score to server here
-                $.post("http://localhost:3000/scores", {
-                    "score": this.score,
-                    "time": new Date()
-                });
+                if (this.score != 0) {
+                    let d: Date = new Date();
+                    $.post("http://localhost:3000/scores", {
+                        "score": this.score,
+                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours()}:${d.getUTCMinutes()}`
+                    });
+                }
                 this.renderer.gameOver();
                 return;
             }
@@ -126,4 +131,5 @@ class TetrisGame{
     }
 }
 
+inforenderer = new InfoRenderer();
 export default tetris = new TetrisGame();
