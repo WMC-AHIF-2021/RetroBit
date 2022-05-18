@@ -66,6 +66,7 @@ class TetrisGame{
             }
         }
         this.currentBlock = this.queue.pop();
+        inforenderer.renderNextBlock(this.queue[this.queue.length - 1]);
     }
 
     private initGameArray(): void{

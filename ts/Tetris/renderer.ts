@@ -28,7 +28,7 @@ export class Renderer{
     }
 
     private clearCanvas(): void{
-        this.context.clearRect(0, 0, 666, 1000);
+        this.context.clearRect(0, 0, 695, 1000);
     }
 
     private renderBlock(block: Block): void{
