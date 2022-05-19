@@ -148,9 +148,9 @@ function CheckBombsAround( y:number, x:number): void{
     if(YMax >= field.length){
         YMax = y;
     }
-    for (let i = YCoordinate; i < YMax; i++) {
-        for (let j = XCoordinate; j < XMax; j++) {
-            if(field[i][j].Status === BlocksType.explosive) {
+    for (let i = YCoordinate; i <= YMax; i++) {
+        for (let j = XCoordinate; j <= XMax; j++) {
+            if(field[i][j].Status == BlocksType.explosive) {
                 field[y][x].BombCount++;
                 field[y][x].Status = BlocksType.detect;
             }
@@ -158,8 +158,6 @@ function CheckBombsAround( y:number, x:number): void{
     }
 
 }
-
-
 
 let cringe = new DrawBlocks();
 let x = 0;
