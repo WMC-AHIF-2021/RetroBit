@@ -159,8 +159,6 @@ function CheckBombsAround( y:number, x:number): void{
 
 }
 
-
-
 let cringe = new DrawBlocks();
 let x = 0;
 let y = 0;

@@ -9,7 +9,7 @@ body {
 
 p, ul {
     font-family: 'Lato', sans-serif;
-    font-size: x-large;
+    font-size: medium;
 }
 
 #index{
@@ -39,13 +39,13 @@ p, ul {
     border-bottom-width: 5px;
     border-right-width: 5px;
     border-left-width: 5px ;
-    text-align: center;
-    font-size: x-large;
+    text-align: left;
+    font-size: large;
 }
 
 .fixedNavbar a{
     display: inline-block;
-    padding: 14px 16px;
+    padding: 14px 10px;
     text-decoration: none;
 }
 
