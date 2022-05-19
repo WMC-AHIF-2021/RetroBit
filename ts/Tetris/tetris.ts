@@ -2,11 +2,12 @@ import {Block, Direction, IBlock, JBlock, LBlock, OBlock, SBlock, TBlock, Tile, 
 import {Renderer} from "./renderer.js";
 import {InfoRenderer} from "./inforenderer.js";
 
-export const GAMESIZE = { height: 20, width: 14};
+export const GAMESIZE = {height: 20, width: 14};
 
 let tetris: TetrisGame;
 let inforenderer: InfoRenderer;
-class TetrisGame{
+
+class TetrisGame {
     public game: Tile[][] = [];
     public currentBlock: Block;
     private renderer: Renderer = new Renderer();
@@ -21,9 +22,9 @@ class TetrisGame{
         inforenderer.renderCurrentScore(this.score);
     }
 
-    public start(): void{
+    public start(): void {
         document.addEventListener("keydown", (e) => {
-            switch (e.code){
+            switch (e.code) {
                 case "ArrowLeft":
                     this.currentBlock.move(Direction.Left);
                     break;
@@ -37,7 +38,7 @@ class TetrisGame{
                     this.currentBlock.move(Direction.Down);
                     break;
                 case "Space":
-                    while(this.currentBlock.isAbleToMove()){
+                    while (this.currentBlock.isAbleToMove()) {
                         this.currentBlock.move(Direction.Down);
                     }
                     break;
@@ -51,8 +52,8 @@ class TetrisGame{
         }, 500));
     }
 
-    public addBlock(): void{
-        if (this.queue.length === 0){
+    public addBlock(): void {
+        if (this.queue.length === 0) {
             this.queue.push(new TBlock());
             this.queue.push(new LBlock());
             this.queue.push(new JBlock());
@@ -69,23 +70,14 @@ class TetrisGame{
         inforenderer.renderNextBlock(this.queue[this.queue.length - 1]);
     }
 
-    private initGameArray(): void{
-        for (let col = 0; col < GAMESIZE.width; col++){
-            this.game[col] = [];
-            for (let row = 0; row < GAMESIZE.height; row++){
-                this.game[col].push(new Tile(row, col));
-            }
-        }
-    }
-
-    public nextFrame(): void{
+    public nextFrame(): void {
         let rowIntact: boolean = false;
         let lastRow: number = 0;
-        for (let row = 0; row < GAMESIZE.height; row++){
-            for (let col = 0; col < GAMESIZE.width; col++){
+        for (let row = 0; row < GAMESIZE.height; row++) {
+            for (let col = 0; col < GAMESIZE.width; col++) {
                 lastRow = row;
                 rowIntact = true;
-                if(!this.game[col][row].containsBlock){
+                if (!this.game[col][row].containsBlock) {
                     rowIntact = false;
                     break;
                 }
@@ -93,9 +85,9 @@ class TetrisGame{
             if (rowIntact) break;
             rowIntact = false;
         }
-        if (rowIntact){
-            for (let row = lastRow; row > 0; row--){
-                for (let col = 0; col < GAMESIZE.width; col++){
+        if (rowIntact) {
+            for (let row = lastRow; row > 0; row--) {
+                for (let col = 0; col < GAMESIZE.width; col++) {
                     this.game[col][row].containsBlock = this.game[col][row - 1].containsBlock;
                     this.game[col][row].color = this.game[col][row - 1].color;
                 }
@@ -104,16 +96,15 @@ class TetrisGame{
             inforenderer.renderCurrentScore(this.score);
         }
 
-        if (this.currentBlock.isAbleToMove()){
+        if (this.currentBlock.isAbleToMove()) {
             this.currentBlock.move(Direction.Down);
-        }
-        else{
-            for (let t of this.currentBlock.tiles){
+        } else {
+            for (let t of this.currentBlock.tiles) {
                 this.game[t.col][t.row].containsBlock = true;
                 this.game[t.col][t.row].color = this.currentBlock.color;
             }
-            if (this.game[6][1].containsBlock){
-                for (let i of this.intervals){
+            if (this.game[6][1].containsBlock) {
+                for (let i of this.intervals) {
                     clearInterval(i);
                 }
                 if (this.score != 0) {
@@ -126,6 +117,15 @@ class TetrisGame{
                 this.renderer.gameOver();
             }
             this.addBlock();
+        }
+    }
+
+    private initGameArray(): void {
+        for (let col = 0; col < GAMESIZE.width; col++) {
+            this.game[col] = [];
+            for (let row = 0; row < GAMESIZE.height; row++) {
+                this.game[col].push(new Tile(row, col));
+            }
         }
     }
 }

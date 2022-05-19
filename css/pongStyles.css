@@ -12,6 +12,7 @@ a:hover {
 h1 {
     font-size: 400%;
 }
+
 h3 {
     margin-top: 40px;
 }
@@ -19,6 +20,7 @@ h3 {
 li a {
     color: white;
 }
+
 li a:visited {
     color: white;
 }

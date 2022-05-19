@@ -1,4 +1,5 @@
 document.getElementById("warning").hidden = true;
+
 function enableNyanCat() {
     document.getElementById("header").innerHTML = "NYAN CAT!!!";
 
@@ -12,7 +13,7 @@ function enableNyanCat() {
     document.getElementById("warning").hidden = false;
 }
 
-function disableNyanCat(){
+function disableNyanCat() {
     document.getElementById("header").innerHTML = "RETROBIT";
     let body = document.getElementsByTagName("body")[0];
     body.style.animation = "";
@@ -23,10 +24,12 @@ function disableNyanCat(){
     document.getElementById("warning").hidden = true;
 }
 
-document.addEventListener("keydown" , e => {
+document.addEventListener("keydown", e => {
     if (e.key == "Escape") {
         disableNyanCat();
-    }})
+    }
+})
+
 function randomInRange(min, max) {
-    return Math.random() < 0.5 ? ((1-Math.random()) * (max-min) + min) : (Math.random() * (max-min) + min);
+    return Math.random() < 0.5 ? ((1 - Math.random()) * (max - min) + min) : (Math.random() * (max - min) + min);
 }

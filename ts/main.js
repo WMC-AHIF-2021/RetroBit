@@ -21,6 +21,7 @@ var Menu = /** @class */ (function () {
         this.createUserEvents();
         window.requestAnimationFrame(this.gameLoop);
     }
+
     Menu.prototype.createUserEvents = function () {
         var canvas = this.canvas;
         //canvas.addEventListener("keyup",this.keypressEventHandler);
@@ -46,6 +47,7 @@ var Menu = /** @class */ (function () {
 var Cursor = /** @class */ (function () {
     function Cursor() {
     }
+
     Cursor.prototype.draw = function (ctx) {
         var image = new Image();
         image.onload = function () {

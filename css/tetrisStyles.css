@@ -20,6 +20,6 @@ canvas {
     grid-auto-flow: column;
 }
 
-.grid-item{
+.grid-item {
     margin: 5%;
 }

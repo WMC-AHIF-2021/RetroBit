@@ -300,6 +300,9 @@ class BallEntity extends Entity {
             this.updateMovementSpeed();
         }
     }
+    updateMovementSpeed() {
+        this.movementSpeed = getRandomInt(Options.ballSpeedRange[0], Options.ballSpeedRange[1]);
+    }
     lost(canvas) {
         this.currentDirX = getRandomIntWithoutZero(-1, 1);
         this.currentDirY = getRandomIntWithoutZero(-1, 1);
@@ -311,9 +314,6 @@ class BallEntity extends Entity {
         else {
             this.X = canvas.width / 4;
         }
-    }
-    updateMovementSpeed() {
-        this.movementSpeed = getRandomInt(Options.ballSpeedRange[0], Options.ballSpeedRange[1]);
     }
 }
 new Game();

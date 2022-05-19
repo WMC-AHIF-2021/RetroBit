@@ -1,8 +1,9 @@
-enum BlocksType{
+enum BlocksType {
     hidden,
     detect,
     explosive,
-    Flagged}
+    Flagged
+}
 
 /*export type Block = {
     Status: BlocksType;
@@ -10,13 +11,13 @@ enum BlocksType{
     Bomb: Boolean;
 }*/
 
-class Field{
+class Field {
     Status: BlocksType;
     BombCount: number;
     Symbol: string;
 
     public constructor(status: BlocksType) {
-        if(status != BlocksType.explosive){
+        if (status != BlocksType.explosive) {
             this.Status = status;
             this.BombCount = 0;
         }
@@ -35,8 +36,9 @@ class Field{
 
 let field: Field[][];
 
-class Mine extends Field{
+class Mine extends Field {
     Status: BlocksType;
+
     constructor(status: BlocksType) {
         super(status);
         status = BlocksType.explosive;
@@ -61,7 +63,7 @@ class DrawBlocks {
         this.context.stroke();
     }
 
-    public RevealField(Fields: Array<Field>[]) : void {
+    public RevealField(Fields: Array<Field>[]): void {
         let x: number = 0;
         let y: number = 0;
         for (let i = 0; i < Fields.length; i++) {
@@ -69,33 +71,32 @@ class DrawBlocks {
 
             for (let j = 0; j < Fields.length; j++) {
 
-                let text : string;
-                if (Fields[i][j].Status === BlocksType.explosive){
+                let text: string;
+                if (Fields[i][j].Status === BlocksType.explosive) {
 
                     text = Fields[i][j].Symbol;
 
-                } else{
+                } else {
                     this.context.fillStyle = '#000000';
-                    if(Fields[i][j].BombCount != 0){
+                    if (Fields[i][j].BombCount != 0) {
                         text = Fields[i][j].BombCount.toString();
-                    }
-                    else{
+                    } else {
                         text = "";
                     }
                 }
                 this.context.font = '50px serif'
 
-                this.context.fillText(text, x+ 5, y+40, 50 );
+                this.context.fillText(text, x + 5, y + 40, 50);
                 this.context.stroke();
                 x = x + 50;
             }
-            y = y+ 50;
+            y = y + 50;
         }
     }
 }
 
-function Create2dArray(fieldCount: number, bombCount: number) : Field[][] {
-    let Blocks:Field[][] = [];
+function Create2dArray(fieldCount: number, bombCount: number): Field[][] {
+    let Blocks: Field[][] = [];
     for (let i = 0; i < fieldCount; i++) {
         Blocks.push([]);
 
@@ -104,53 +105,52 @@ function Create2dArray(fieldCount: number, bombCount: number) : Field[][] {
         }
     }
 
-    while (bombCount > 0){
+    while (bombCount > 0) {
         let randomX: number = Math.floor(Math.random() * 10);
         let randomY: number = Math.floor(Math.random() * 10);
 
-        if(Blocks[randomY][randomX].Status === BlocksType.hidden){
+        if (Blocks[randomY][randomX].Status === BlocksType.hidden) {
             Blocks[randomY][randomX] = new Mine(BlocksType.explosive);
-            bombCount = bombCount-1;
+            bombCount = bombCount - 1;
         }
     }
     return Blocks;
 }
 
-function GiveBlocksNumbers() : void
-{
+function GiveBlocksNumbers(): void {
     for (let i = 0; i < field.length; i++) {
         for (let j = 0; j < field[i].length; j++) {
-            if(field[i][j].Status != BlocksType.explosive) {
-                CheckBombsAround( i, j);
+            if (field[i][j].Status != BlocksType.explosive) {
+                CheckBombsAround(i, j);
             }
         }
     }
 
 }
 
-function CheckBombsAround( y:number, x:number): void{
-    let XCoordinate : number = x-1;
-    let YCoordinate : number = y-1;
+function CheckBombsAround(y: number, x: number): void {
+    let XCoordinate: number = x - 1;
+    let YCoordinate: number = y - 1;
 
-    let XMax : number = x+1;
-    let YMax : number = y+1;
+    let XMax: number = x + 1;
+    let YMax: number = y + 1;
 
-    if (XCoordinate < 0){
+    if (XCoordinate < 0) {
         XCoordinate = x;
 
     }
-    if(YCoordinate < 0){
+    if (YCoordinate < 0) {
         YCoordinate = y;
     }
-    if(XMax >= field.length) {
+    if (XMax >= field.length) {
         XMax = x;
     }
-    if(YMax >= field.length){
+    if (YMax >= field.length) {
         YMax = y;
     }
     for (let i = YCoordinate; i <= YMax; i++) {
         for (let j = XCoordinate; j <= XMax; j++) {
-            if(field[i][j].Status == BlocksType.explosive) {
+            if (field[i][j].Status == BlocksType.explosive) {
                 field[y][x].BombCount++;
                 field[y][x].Status = BlocksType.detect;
             }
@@ -169,7 +169,8 @@ for (let d = 0; d < 10; d++) {
         x = x + 50;
     }
     y = y + 50;
-    x = 0; }
+    x = 0;
+}
 
 field = Create2dArray(10, 10);
 GiveBlocksNumbers();

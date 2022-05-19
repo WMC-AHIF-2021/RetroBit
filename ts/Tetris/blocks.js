@@ -1,8 +1,8 @@
 import tetris, { GAMESIZE } from "./tetris.js";
 export class Block {
     constructor() {
-        this.orientation = -90;
         this.tiles = [];
+        this.orientation = -90;
         this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row);
         this.rotate();
     }

@@ -9,6 +9,20 @@ export class Renderer {
         this.clearCanvas();
         this.renderGame();
     }
+    gameOver() {
+        this.clearCanvas();
+        this.context.fillStyle = "white";
+        this.context.font = "98px 'Press Start 2P'";
+        this.context.fillText("Game", 11, 300);
+        this.context.fillText("Over", 11, 400);
+        this.context.fillText("Press", 11, 500);
+        this.context.fillText("Enter", 11, 600);
+        this.context.fillText("To", 11, 700);
+        this.context.fillText("Restart", 11, 800);
+        document.addEventListener("keydown", () => {
+            location.reload();
+        });
+    }
     renderGame() {
         for (let col = 0; col < GAMESIZE.width; col++) {
             for (let row = 0; row < GAMESIZE.height; row++) {
@@ -26,7 +40,7 @@ export class Renderer {
         this.renderBlock(tetris.currentBlock);
     }
     clearCanvas() {
-        this.context.clearRect(0, 0, 695, 1000);
+        this.context.clearRect(0, 0, 700, 1000);
     }
     renderBlock(block) {
         for (let t of block.tiles) {
@@ -36,20 +50,6 @@ export class Renderer {
             this.context.fillRect(t.col * Renderer.SCALINGFACTOR, t.row * Renderer.SCALINGFACTOR, 49, 49);
             this.context.stroke();
         }
-    }
-    gameOver() {
-        this.clearCanvas();
-        this.context.fillStyle = "white";
-        this.context.font = "98px 'Press Start 2P'";
-        this.context.fillText("Game", 11, 300);
-        this.context.fillText("Over", 11, 400);
-        this.context.fillText("Press", 11, 500);
-        this.context.fillText("Enter", 11, 600);
-        this.context.fillText("To", 11, 700);
-        this.context.fillText("Restart", 11, 800);
-        document.addEventListener("keydown", () => {
-            location.reload();
-        });
     }
 }
 Renderer.SCALINGFACTOR = 50;

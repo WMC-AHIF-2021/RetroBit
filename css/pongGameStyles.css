@@ -3,24 +3,26 @@
     color: white;
 }
 
-canvas{
+canvas {
     top: 0;
     left: 0;
-    position:fixed;
-    width:100vw;
-    height:100vh;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
     visibility: hidden;
 }
 
-input,select {
+input, select {
     background-color: black;
     border: 2px solid white;
 }
+
 #options_difficultySelect {
     width: 100%;
     margin-top: 10px;
     height: 40px;
 }
+
 input[type="checkbox"] {
     background-color: black;
     -webkit-appearance: none;
@@ -29,6 +31,7 @@ input[type="checkbox"] {
     width: 30px;
     height: 30px;
 }
+
 input[type=checkbox]:checked {
     background-image: url(../img/mark.png);
     background-size: cover;
@@ -48,6 +51,7 @@ input[type=checkbox]:checked {
     border: 3px solid white;
     background-color: black;
 }
+
 #options_submitButton {
     position: absolute;
     bottom: 30px;
@@ -56,6 +60,7 @@ input[type=checkbox]:checked {
     background-color: black;
     border: 3px solid black;
 }
+
 #options_submitButton:hover {
     animation: 0.5s hover infinite step-end;
 }
@@ -64,8 +69,7 @@ input[type=checkbox]:checked {
     0% {
         border-bottom: 3px solid white;
     }
-    50%
-    {
+    50% {
         border-bottom: 3px solid black;
     }
 }

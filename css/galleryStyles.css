@@ -5,6 +5,7 @@
     transform: translateX(-50%);
     background-color: transparent;
 }
+
 .slider-control {
     position: absolute;
     top: 125px;
@@ -14,30 +15,37 @@
     cursor: pointer;
     user-select: none;
 }
+
 .slider-control:hover {
     animation: 0.5s hover infinite step-end;
 }
+
 .slider-control:active {
     color: var(--color-synthwave-5);
 }
+
 .slider-image {
     width: 100%;
     height: 100%;
     margin-left: 0;
     margin-top: 0;
 }
+
 .slider-image img {
     width: 100%;
     height: 100%;
     margin-left: 0;
     margin-top: 0;
 }
+
 #nextButton {
     right: -25px;
 }
+
 #previousButton {
     left: -25px;
 }
+
 #viewport {
     overflow: hidden;
     margin-left: 0;
@@ -45,6 +53,7 @@
     width: 100%;
     height: 100%;
 }
+
 #text {
     width: 500px;
     margin-left: 50%;
@@ -56,8 +65,7 @@
         border-bottom: 3px solid white;
         transform: scale(1.2);
     }
-    50%
-    {
+    50% {
         border-bottom: 3px solid black;
         transform: scale(1);
     }

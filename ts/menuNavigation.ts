@@ -19,6 +19,7 @@ class MenuNavigator {
 
         this.registerUserEvents();
     }
+
     private registerUserEvents = () => {
         document.addEventListener("keydown", e => {
             if (!this.isVertical) {
@@ -66,7 +67,7 @@ class MenuNavigator {
             this.arrowElement.style.left = ((<HTMLAnchorElement>selectedElement.children[0]).offsetLeft - 60) + "px";
             this.arrowElement.style.top = (selectedElement.offsetTop) + "px";
         } else {
-            this.arrowElement.style.left = (selectedElement.offsetLeft + selectedElement.offsetWidth/2 - 27.5) + "px";
+            this.arrowElement.style.left = (selectedElement.offsetLeft + selectedElement.offsetWidth / 2 - 27.5) + "px";
             this.arrowElement.style.top = (selectedElement.offsetTop - 50) + "px";
         }
 

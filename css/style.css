@@ -12,7 +12,7 @@ p, ul {
     font-size: medium;
 }
 
-#index{
+#index {
     text-align: center;
     overflow: hidden;
 }
@@ -26,7 +26,7 @@ p, ul {
     animation: 0.5s blink infinite step-end;
 }
 
-.fixedNavbar a{
+.fixedNavbar a {
     display: inline-block;
     padding: 14px 10px;
     text-decoration: none;
@@ -36,8 +36,7 @@ p, ul {
     0% {
         opacity: 1;
     }
-    50%
-    {
+    50% {
         opacity: 0;
     }
 }
@@ -62,6 +61,7 @@ p, ul {
         background-color: indigo;
     }
 }
+
 @keyframes rotate {
     0% {
         transform: rotate(0deg);
@@ -82,17 +82,17 @@ p, ul {
     font-style: italic;
 }
 
-.historyimage{
+.historyimage {
     width: 15%;
     float: right;
 }
 
-.ul-menu{
+.ul-menu {
     list-style: none;
     color: #ff901f;
 }
 
-.technologyimage{
+.technologyimage {
     width: 30%;
     float: right;
 }
@@ -101,62 +101,68 @@ a {
     color: var(--color-synthwave-5);
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: underline;
 }
+
 a:focus {
     text-decoration: underline;
 }
+
 a:visited {
     color: var(--color-synthwave-5);
 }
 
-#header{
+#header {
     font-size: 600%;
 }
+
 #smolHeader {
     font-size: 150%;
 }
 
-#historyheader{
+#historyheader {
     font-size: 400%;
 }
 
-h2{
+h2 {
     font-size: 200%;
 }
 
-.playGame{
+.playGame {
     font-size: 300%;
 }
 
-#nyanCat{
+#nyanCat {
     width: 20%;
     height: auto;
     cursor: pointer;
     transition: all 0.2s ease;
 }
+
 #nyanCat:hover {
     transform: scale(1.2);
 }
 
-#underline{
+#underline {
     text-decoration: underline;
 }
 
-h3{
+h3 {
     color: var(--color-synthwave-2);
 }
 
-h2{
+h2 {
     color: var(--color-synthwave-2);
 }
 
-#index h3 a{
-    color: var(--color-synthwave-5)!important;
+#index h3 a {
+    color: var(--color-synthwave-5) !important;
 }
-#index h2 a{
-    color: var(--color-synthwave-2)!important;
+
+#index h2 a {
+    color: var(--color-synthwave-2) !important;
 }
 
 .grid-container {
@@ -182,9 +188,10 @@ h2{
     margin: 0 15% 15%;
 }
 
-#first{
+#first {
     border: none;
 }
+
 .grid-container h3 {
     text-align: center;
     color: var(--color-synthwave-2);
@@ -194,14 +201,14 @@ h2{
     text-align: center;
 }
 
-#aboutusbody{
+#aboutusbody {
     margin-bottom: 0;
 }
 
-#warning{
+#warning {
     color: black;
 }
 
-#mostleft{
+#mostleft {
     border-left: none;
 }

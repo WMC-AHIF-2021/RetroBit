@@ -15,27 +15,6 @@ export class InfoRenderer {
         this.image = document.getElementById("nextBlock");
         this.renderScoreboard().then(_ => { });
     }
-    renderScoreboard() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let scores = yield $.get("http://localhost:3000/scores/");
-            scores.sort((a, b) => {
-                if (a.score > b.score)
-                    return -1;
-                if (a.score < b.score)
-                    return 1;
-                return 0;
-            });
-            let counter = 1;
-            for (let s of scores) {
-                this.scoreboard.innerHTML += `<tr>
-                        <td>${counter}</td>
-                        <td>${s.score}</td>
-                        <td>${s.time}</td>
-                    </tr>`;
-                counter++;
-            }
-        });
-    }
     renderCurrentScore(score) {
         this.currentScore.innerHTML = score.toString();
     }
@@ -63,6 +42,26 @@ export class InfoRenderer {
                 this.image.src = "img/blocks/LBlock.PNG";
                 break;
         }
+    }
+    renderScoreboard() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let scores = yield $.get("http://localhost:3000/scores/");
+            scores.sort((a, b) => {
+                if (a.score > b.score)
+                    return -1;
+                if (a.score < b.score)
+                    return 1;
+                return 0;
+            });
+            let counter = 0;
+            for (let s of scores) {
+                this.scoreboard.innerHTML += `<tr>
+                        <td>${++counter}</td>
+                        <td>${s.score}</td>
+                        <td>${s.time}</td>
+                    </tr>`;
+            }
+        });
     }
 }
 //# sourceMappingURL=inforenderer.js.map

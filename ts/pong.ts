@@ -12,20 +12,20 @@ class Options {
 
     public static setOptions = () => {
         // set difficulty
-        let difficulty : number = parseInt((<HTMLInputElement>document.getElementById("options_difficultySelect")).value);
+        let difficulty: number = parseInt((<HTMLInputElement>document.getElementById("options_difficultySelect")).value);
         switch (difficulty) {
             case 0:
-                Options.computerSpeedRange = [4,6];
-                Options.ballSpeedRange = [4,7];
+                Options.computerSpeedRange = [4, 6];
+                Options.ballSpeedRange = [4, 7];
                 Options.computerBatHeight = 100;
                 break;
             case 1:
-                Options.computerSpeedRange = [6,8];
-                Options.ballSpeedRange = [6,9];
+                Options.computerSpeedRange = [6, 8];
+                Options.ballSpeedRange = [6, 9];
                 Options.computerBatHeight = 100;
                 break;
             case 2:
-                Options.computerSpeedRange = [8,10];
+                Options.computerSpeedRange = [8, 10];
                 Options.ballSpeedRange = [7, 10];
                 Options.computerBatHeight = 100;
                 break;
@@ -61,17 +61,14 @@ class Options {
 }
 
 class Game {
-    private readonly canvas: HTMLCanvasElement;
-    private readonly context: CanvasRenderingContext2D;
-
     public playerBat: PlayerBatEntity;
     public computerBat: ComputerBatEntity;
-    private readonly ball: BallEntity;
-    private secondBall: BallEntity;
-
     public pointsPlayer: number;
     public pointsComputer: number;
-
+    private readonly canvas: HTMLCanvasElement;
+    private readonly context: CanvasRenderingContext2D;
+    private readonly ball: BallEntity;
+    private secondBall: BallEntity;
     private currentWinner: number;
     private isRunning: boolean;
 
@@ -105,12 +102,13 @@ class Game {
 
     private createUserEvents() {
         let canvas = this.canvas;
-        canvas.addEventListener("keydown",this.keypressEventHandler);
+        canvas.addEventListener("keydown", this.keypressEventHandler);
 
         document.getElementById("options_submitButton").addEventListener("click", () => {
             this.startGame();
         })
     }
+
     private keypressEventHandler = (e) => {
         switch (e.keyCode) {
             case 38:
@@ -212,7 +210,7 @@ class Game {
         this.clear();
 
         this.context.strokeStyle = "white";
-        this.context.strokeRect(5,5,this.canvas.width - 10,this.canvas.height - 10);
+        this.context.strokeRect(5, 5, this.canvas.width - 10, this.canvas.height - 10);
 
         // entities
         this.playerBat.draw(this.context);
@@ -269,7 +267,7 @@ class Entity {
 
     public IsEvil: boolean;
 
-    constructor(x:number, y:number, sizeX:number, sizeY:number, color:string, isEvil:boolean = false) {
+    constructor(x: number, y: number, sizeX: number, sizeY: number, color: string, isEvil: boolean = false) {
         this.X = x;
         this.Y = y;
         this.SizeX = sizeX;
@@ -278,27 +276,29 @@ class Entity {
         this.IsEvil = isEvil;
     }
 
-    public move(x:number, y:number) {
+    public move(x: number, y: number) {
         this.X += x;
         this.Y += y;
     }
 
-    public draw(ctx:CanvasRenderingContext2D) {
+    public draw(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = this.Color;
         ctx.fillRect(this.X, this.Y, this.SizeX, this.SizeY);
     }
 }
 
-class PlayerBatEntity extends Entity {}
+class PlayerBatEntity extends Entity {
+}
 
 class ComputerBatEntity extends Entity {
     private movementSpeed: number = 4;
 
-    private i:number = 0;
-    public update(ball:BallEntity) {
-        if (ball.Y > this.Y + this.SizeY/2) {
+    private i: number = 0;
+
+    public update(ball: BallEntity) {
+        if (ball.Y > this.Y + this.SizeY / 2) {
             this.Y += this.movementSpeed;
-        } else if (ball.Y < this.Y + this.SizeY/2) {
+        } else if (ball.Y < this.Y + this.SizeY / 2) {
             this.Y -= this.movementSpeed;
         }
         this.i++;
@@ -307,6 +307,7 @@ class ComputerBatEntity extends Entity {
             this.i = 0;
         }
     }
+
     public updateMovementSpeed() {
         this.movementSpeed = getRandomInt(Options.computerSpeedRange[0], Options.computerSpeedRange[1]);
     }
@@ -318,7 +319,7 @@ class BallEntity extends Entity {
 
     private movementSpeed: number = 7;
 
-    public update(canvas:HTMLCanvasElement, game:Game) {
+    public update(canvas: HTMLCanvasElement, game: Game) {
         this.X += this.currentDirX * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
         this.Y += this.currentDirY * this.movementSpeed * (this.IsEvil ? 0.5 : 1);
 
@@ -352,27 +353,28 @@ class BallEntity extends Entity {
             this.updateMovementSpeed();
         }
     }
-    private lost(canvas:HTMLCanvasElement) {
+
+    public updateMovementSpeed() {
+        this.movementSpeed = getRandomInt(Options.ballSpeedRange[0], Options.ballSpeedRange[1]);
+    }
+
+    private lost(canvas: HTMLCanvasElement) {
         this.currentDirX = getRandomIntWithoutZero(-1, 1);
         this.currentDirY = getRandomIntWithoutZero(-1, 1);
         this.updateMovementSpeed();
         this.Y = canvas.height / 2;
-        if (this.currentDirX < 0){
+        if (this.currentDirX < 0) {
             this.X = 3 * canvas.width / 4;
-        }
-        else{
+        } else {
             this.X = canvas.width / 4;
         }
-    }
-    public updateMovementSpeed() {
-        this.movementSpeed = getRandomInt(Options.ballSpeedRange[0], Options.ballSpeedRange[1]);
     }
 }
 
 new Game();
 
 class Cursor {
-    public static _instance : Cursor = new Cursor();
+    public static _instance: Cursor = new Cursor();
 
     public X: number;
     public Y: number;
@@ -404,8 +406,8 @@ function getRandomInt(min, max) {
 
 function getRandomIntWithoutZero(min, max) {
     let lastResult = 0;
-    while(lastResult == 0) {
-        lastResult = getRandomInt(min-1,max+1);
+    while (lastResult == 0) {
+        lastResult = getRandomInt(min - 1, max + 1);
     }
     return lastResult;
 }

@@ -62,14 +62,6 @@ class TetrisGame {
         this.currentBlock = this.queue.pop();
         inforenderer.renderNextBlock(this.queue[this.queue.length - 1]);
     }
-    initGameArray() {
-        for (let col = 0; col < GAMESIZE.width; col++) {
-            this.game[col] = [];
-            for (let row = 0; row < GAMESIZE.height; row++) {
-                this.game[col].push(new Tile(row, col));
-            }
-        }
-    }
     nextFrame() {
         let rowIntact = false;
         let lastRow = 0;
@@ -108,7 +100,7 @@ class TetrisGame {
                 for (let i of this.intervals) {
                     clearInterval(i);
                 }
-                if (this.score != 0) {
+                if (this.score !== 0) {
                     let d = new Date();
                     $.post("http://localhost:3000/scores", {
                         "score": this.score,
@@ -118,6 +110,14 @@ class TetrisGame {
                 this.renderer.gameOver();
             }
             this.addBlock();
+        }
+    }
+    initGameArray() {
+        for (let col = 0; col < GAMESIZE.width; col++) {
+            this.game[col] = [];
+            for (let row = 0; row < GAMESIZE.height; row++) {
+                this.game[col].push(new Tile(row, col));
+            }
         }
     }
 }
