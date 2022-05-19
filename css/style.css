@@ -26,23 +26,6 @@ p, ul {
     animation: 0.5s blink infinite step-end;
 }
 
-.fixedNavbar{
-    overflow: hidden;
-    background-color: #808080;
-    position: fixed;
-    top: 0;
-    width: 89%;
-    height: 50px;
-    border-bottom-style: solid;
-    border-left-style: solid;
-    border-right-style: solid;
-    border-bottom-width: 5px;
-    border-right-width: 5px;
-    border-left-width: 5px ;
-    text-align: left;
-    font-size: large;
-}
-
 .fixedNavbar a{
     display: inline-block;
     padding: 14px 10px;
