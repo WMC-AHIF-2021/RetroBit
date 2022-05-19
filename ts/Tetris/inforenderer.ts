@@ -18,17 +18,18 @@ export class InfoRenderer {
     private async renderScoreboard() {
         let scores = <Score[]><unknown>await $.get("http://localhost:3000/scores/");
         scores.sort((a, b) => {
-            if (a.id > b.id) return -1;
-            if (a.id < b.id) return 1;
+            if (a.score > b.score) return -1;
+            if (a.score < b.score) return 1;
             return 0;
         })
-        let counter = 0;
+        let counter = 1;
         for (let s of scores) {
             this.scoreboard.innerHTML += `<tr>
-                        <td>${counter++}</td>
+                        <td>${counter}</td>
                         <td>${s.score}</td>
                         <td>${s.time}</td>
                     </tr>`;
+            counter++;
         }
     }
 

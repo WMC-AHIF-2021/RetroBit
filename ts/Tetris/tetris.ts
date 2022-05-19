@@ -120,11 +120,10 @@ class TetrisGame{
                     let d: Date = new Date();
                     $.post("http://localhost:3000/scores", {
                         "score": this.score,
-                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours()}:${d.getUTCMinutes()}`
+                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
                     });
                 }
                 this.renderer.gameOver();
-                return;
             }
             this.addBlock();
         }

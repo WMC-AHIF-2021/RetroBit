@@ -19,6 +19,10 @@ export class Renderer {
                 this.context.stroke();
             }
         }
+        this.context.beginPath();
+        this.context.fillStyle = "white";
+        this.context.fillRect(0, 1000, 1000, 700);
+        this.context.stroke();
         this.renderBlock(tetris.currentBlock);
     }
     clearCanvas() {
@@ -37,12 +41,12 @@ export class Renderer {
         this.clearCanvas();
         this.context.fillStyle = "white";
         this.context.font = "98px 'Press Start 2P'";
-        this.context.fillText("Game", 0, 300);
-        this.context.fillText("Over", 0, 400);
-        this.context.fillText("Press", 0, 500);
-        this.context.fillText("Enter", 0, 600);
-        this.context.fillText("To", 0, 700);
-        this.context.fillText("Restart", 0, 800);
+        this.context.fillText("Game", 11, 300);
+        this.context.fillText("Over", 11, 400);
+        this.context.fillText("Press", 11, 500);
+        this.context.fillText("Enter", 11, 600);
+        this.context.fillText("To", 11, 700);
+        this.context.fillText("Restart", 11, 800);
         document.addEventListener("keydown", () => {
             location.reload();
         });
