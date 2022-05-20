@@ -5,6 +5,7 @@ class Player
     public name: string;
 }
 
+// noinspection TypeScriptUnresolvedVariable
 class SocketClient
 {
     private roomManager: RoomManager;
@@ -22,6 +23,7 @@ class SocketClient
     }
     private registerSocketEvents(): void
     {
+        // @ts-ignore
         socket.on("connect", () =>
         {
             console.log("Connected to server");

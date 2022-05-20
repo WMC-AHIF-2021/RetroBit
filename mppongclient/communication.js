@@ -3,6 +3,7 @@ var Player = /** @class */ (function () {
     }
     return Player;
 }());
+// noinspection TypeScriptUnresolvedVariable
 var SocketClient = /** @class */ (function () {
     function SocketClient() {
     }
@@ -16,6 +17,7 @@ var SocketClient = /** @class */ (function () {
     };
     SocketClient.prototype.registerSocketEvents = function () {
         var _this = this;
+        // @ts-ignore
         socket.on("connect", function () {
             console.log("Connected to server");
         });
@@ -130,4 +132,3 @@ var RoomManager = /** @class */ (function () {
     };
     return RoomManager;
 }());
-//# sourceMappingURL=communication.js.map

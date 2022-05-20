@@ -1,3 +1,4 @@
+// noinspection TypeScriptUnresolvedVariable,TypeScriptUnresolvedFunction
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,9 +35,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var serverIP = "ws://fos.the-changer.net:3000";
+var serverIP = "wss://fos.the-changer.net:3000";
 // @ts-ignore
-var socket = io(serverIP);
+var socket = io(serverIP, { secure: true });
 var Cursor = /** @class */ (function () {
     function Cursor() {
         var _this = this;
@@ -76,6 +77,7 @@ var Game = /** @class */ (function () {
     function Game() {
         var _this = this;
         // updated by RoomManager
+        // @ts-ignore
         this.players = [];
         this.playerBats = [];
         this.playerBatIndex = -1;
@@ -89,25 +91,30 @@ var Game = /** @class */ (function () {
         this.LastScoreP1 = 0;
         this.LastScoreP2 = 0;
         this.gameState = GameState.NotStarted;
+        // @ts-ignore
         this.socketClient = new SocketClient();
+        // @ts-ignore
         this.roomManager = new RoomManager(this.socketClient);
         this.renderer = new Renderer();
         this.init();
     }
     Game.prototype.init = function () {
         var _this = this;
+        // @ts-ignore
         document.getElementById("options_createButton").addEventListener("click", function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.roomManager.createRoom();
                 return [2 /*return*/];
             });
         }); });
+        // @ts-ignore
         document.getElementById("options_joinButton").addEventListener("click", function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.roomManager.joinRoom();
                 return [2 /*return*/];
             });
         }); });
+        // @ts-ignore
         document.getElementById("joinedRoomPanel_startGameButton").addEventListener("click", function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 game.startGame(true);
@@ -216,4 +223,3 @@ function pad(n, width, z) {
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
-//# sourceMappingURL=client.js.map
