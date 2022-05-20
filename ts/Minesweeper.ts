@@ -106,90 +106,89 @@ class DrawBlocks {
             y = y + 50;
         }
     }
-}
 
-function Create2dArray(fieldCount: number, bombCount: number): Field[][] {
-    let Blocks: Field[][] = [];
-    for (let i = 0; i < fieldCount; i++) {
-        Blocks.push([]);
+    public Create2dArray(fieldCount: number, bombCount: number): Field[][] {
+        let Blocks: Field[][] = [];
+        for (let i = 0; i < fieldCount; i++) {
+            Blocks.push([]);
 
-        for (let j = 0; j < fieldCount; j++) {
-            Blocks[i][j] = new Field(BlocksType.hidden);
+            for (let j = 0; j < fieldCount; j++) {
+                Blocks[i][j] = new Field(BlocksType.hidden);
+            }
         }
+
+        while (bombCount > 0) {
+            let randomX: number = Math.floor(Math.random() * 10);
+            let randomY: number = Math.floor(Math.random() * 10);
+
+            if (Blocks[randomY][randomX].Status === BlocksType.hidden) {
+                Blocks[randomY][randomX] = new Mine(BlocksType.explosive);
+                bombCount = bombCount - 1;
+            }
+        }
+        return Blocks;
     }
 
-    while (bombCount > 0) {
-        let randomX: number = Math.floor(Math.random() * 10);
-        let randomY: number = Math.floor(Math.random() * 10);
-
-        if (Blocks[randomY][randomX].Status === BlocksType.hidden) {
-            Blocks[randomY][randomX] = new Mine(BlocksType.explosive);
-            bombCount = bombCount - 1;
-        }
-    }
-    return Blocks;
-}
-
-function GiveBlocksNumbers(): void {
-    for (let i = 0; i < field.length; i++) {
-        for (let j = 0; j < field[i].length; j++) {
-            if (field[i][j].Status != BlocksType.explosive) {
-                CheckBombsAround(i, j);
+   public GiveBlocksNumbers(): void {
+        for (let i = 0; i < field.length; i++) {
+            for (let j = 0; j < field[i].length; j++) {
+                if (field[i][j].Status != BlocksType.explosive) {
+                    this.CheckBombsAround(i, j);
+                }
             }
         }
     }
 
-}
+    private CheckBombsAround(y: number, x: number): void {
+        let XCoordinate: number = x - 1;
+        let YCoordinate: number = y - 1;
 
-function CheckBombsAround(y: number, x: number): void {
-    let XCoordinate: number = x - 1;
-    let YCoordinate: number = y - 1;
+        let XMax: number = x + 1;
+        let YMax: number = y + 1;
 
-    let XMax: number = x + 1;
-    let YMax: number = y + 1;
+        if (XCoordinate < 0) {
+            XCoordinate = x;
 
-    if (XCoordinate < 0) {
-        XCoordinate = x;
-
-    }
-    if (YCoordinate < 0) {
-        YCoordinate = y;
-    }
-    if (XMax >= field.length) {
-        XMax = x;
-    }
-    if (YMax >= field.length) {
-        YMax = y;
-    }
-    for (let i = YCoordinate; i <= YMax; i++) {
-        for (let j = XCoordinate; j <= XMax; j++) {
-            if (field[i][j].Status == BlocksType.explosive) {
-                field[y][x].BombCount++;
-                field[y][x].Status = BlocksType.detect;
+        }
+        if (YCoordinate < 0) {
+            YCoordinate = y;
+        }
+        if (XMax >= field.length) {
+            XMax = x;
+        }
+        if (YMax >= field.length) {
+            YMax = y;
+        }
+        for (let i = YCoordinate; i <= YMax; i++) {
+            for (let j = XCoordinate; j <= XMax; j++) {
+                if (field[i][j].Status == BlocksType.explosive) {
+                    field[y][x].BombCount++;
+                    field[y][x].Status = BlocksType.detect;
+                }
             }
         }
     }
+
+    public AllFieldRevealed(): boolean
+    {
+        for (let i = 0; i < field.length; i++) {
+            for (let j = 0; j < field.length; j++) {
+                if (field[i][j].Revealed === false) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
 
-function allFieldRevealed(): boolean
+
+function buttonHandler() : void
 {
-    for (let i = 0; i < field.length; i++) {
-        for (let j = 0; j < field.length; j++) {
-            if (field[i][j].Revealed === false) {
-                return false;
-            }
-        }etw. aufdecken
-    }
-    return true;
+    window.location.reload();
 }
 
 let cringe = new DrawBlocks();
-
-function cellClick(){
-    const button = document.getElementById('myCanvas');
-    // button?.addEventListener("click", fieldClicked);
-
-}
 
 let x = 0;
 let y = 0;
@@ -202,6 +201,11 @@ for (let d = 0; d < 10; d++) {
     y = y + 50;
     x = 0;
 }
+
+field = cringe.Create2dArray(10, 10);
+cringe.GiveBlocksNumbers();
+
+
 
 document.getElementById("myCanvas").addEventListener("click", (e) => {
 
@@ -243,9 +247,16 @@ document.getElementById("myCanvas").addEventListener("click", (e) => {
     console.log(y*50);
     context.fillText(text, (x*50) + 5, (y*50) + 40, 50);
     context.stroke();
+
+    let gameFinished = cringe.AllFieldRevealed();
+    if (gameFinished === true)
+    {
+        cringe.RevealField(field);
+        gamestate.innerText = "You loose!"
+    }
 })
 
-field = Create2dArray(10, 10);
-GiveBlocksNumbers();
 
-cellClick();
+
+
+
