@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <title>RetroBit | PONG</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/pongGameStyles.css" rel="stylesheet">
+    <link href="css/colors.css" rel="stylesheet">
+</head>
+<body>
+
+<canvas tabindex="1" id="canvas" width="1500" height="1000"></canvas>
+<div id="options">
+    <br>
+    <div id="navbar">
+        <a href="../gameSelection.html" style="padding-top: 20px;">&lt; Back</a>
+    </div>
+    <h2>2P PONG</h2>
+    <h3>Create game</h3>
+    <label for="options_difficultySelect">Difficulty Selection</label>
+    <br>
+    <select id="options_difficultySelect">
+        <option value="0">Easy</option>
+        <option value="1">Medium</option>
+        <option value="2">Hard</option>
+    </select>
+    <br><br>
+    <br>
+    <button id="options_createButton">Create game</button>
+    <h3 style="margin-top: 35px;">Join game</h3>
+    <label for="options_gameId">Game ID</label>
+    <br>
+    <input type="text" id="options_gameId">
+    <br><br><br>
+    <button id="options_joinButton">Join game</button>
+</div>
+<div id="joinedRoomInfoPanel">
+    <h2>Room</h2>
+    GameID: <span id="joinedRoomId"></span>
+    <h3>Connected Players</h3>
+    Count: <span id="joinedRoom_playerCount">0/2</span>
+    <ul id="joinedRoom_playerList">
+        <li>You</li>
+    </ul>
+    <br><br>
+    <button id="joinedRoomPanel_startGameButton">Start game</button>
+</div>
+<div id="gameEndPanel">
+    <h2 id="gameEndPanel_winnerOrLoser"></h2>
+    <button id="gameReloadButton" onclick="window.location.reload();">Reload</button>
+</div>
+
+<script src="https://fos.the-changer.net:3000/socket.io/socket.io.js"></script>
+<script src="communication.js"></script>
+<script src="client.js"></script>
+</body>
+</html>
