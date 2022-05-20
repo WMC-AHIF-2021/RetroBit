@@ -24,7 +24,7 @@ export class InfoRenderer {
                 this.image.src = "img/blocks/JBlock.PNG";
                 break;
             case BlockColor.Cyan:
-                this.image.src = "img/blocks/IBlock.PNG";
+                this.image.src = "img/blocks/IBlock.png";
                 break;
             case BlockColor.Yellow:
                 this.image.src = "img/blocks/OBlock.PNG";
@@ -47,9 +47,9 @@ export class InfoRenderer {
         return __awaiter(this, void 0, void 0, function* () {
             let scores = yield $.get("http://localhost:3000/scores/");
             scores.sort((a, b) => {
-                if (a.score > b.score)
+                if (parseInt(a.score) > parseInt(b.score))
                     return -1;
-                if (a.score < b.score)
+                else if (parseInt(a.score) < parseInt(b.score))
                     return 1;
                 return 0;
             });

@@ -7,6 +7,7 @@ let inforenderer;
 class TetrisGame {
     constructor() {
         this.game = [];
+        this.speed = 500;
         this.renderer = new Renderer();
         this.queue = [];
         this.intervals = [];
@@ -43,23 +44,27 @@ class TetrisGame {
         }, 1000 / 60));
         this.intervals.push(setInterval(() => {
             this.nextFrame();
-        }, 500));
+        }, this.speed));
     }
     addBlock() {
-        if (this.queue.length === 0) {
-            this.queue.push(new TBlock());
-            this.queue.push(new LBlock());
-            this.queue.push(new JBlock());
-            this.queue.push(new SBlock());
-            this.queue.push(new ZBlock());
-            this.queue.push(new OBlock());
-            this.queue.push(new IBlock());
-            for (let i = this.queue.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [this.queue[i], this.queue[j]] = [this.queue[j], this.queue[i]];
+        let lengthIsZero = () => {
+            if (this.queue.length === 0) {
+                this.queue.push(new TBlock());
+                this.queue.push(new LBlock());
+                this.queue.push(new JBlock());
+                this.queue.push(new SBlock());
+                this.queue.push(new ZBlock());
+                this.queue.push(new OBlock());
+                this.queue.push(new IBlock());
+                for (let i = this.queue.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.queue[i], this.queue[j]] = [this.queue[j], this.queue[i]];
+                }
             }
-        }
+        };
+        lengthIsZero();
         this.currentBlock = this.queue.pop();
+        lengthIsZero();
         inforenderer.renderNextBlock(this.queue[this.queue.length - 1]);
     }
     nextFrame() {
@@ -104,7 +109,7 @@ class TetrisGame {
                     let d = new Date();
                     $.post("http://localhost:3000/scores", {
                         "score": this.score,
-                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
+                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours() < 10 ? "0" : ""}${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
                     });
                 }
                 this.renderer.gameOver();

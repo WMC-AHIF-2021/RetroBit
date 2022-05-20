@@ -25,7 +25,7 @@ export class InfoRenderer {
                 this.image.src = "img/blocks/JBlock.PNG";
                 break;
             case BlockColor.Cyan:
-                this.image.src = "img/blocks/IBlock.PNG";
+                this.image.src = "img/blocks/IBlock.png";
                 break;
             case BlockColor.Yellow:
                 this.image.src = "img/blocks/OBlock.PNG";
@@ -49,11 +49,11 @@ export class InfoRenderer {
     private async renderScoreboard() {
         let scores: Score[] = <Score[]><unknown>await $.get("http://localhost:3000/scores/");
         scores.sort((a, b) => {
-            if (a.score > b.score) return -1;
-            if (a.score < b.score) return 1;
+            if (parseInt(a.score) > parseInt(b.score)) return -1;
+            else if (parseInt(a.score) < parseInt(b.score)) return 1;
             return 0;
-        })
-        let counter = 0;
+        });
+        let counter: number = 0;
         for (let s of scores) {
             this.scoreboard.innerHTML += `<tr>
                         <td>${++counter}</td>

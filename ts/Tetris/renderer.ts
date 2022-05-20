@@ -4,7 +4,7 @@ import {Block} from "./blocks.js";
 export class Renderer {
     private static SCALINGFACTOR: number = 50;
     private canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement;
-    private context = this.canvas.getContext("2d");
+    private context: CanvasRenderingContext2D = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
     public constructor() {
         this.canvas.focus();
