@@ -170,6 +170,41 @@ for (let d = 0; d < 10; d++) {
 }
 field = cringe.Create2dArray(10, 10);
 cringe.GiveBlocksNumbers();
+function findEmptyFields(x, y, context) {
+    for (let i = y; i < field.length; i++) {
+        for (let j = x; j < field.length; j++) {
+            if (field[i][j].Status == BlocksType.hidden) {
+                context.fillStyle = "#aba3a3";
+                context.fillRect(j * 50 + 1, i * 50 + 1, 48, 48);
+            }
+            else {
+                context.fillStyle = "#000000";
+                writeOnBlock(j, i, context, field[i][j].BombCount.toString());
+                break;
+            }
+        }
+        continue;
+    }
+    for (let i = y; i => 0; i--) {
+        for (let j = x; j => 0; j--) {
+            if (field[i][j].Status == BlocksType.hidden) {
+                context.fillStyle = "#aba3a3";
+                context.fillRect(j * 50 + 1, i * 50 + 1, 48, 48);
+            }
+            else {
+                context.fillStyle = "#000000";
+                writeOnBlock(j, i, context, field[i][j].BombCount.toString());
+                break;
+            }
+        }
+        continue;
+    }
+}
+function writeOnBlock(x, y, context, text) {
+    context.font = '50px serif';
+    context.fillText(text, (x * 50) + 5, (y * 50) + 40, 50);
+    context.stroke();
+}
 document.getElementById("myCanvas").addEventListener("click", (e) => {
     const gamestate = document.getElementById("gameState");
     const canvas = document.getElementById("myCanvas");
@@ -198,14 +233,13 @@ document.getElementById("myCanvas").addEventListener("click", (e) => {
         else {
             text = "";
             context.fillStyle = "#aba3a3";
+            findEmptyFields(x, y, context);
             context.fillRect(x * 50 + 1, y * 50 + 1, 48, 48);
         }
     }
-    context.font = '50px serif';
-    console.log(x * 50);
-    console.log(y * 50);
-    context.fillText(text, (x * 50) + 5, (y * 50) + 40, 50);
-    context.stroke();
+    if (field[x][y].Status == BlocksType.explosive || field[x][y].BombCount != 0) {
+        writeOnBlock(x, y, context, text);
+    }
     let gameFinished = cringe.AllFieldRevealed();
     if (gameFinished === true) {
         cringe.RevealField(field);
