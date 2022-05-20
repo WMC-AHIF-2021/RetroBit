@@ -48,8 +48,15 @@ class Mine extends Field {
 }
 
 class DrawBlocks {
+
     private canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
     private context = this.canvas.getContext("2d");
+
+    // private click = this.canvas.addEventListener("click", this.getMousePos(canvas, ));
+    //
+    //
+    //
+    // private pos = canvas.getBoundingClientRect();
 
     public drawRoster(x, y) {
         this.context.beginPath();
@@ -61,6 +68,14 @@ class DrawBlocks {
         this.context.fillStyle = "#888888";
         this.context.fillRect(x, y, 50, 50)
         this.context.stroke();
+    }
+
+    private getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
     }
 
     public RevealField(Fields: Array<Field>[]): void {
@@ -156,10 +171,20 @@ function CheckBombsAround(y: number, x: number): void {
             }
         }
     }
+}
+
+class MineSweeperGame{
 
 }
 
 let cringe = new DrawBlocks();
+
+function cellClick(){
+    const button = document.getElementById('myCanvas');
+    // button?.addEventListener("click", fieldClicked);
+
+}
+
 let x = 0;
 let y = 0;
 for (let d = 0; d < 10; d++) {
@@ -172,6 +197,15 @@ for (let d = 0; d < 10; d++) {
     x = 0;
 }
 
+document.getElementById("myCanvas").addEventListener("click", (e) => {
+    const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
+
+    const canvasPos = canvas.getBoundingClientRect();
+
+    console.log(canvasPos.top, canvasPos.right, canvasPos.bottom, canvasPos.left);
+})
+
 field = Create2dArray(10, 10);
 GiveBlocksNumbers();
-cringe.RevealField(field);
+
+cellClick();

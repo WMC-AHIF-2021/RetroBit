@@ -100,7 +100,7 @@ class TetrisGame {
                 for (let i of this.intervals) {
                     clearInterval(i);
                 }
-                if (this.score !== 0) {
+                if (this.score != 0) {
                     let d = new Date();
                     $.post("http://localhost:3000/scores", {
                         "score": this.score,

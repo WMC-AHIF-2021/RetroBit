@@ -41,6 +41,11 @@ class DrawBlocks {
         this.canvas = document.getElementById("myCanvas");
         this.context = this.canvas.getContext("2d");
     }
+    // private click = this.canvas.addEventListener("click", this.getMousePos(canvas, ));
+    //
+    //
+    //
+    // private pos = canvas.getBoundingClientRect();
     drawRoster(x, y) {
         this.context.beginPath();
         this.context.rect(x, y, 50, 50);
@@ -50,6 +55,13 @@ class DrawBlocks {
         this.context.fillStyle = "#888888";
         this.context.fillRect(x, y, 50, 50);
         this.context.stroke();
+    }
+    getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
     }
     RevealField(Fields) {
         let x = 0;
@@ -132,7 +144,13 @@ function CheckBombsAround(y, x) {
         }
     }
 }
+class MineSweeperGame {
+}
 let cringe = new DrawBlocks();
+function cellClick() {
+    const button = document.getElementById('myCanvas');
+    // button?.addEventListener("click", fieldClicked);
+}
 let x = 0;
 let y = 0;
 for (let d = 0; d < 10; d++) {
@@ -144,7 +162,12 @@ for (let d = 0; d < 10; d++) {
     y = y + 50;
     x = 0;
 }
+document.getElementById("myCanvas").addEventListener("click", (e) => {
+    const canvas = document.getElementById("myCanvas");
+    const canvasPos = canvas.getBoundingClientRect();
+    console.log(canvasPos.top, canvasPos.right, canvasPos.bottom, canvasPos.left);
+});
 field = Create2dArray(10, 10);
 GiveBlocksNumbers();
-cringe.RevealField(field);
+cellClick();
 //# sourceMappingURL=Minesweeper.js.map
