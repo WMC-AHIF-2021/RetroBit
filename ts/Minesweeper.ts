@@ -5,21 +5,19 @@ enum BlocksType {
     Flagged
 }
 
-/*export type Block = {
-    Status: BlocksType;
-    bombCount: number;
-    Bomb: Boolean;
-}*/
-
 class Field {
     Status: BlocksType;
     BombCount: number;
     Symbol: string;
+    Revealed: boolean;
 
     public constructor(status: BlocksType) {
         if (status != BlocksType.explosive) {
             this.Status = status;
             this.BombCount = 0;
+            this.Revealed = true;
+        } else {
+            this.Revealed = false;
         }
 
         this.Symbol = this.getSymbol();
@@ -173,8 +171,16 @@ function CheckBombsAround(y: number, x: number): void {
     }
 }
 
-class MineSweeperGame{
-
+function allFieldRevealed(): boolean
+{
+    for (let i = 0; i < field.length; i++) {
+        for (let j = 0; j < field.length; j++) {
+            if (field[i][j].Revealed === false) {
+                return false;
+            }
+        }etw. aufdecken
+    }
+    return true;
 }
 
 let cringe = new DrawBlocks();
@@ -198,11 +204,45 @@ for (let d = 0; d < 10; d++) {
 }
 
 document.getElementById("myCanvas").addEventListener("click", (e) => {
-    const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 
+    const gamestate = document.getElementById("gameState") as HTMLHeadElement;
+    const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
+    const context = canvas.getContext("2d");
     const canvasPos = canvas.getBoundingClientRect();
 
+    console.log(e.clientX, e.clientY);
+
     console.log(canvasPos.top, canvasPos.right, canvasPos.bottom, canvasPos.left);
+
+    let x = e.clientX - Math.round(canvasPos.left);
+    let y = e.clientY - Math.round(canvasPos.top);
+    console.log(x, y);
+
+    x = Math.floor(x/50);
+    y = Math.floor(y/50);
+    console.log(x, y);
+    let text: string;
+    if (field[y][x].Status === BlocksType.explosive) {
+
+        text = field[y][x].Symbol;
+        cringe.RevealField(field);
+        gamestate.innerText = "You loose!"
+    } else {
+        field[y][x].Revealed = true;
+        context.fillStyle= "#000000";
+        if (field[y][x].BombCount != 0) {
+            text = field[y][x].BombCount.toString();
+        } else {
+            text = "";
+            context.fillStyle = "#aba3a3";
+            context.fillRect(x*50+1, y*50+1, 48, 48);
+        }
+    }
+    context.font = '50px serif'
+    console.log(x*50);
+    console.log(y*50);
+    context.fillText(text, (x*50) + 5, (y*50) + 40, 50);
+    context.stroke();
 })
 
 field = Create2dArray(10, 10);
