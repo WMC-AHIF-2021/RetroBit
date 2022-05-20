@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    margin: 5%;
+}
+
+p, ul {
+    font-family: 'Lato', sans-serif;
+}
+
+#index{
+    text-align: center;
+    overflow: hidden;
+}
+
+#navbarArrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45px;
+    height: 40px;
+    animation: 0.5s blink infinite step-end;
+}
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50%
+    {
+        opacity: 0;
+    }
+}
+
+@keyframes rainbowBg {
+    16% {
+        background-color: red;
+    }
+    32% {
+        background-color: orange;
+    }
+    48% {
+        background-color: yellow;
+    }
+    64% {
+        background-color: green;
+    }
+    80% {
+        background-color: blue;
+    }
+    100% {
+        background-color: indigo;
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(359deg);
+    }
+}
+
+#tipText {
+    position: fixed;
+    width: max-content;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gray;
+    font-size: 10px;
+    font-style: italic;
+}
+
+.historyimage{
+    width: 15%;
+    float: right;
+}
+
+.ul-menu{
+    list-style: none;
+}
+
+.technologyimage{
+    width: 30%;
+    float: right;
+}
+
+a {
+    color: var(--color-synthwave-5);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:focus {
+    text-decoration: underline;
+}
+a:visited {
+    color: var(--color-synthwave-5);
+}
+
+#header{
+    font-size: 600%;
+}
+#smolHeader {
+    font-size: 150%;
+}
+
+#historyheader{
+    font-size: 400%;
+}
+
+h2{
+    font-size: 200%;
+}
+
+.playGame{
+    font-size: 300%;
+}
+
+#nyanCat{
+    width: 20%;
+    height: auto;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+#nyanCat:hover {
+    transform: scale(1.2);
+}
+
+#underline{
+    text-decoration: underline;
+}
+
+h3{
+    color: var(--color-synthwave-2);
+}
+
+h2{
+    color: var(--color-synthwave-2);
+}
+
+#index h3 a{
+    color: var(--color-synthwave-5)!important;
+}
+#index h2 a{
+    color: var(--color-synthwave-2)!important;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid-item {
+    color: gray;
+    border-left: 3px dotted grey;
+}
+
+.grid-header {
+    color: var(--color-synthwave-5);
+    display: flex;
+}
+
+.grid-item img {
+    width: 70%;
+    float: left;
+    border-radius: 20%;
+    margin: 15%;
+    margin-top: 0;
+}
+
+#first{
+    border: none;
+}
+.grid-container h3 {
+    text-align: center;
+    color: var(--color-synthwave-2);
+}
+
+.grid-container p {
+    text-align: center;
+}
+
+#aboutusbody{
+    margin-bottom: 0;
+}
+
+#warning{
+    color: black;
+}
+
+#mostleft{
+    border-left: none;
+}

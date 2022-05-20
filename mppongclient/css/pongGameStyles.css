@@ -1,0 +1,77 @@
+* {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+}
+
+canvas{
+    top: 0;
+    left: 0;
+    position:fixed;
+    width:100vw;
+    height:100vh;
+    visibility: hidden;
+}
+
+input,select {
+    background-color: black;
+    border: 2px solid white;
+}
+#options_difficultySelect, #options_gameId {
+    width: 100%;
+    margin-top: 10px;
+    height: 40px;
+}
+input[type="checkbox"] {
+    background-color: black;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 2px solid white;
+    width: 30px;
+    height: 30px;
+}
+input[type=checkbox]:checked {
+    background-image: url(../img/mark.png);
+    background-size: cover;
+    border: 2px solid black;
+}
+
+#options {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: max-content;
+    height: max-content;
+    padding: 10px 30px 40px;
+
+    border: 3px solid white;
+    background-color: black;
+}
+#options_createButton, #options_joinButton, #joinedRoomPanel_startGameButton, #gameReloadButton{
+    width: 100%;
+    background-color: black;
+    border: 3px solid black;
+    cursor: pointer;
+}
+#options_createButton:hover, #options_joinButton:hover, #joinedRoomPanel_startGameButton:hover, #gameReloadButton:hover {
+    animation: 0.5s hover infinite step-end;
+}
+
+#joinedRoomInfoPanel {
+    visibility: hidden;
+}
+
+#gameEndPanel {
+    visibility: hidden;
+}
+
+@keyframes hover {
+    0% {
+        border-bottom: 3px solid white;
+    }
+    50%
+    {
+        border-bottom: 3px solid black;
+    }
+}
