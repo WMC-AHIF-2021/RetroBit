@@ -54,20 +54,24 @@ class TetrisGame {
     }
 
     public addBlock(): void {
-        if (this.queue.length === 0) {
-            this.queue.push(new TBlock());
-            this.queue.push(new LBlock());
-            this.queue.push(new JBlock());
-            this.queue.push(new SBlock());
-            this.queue.push(new ZBlock());
-            this.queue.push(new OBlock());
-            this.queue.push(new IBlock());
-            for (let i = this.queue.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [this.queue[i], this.queue[j]] = [this.queue[j], this.queue[i]];
+        let lengthIsZero = () => {
+            if (this.queue.length === 0) {
+                this.queue.push(new TBlock());
+                this.queue.push(new LBlock());
+                this.queue.push(new JBlock());
+                this.queue.push(new SBlock());
+                this.queue.push(new ZBlock());
+                this.queue.push(new OBlock());
+                this.queue.push(new IBlock());
+                for (let i = this.queue.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.queue[i], this.queue[j]] = [this.queue[j], this.queue[i]];
+                }
             }
         }
+        lengthIsZero();
         this.currentBlock = this.queue.pop();
+        lengthIsZero();
         inforenderer.renderNextBlock(this.queue[this.queue.length - 1]);
     }
 
