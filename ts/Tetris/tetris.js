@@ -7,6 +7,7 @@ let inforenderer;
 class TetrisGame {
     constructor() {
         this.game = [];
+        this.speed = 500;
         this.renderer = new Renderer();
         this.queue = [];
         this.intervals = [];
@@ -43,7 +44,7 @@ class TetrisGame {
         }, 1000 / 60));
         this.intervals.push(setInterval(() => {
             this.nextFrame();
-        }, 500));
+        }, this.speed));
     }
     addBlock() {
         if (this.queue.length === 0) {
@@ -100,11 +101,11 @@ class TetrisGame {
                 for (let i of this.intervals) {
                     clearInterval(i);
                 }
-                if (this.score !== 0) {
+                if (this.score != 0) {
                     let d = new Date();
                     $.post("http://localhost:3000/scores", {
                         "score": this.score,
-                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
+                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours() < 10 ? "0" : ""}${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
                     });
                 }
                 this.renderer.gameOver();

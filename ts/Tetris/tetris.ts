@@ -10,6 +10,7 @@ let inforenderer: InfoRenderer;
 class TetrisGame {
     public game: Tile[][] = [];
     public currentBlock: Block;
+    public speed: number = 500;
     private renderer: Renderer = new Renderer();
     private queue: Block[] = [];
     private intervals: number[] = [];
@@ -49,7 +50,7 @@ class TetrisGame {
         }, 1000 / 60));
         this.intervals.push(setInterval(() => {
             this.nextFrame();
-        }, 500));
+        }, this.speed));
     }
 
     public addBlock(): void {
@@ -111,7 +112,7 @@ class TetrisGame {
                     let d: Date = new Date();
                     $.post("http://localhost:3000/scores", {
                         "score": this.score,
-                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
+                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours() < 10 ? "0" : ""}${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
                     });
                 }
                 this.renderer.gameOver();
