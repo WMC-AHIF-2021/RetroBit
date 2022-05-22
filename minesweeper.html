@@ -4,14 +4,24 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="img/favicon.ico" rel="shortcut icon">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <base href="./">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <title>RetroBit | Minesweeper</title>
     <link href="css/minesweeper.css" rel="stylesheet">
+    <link href="css/colors.css" rel="stylesheet">
 </head>
     <body>
-        <h1 style="margin-left: 400px">Minesweeper</h1>
-        <h2 id="gameState" style="margin-left: 400px">Click any field to start!</h2>
+        <h1>Minesweeper</h1>
+        <br>
+        <h2 id="gameState">Click any field!</h2>
         <canvas height="500" id="myCanvas" width="500"></canvas>
-        <script id="mineCanvas" src="ts/Minesweeper.js"></script>
+        <br> <br>
         <button onClick="buttonHandler()">Restart game</button>
+        <script id="mineCanvas" src="ts/Minesweeper.js"></script>
+
     </body>
 </html>

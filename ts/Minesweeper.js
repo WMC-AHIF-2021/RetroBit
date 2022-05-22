@@ -10,10 +10,10 @@ class Field {
         if (status != BlocksType.explosive) {
             this.Status = status;
             this.BombCount = 0;
-            this.Revealed = true;
+            this.Revealed = false;
         }
         else {
-            this.Revealed = false;
+            this.Revealed = true;
         }
         this.Symbol = this.getSymbol();
     }
@@ -27,6 +27,7 @@ class Field {
     }
 }
 let field;
+let allowClick = true;
 class Mine extends Field {
     constructor(status) {
         super(status);
@@ -56,7 +57,7 @@ class DrawBlocks {
         this.context.stroke();
     }
     getMousePos(canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
+        let rect = canvas.getBoundingClientRect();
         return {
             x: evt.clientX - rect.left,
             y: evt.clientY - rect.top
@@ -171,33 +172,30 @@ for (let d = 0; d < 10; d++) {
 field = cringe.Create2dArray(10, 10);
 cringe.GiveBlocksNumbers();
 function findEmptyFields(x, y, context) {
-    for (let i = y; i < field.length; i++) {
-        for (let j = x; j < field.length; j++) {
-            if (field[i][j].Status == BlocksType.hidden) {
-                context.fillStyle = "#aba3a3";
-                context.fillRect(j * 50 + 1, i * 50 + 1, 48, 48);
-            }
-            else {
-                context.fillStyle = "#000000";
-                writeOnBlock(j, i, context, field[i][j].BombCount.toString());
-                break;
-            }
-        }
-        continue;
+    let XCoordinate = x - 1;
+    let YCoordinate = y - 1;
+    let XMax = x + 1;
+    let YMax = y + 1;
+    if (XCoordinate < 0) {
+        XCoordinate = x;
     }
-    for (let i = y; i => 0; i--) {
-        for (let j = x; j => 0; j--) {
-            if (field[i][j].Status == BlocksType.hidden) {
-                context.fillStyle = "#aba3a3";
+    if (YCoordinate < 0) {
+        YCoordinate = y;
+    }
+    if (XMax >= field.length) {
+        XMax = x;
+    }
+    if (YMax >= field.length) {
+        YMax = y;
+    }
+    for (let i = YCoordinate; i <= YMax; i++) {
+        for (let j = XCoordinate; j <= XMax; j++) {
+            if (field[i][j].BombCount == 0 && !field[i][j].Revealed) {
+                field[i][j].Revealed = true;
                 context.fillRect(j * 50 + 1, i * 50 + 1, 48, 48);
-            }
-            else {
-                context.fillStyle = "#000000";
-                writeOnBlock(j, i, context, field[i][j].BombCount.toString());
-                break;
+                findEmptyFields(j, i, context);
             }
         }
-        continue;
     }
 }
 function writeOnBlock(x, y, context, text) {
@@ -206,6 +204,9 @@ function writeOnBlock(x, y, context, text) {
     context.stroke();
 }
 document.getElementById("myCanvas").addEventListener("click", (e) => {
+    if (!allowClick) {
+        return;
+    }
     const gamestate = document.getElementById("gameState");
     const canvas = document.getElementById("myCanvas");
     const context = canvas.getContext("2d");
@@ -222,6 +223,7 @@ document.getElementById("myCanvas").addEventListener("click", (e) => {
     if (field[y][x].Status === BlocksType.explosive) {
         text = field[y][x].Symbol;
         cringe.RevealField(field);
+        allowClick = false;
         gamestate.innerText = "You loose!";
     }
     else {
@@ -237,11 +239,10 @@ document.getElementById("myCanvas").addEventListener("click", (e) => {
             context.fillRect(x * 50 + 1, y * 50 + 1, 48, 48);
         }
     }
-    if (field[x][y].Status == BlocksType.explosive || field[x][y].BombCount != 0) {
-        writeOnBlock(x, y, context, text);
-    }
+    writeOnBlock(x, y, context, text);
     let gameFinished = cringe.AllFieldRevealed();
     if (gameFinished === true) {
+        allowClick = false;
         cringe.RevealField(field);
         gamestate.innerText = "You loose!";
     }
