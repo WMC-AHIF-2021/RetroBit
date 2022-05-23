@@ -1,6 +1,6 @@
 // noinspection TypeScriptUnresolvedVariable,TypeScriptUnresolvedFunction
 
-const serverIP = "https://fos.the-changer.net:3000";
+const serverIP = "https://fos.the-changer.net";
 // @ts-ignore
 let socket = io(serverIP, {secure: true});
 
