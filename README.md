@@ -40,7 +40,7 @@ the website like an NES or SNES game with menus looking like the iconic titlescr
 ## Workload assistment:
 
 - Vincent (History, Minesweeper)
-- Lorenz (About-Us, Technology)
+- Lorenz (About-Us, Technology, TETRIS)
 - Stefan (Gallery, PONG implementation, MenuNavigation)
 
 ## Risks (and solutions)
