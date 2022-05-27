@@ -16,26 +16,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-<div class="grid-container">
-    <div class="grid-item">
-        <h1>Highscores</h1>
-        <table id="scoreboard">
-            <tr>
-                <th>Number</th>
-                <th>Score</th>
-                <th>Time</th>
-            </tr>
-        </table>
-    </div>
-    <canvas height="1020" id="canvas" tabindex="1" width="700"></canvas>
-    <div class="grid-item">
-        <h1>Score</h1>
-        <h2 id="currentScore"></h2>
-        <br><br>
-        <h1>Next Block</h1>
-        <img alt="Image of next Block" id="nextBlock" src="">
+<div id="mobileBlocker">
+    <div class="grid-container">
+        <div class="grid-item">
+            <h1>Highscores</h1>
+            <table id="scoreboard">
+                <tr>
+                    <th>Number</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                </tr>
+            </table>
+        </div>
+        <canvas height="1020" id="canvas" tabindex="1" width="700"></canvas>
+        <div class="grid-item">
+            <h1>Score</h1>
+            <h2 id="currentScore"></h2>
+            <br><br>
+            <h1>Next Block</h1>
+            <img alt="Image of next Block" id="nextBlock" src="">
+        </div>
     </div>
 </div>
+<p id="message">Please use this on a desktop.</p>
 
 <audio autoplay loop>
     <source src="audio/tetris.mp3" type="audio/mpeg">

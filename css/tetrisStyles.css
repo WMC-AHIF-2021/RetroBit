@@ -23,3 +23,17 @@ canvas {
 .grid-item {
     margin: 5%;
 }
+
+#message {
+    display: none;
+}
+
+@media (max-width: 500px){
+    #mobileBlocker {
+        display: none;
+    }
+
+    #message {
+        display: block;
+    }
+}
