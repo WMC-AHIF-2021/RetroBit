@@ -16,7 +16,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 80px;
-
+    outline: #ffffff 3px solid;
 }
 
 h1 {
@@ -29,12 +29,24 @@ h2 {
     text-align: center;
 }
 
+a{
+    position: center;
+    display: block;
+    font-size: xx-large;
+    color: #8C1EFFFF;
+    margin-left: 46%;
+    margin-top: 30px;
+    background-size: auto;
+
+}
+
 button{
     display: block;
     font-size: xx-large;
     color: #ff901f;
     margin-left: auto;
     margin-right: auto;
-
+    text-decoration: underline;
+    text-underline: #ff901f;
 }
 

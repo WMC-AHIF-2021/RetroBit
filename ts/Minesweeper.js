@@ -41,11 +41,6 @@ class DrawBlocks {
         this.canvas = document.getElementById("myCanvas");
         this.context = this.canvas.getContext("2d");
     }
-    // private click = this.canvas.addEventListener("click", this.getMousePos(canvas, ));
-    //
-    //
-    //
-    // private pos = canvas.getBoundingClientRect();
     drawRoster(x, y) {
         this.context.beginPath();
         this.context.rect(x, y, 50, 50);
