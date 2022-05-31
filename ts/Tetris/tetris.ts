@@ -57,7 +57,7 @@ class TetrisGame {
     }
 
     public addBlock(): void {
-        this.speed = this.speed * 0.95;
+        this.speed = this.speed * 0.974;
         let lengthIsZero = () => {
             if (this.queue.length === 0) {
                 this.queue.push(new TBlock());
@@ -102,15 +102,18 @@ class TetrisGame {
                         this.game[col][row].color = this.game[col][row - 1].color;
                     }
                 }
-                this.score += 100;
-                inforenderer.renderCurrentScore(this.score);
+                return true;
+            }
+            return false;
+        }
+        let adder: number = 0;
+        for (let i = 0; i < 4; i++){
+            if (checkIntact()){
+                adder += 100;
+                this.score += adder;
             }
         }
-
-        for (let i = 0; i < 4; i++){
-            checkIntact();
-        }
-
+        inforenderer.renderCurrentScore(this.score);
         if (this.currentBlock.isAbleToMove()) {
             this.currentBlock.move(Direction.Down);
         } else {
