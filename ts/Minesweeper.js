@@ -41,11 +41,6 @@ class DrawBlocks {
         this.canvas = document.getElementById("myCanvas");
         this.context = this.canvas.getContext("2d");
     }
-    // private click = this.canvas.addEventListener("click", this.getMousePos(canvas, ));
-    //
-    //
-    //
-    // private pos = canvas.getBoundingClientRect();
     drawRoster(x, y) {
         this.context.beginPath();
         this.context.rect(x, y, 50, 50);
@@ -54,6 +49,11 @@ class DrawBlocks {
     MakeBlocHidden(x, y) {
         this.context.fillStyle = "#888888";
         this.context.fillRect(x, y, 50, 50);
+        this.context.stroke();
+    }
+    MakeBlocFlagged(x, y) {
+        this.context.fillStyle = "#0000ff";
+        this.context.fillRect(x * 50 + 1, y * 50 + 1, 48, 48);
         this.context.stroke();
     }
     getMousePos(canvas, evt) {
@@ -203,7 +203,7 @@ function writeOnBlock(x, y, context, text) {
     context.fillText(text, (x * 50) + 5, (y * 50) + 40, 50);
     context.stroke();
 }
-document.getElementById("myCanvas").addEventListener("click", (e) => {
+document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     if (!allowClick) {
         return;
     }
@@ -220,26 +220,37 @@ document.getElementById("myCanvas").addEventListener("click", (e) => {
     y = Math.floor(y / 50);
     console.log(x, y);
     let text;
-    if (field[y][x].Status === BlocksType.explosive) {
-        text = field[y][x].Symbol;
-        cringe.RevealField(field);
-        allowClick = false;
-        gamestate.innerText = "You loose!";
-    }
-    else {
+    //right click
+    if (e.button === 2) {
+        field[y][x] = new Field(BlocksType.Flagged);
+        cringe.MakeBlocFlagged(x, y);
         field[y][x].Revealed = true;
-        context.fillStyle = "#000000";
-        if (field[y][x].BombCount != 0) {
-            text = field[y][x].BombCount.toString();
+        text = field[y][x].Symbol;
+    }
+    else if (field[y][x].Status !== BlocksType.Flagged) {
+        if (field[y][x].Status === BlocksType.explosive) {
+            text = field[y][x].Symbol;
+            cringe.RevealField(field);
+            allowClick = false;
+            gamestate.innerText = "You loose!";
         }
         else {
-            text = "";
-            context.fillStyle = "#aba3a3";
-            findEmptyFields(x, y, context);
-            context.fillRect(x * 50 + 1, y * 50 + 1, 48, 48);
+            field[y][x].Revealed = true;
+            context.fillStyle = "#000000";
+            if (field[y][x].BombCount != 0) {
+                text = field[y][x].BombCount.toString();
+            }
+            else {
+                text = "";
+                context.fillStyle = "#aba3a3";
+                findEmptyFields(x, y, context);
+                context.fillRect(x * 50 + 1, y * 50 + 1, 48, 48);
+            }
         }
     }
-    writeOnBlock(x, y, context, text);
+    if (text != undefined) {
+        writeOnBlock(x, y, context, text);
+    }
     let gameFinished = cringe.AllFieldRevealed();
     if (gameFinished === true) {
         allowClick = false;
