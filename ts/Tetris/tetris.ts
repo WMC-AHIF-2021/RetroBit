@@ -7,10 +7,11 @@ export const GAMESIZE = {height: 20, width: 14};
 let tetris: TetrisGame;
 let inforenderer: InfoRenderer;
 
-class TetrisGame {
+export class TetrisGame {
     public game: Tile[][] = [];
     public currentBlock: Block;
     public speed: number = 30;
+    public static inputName: string = "";
     private renderer: Renderer = new Renderer();
     private queue: Block[] = [];
     private interval: number;
@@ -57,7 +58,7 @@ class TetrisGame {
     }
 
     public addBlock(): void {
-        this.speed = this.speed * 0.974;
+        this.speed = this.speed * 0.98;
         let lengthIsZero = () => {
             if (this.queue.length === 0) {
                 this.queue.push(new TBlock());
@@ -123,14 +124,13 @@ class TetrisGame {
             }
             if (this.game[6][1].containsBlock) {
                 clearInterval(this.interval);
-                if (this.score != 0) {
-                    let d: Date = new Date();
-                    $.post("http://localhost:3000/scores", {
-                        "score": this.score,
-                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours() < 10 ? "0" : ""}${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
-                    });
-                }
                 this.renderer.gameOver();
+                let d: Date = new Date();
+                $.post("http://localhost:3000/scores", {
+                    "name": TetrisGame.inputName,
+                    "score": this.score,
+                    "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()}` //${d.getHours() < 10 ? "0" : "" ${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}
+                });
             }
             this.addBlock();
         }
@@ -143,6 +143,16 @@ class TetrisGame {
                 this.game[col].push(new Tile(row, col));
             }
         }
+    }
+
+    public static checkUserName(): boolean{
+        // @ts-ignore
+        TetrisGame.inputName = <string>document.getElementById("usernameInput").value;
+        console.log(TetrisGame.inputName);
+        if (!TetrisGame.inputName || TetrisGame.inputName.length > 20){
+            return false;
+        }
+        return true;
     }
 }
 

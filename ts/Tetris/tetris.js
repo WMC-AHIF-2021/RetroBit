@@ -4,7 +4,7 @@ import { InfoRenderer } from "./inforenderer.js";
 export const GAMESIZE = { height: 20, width: 14 };
 let tetris;
 let inforenderer;
-class TetrisGame {
+export class TetrisGame {
     constructor() {
         this.game = [];
         this.speed = 30;
@@ -49,7 +49,7 @@ class TetrisGame {
         }, 1000 / 60));
     }
     addBlock() {
-        this.speed = this.speed * 0.974;
+        this.speed = this.speed * 0.98;
         let lengthIsZero = () => {
             if (this.queue.length === 0) {
                 this.queue.push(new TBlock());
@@ -116,14 +116,13 @@ class TetrisGame {
             }
             if (this.game[6][1].containsBlock) {
                 clearInterval(this.interval);
-                if (this.score != 0) {
-                    let d = new Date();
-                    $.post("http://localhost:3000/scores", {
-                        "score": this.score,
-                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours() < 10 ? "0" : ""}${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
-                    });
-                }
                 this.renderer.gameOver();
+                let d = new Date();
+                $.post("http://localhost:3000/scores", {
+                    "name": TetrisGame.inputName,
+                    "score": this.score,
+                    "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()}` //${d.getHours() < 10 ? "0" : "" ${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}
+                });
             }
             this.addBlock();
         }
@@ -136,7 +135,17 @@ class TetrisGame {
             }
         }
     }
+    static checkUserName() {
+        // @ts-ignore
+        TetrisGame.inputName = document.getElementById("usernameInput").value;
+        console.log(TetrisGame.inputName);
+        if (!TetrisGame.inputName || TetrisGame.inputName.length > 20) {
+            return false;
+        }
+        return true;
+    }
 }
+TetrisGame.inputName = "";
 inforenderer = new InfoRenderer();
 export default tetris = new TetrisGame();
 //# sourceMappingURL=tetris.js.map
