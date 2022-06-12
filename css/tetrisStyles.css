@@ -4,6 +4,8 @@
     color: white;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    text-align: center;
 }
 
 canvas {
@@ -36,4 +38,14 @@ canvas {
     #message {
         display: block;
     }
+}
+
+#scoreboard{
+    width: 100%;
+}
+
+#usernameInput{
+    height: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
