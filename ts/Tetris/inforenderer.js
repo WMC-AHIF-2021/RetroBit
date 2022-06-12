@@ -61,7 +61,7 @@ export class InfoRenderer {
                 return a;
             };
             scores = sort(scores);
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < Math.min(scores.length, 10); i++) {
                 let s = scores[i];
                 this.scoreboard.innerHTML +=
                     `<tr>
@@ -74,9 +74,7 @@ export class InfoRenderer {
     }
     static checkAspectRatio() {
         let warning = document.getElementById("aspectwarning");
-        let height = window.innerHeight;
-        let width = window.innerWidth;
-        let ratio = width / height;
+        let ratio = window.innerWidth / window.innerHeight;
         if (ratio === 1536 / 739 || ratio === 1536 / 864) {
             warning.hidden = true;
         }

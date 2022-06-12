@@ -13,11 +13,10 @@ export class TetrisGame {
         this.score = 0;
         this.initGameArray();
         this.addBlock();
-        inforenderer.renderCurrentScore(this.score);
         this.start();
+        inforenderer.renderCurrentScore(this.score);
     }
     start() {
-        console.log("test");
         document.addEventListener("keydown", (e) => {
             switch (e.code) {
                 case "ArrowLeft":

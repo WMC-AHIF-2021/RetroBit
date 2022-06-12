@@ -3,7 +3,8 @@ export class Block {
     constructor() {
         this.tiles = [];
         this.orientation = -90;
-        this.mainTile = new Tile(TBlock._startpos.col, TBlock._startpos.row);
+        this.firstTime = true;
+        this.mainTile = new Tile(TBlock.startpos.col, TBlock.startpos.row);
         this.rotate();
     }
     move(dir) {
@@ -46,10 +47,27 @@ export class Block {
         return true;
     }
     isAbleToRotate() {
-        return !(this.mainTile.col - 1 < 0 || this.mainTile.col + 1 >= GAMESIZE.width);
+        if (this.mainTile.col - 1 < 0 || this.mainTile.col + 1 >= GAMESIZE.width) {
+            this.firstTime = false;
+            return false;
+        }
+        if (this.firstTime) {
+            this.firstTime = false;
+            return true;
+        }
+        for (let col = -1; col < 2; col++) {
+            for (let row = -1; row < 2; row++) {
+                if (row !== 1 && col !== 1) {
+                    if (tetris.game[this.mainTile.col + col][this.mainTile.row + row].containsBlock) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
-Block._startpos = { row: 1, col: 6 };
+Block.startpos = { row: 1, col: 6 };
 export class OBlock extends Block {
     constructor() {
         super();
