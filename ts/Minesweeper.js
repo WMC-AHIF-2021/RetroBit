@@ -26,6 +26,7 @@ class Field {
         }
     }
 }
+let totalTime = 0;
 let field;
 let allowClick = true;
 class Mine extends Field {
@@ -36,7 +37,7 @@ class Mine extends Field {
         this.Symbol = this.getSymbol();
     }
 }
-class DrawBlocks {
+class Renderer {
     constructor() {
         this.canvas = document.getElementById("myCanvas");
         this.context = this.canvas.getContext("2d");
@@ -154,23 +155,58 @@ class DrawBlocks {
         return true;
     }
 }
+/*class rendrerScores{
+
+    private table = document.getElementById("HighScoreTable") as HTMLCanvasElement;
+
+    public ScoreTable(): void {
+        let data = $.ajax({
+            url: "http://localhost:3000/minesweeperScores",
+            type: 'GET'
+        })
+        let scores: any = data;
+        console.log(scores)
+        let sort = (a: ScoureData[]): ScoureData[] => {
+            for(let i = 0; i < a.length; i++){
+                for(let j = 0; j < a.length - 1; j++){
+                    if (parseInt(a[j].score) > parseInt(a[j + 1].score)){
+                        let temperate: ScoureData = a[j];
+                        a[j] = a[j + 1];
+                        a[j + 1] = temperate;
+                    }
+                }
+            }
+            return a;
+        }
+        scores = sort(scores);
+        for (let i = 0; i < 5; i++) {
+            let s: ScoureData = scores[i];
+            this.table.innerHTML +=
+                `<tr>
+                    <td>${s.score}</td>
+                    <td>${s.time}</td>
+                </tr>`;
+        }
+    }
+
+}*/
 function buttonHandler() {
     window.location.reload();
 }
-let cringe = new DrawBlocks();
+let renderer = new Renderer();
 let x = 0;
 let y = 0;
 for (let d = 0; d < 10; d++) {
     for (let i = 0; i < 10; i++) {
-        cringe.drawRoster(x, y);
-        cringe.MakeBlocHidden(x, y);
+        renderer.drawRoster(x, y);
+        renderer.MakeBlocHidden(x, y);
         x = x + 50;
     }
     y = y + 50;
     x = 0;
 }
-field = cringe.Create2dArray(10, 10);
-cringe.GiveBlocksNumbers();
+field = renderer.Create2dArray(10, 10);
+renderer.GiveBlocksNumbers();
 function findEmptyFields(x, y, context) {
     let XCoordinate = x - 1;
     let YCoordinate = y - 1;
@@ -203,7 +239,21 @@ function writeOnBlock(x, y, context, text) {
     context.fillText(text, (x * 50) + 5, (y * 50) + 40, 50);
     context.stroke();
 }
+function PostResults(score) {
+    let d = new Date();
+    let data = {
+        "score": score,
+        "time": `${d.toLocaleDateString("en-GB")}`
+    };
+    jQuery.ajax({
+        url: "http://localhost:3000/minesweeperScores",
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json'
+    });
+}
 document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
+    let time = performance.now();
     if (!allowClick) {
         return;
     }
@@ -223,16 +273,17 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     //right click
     if (e.button === 2) {
         field[y][x] = new Field(BlocksType.Flagged);
-        cringe.MakeBlocFlagged(x, y);
+        renderer.MakeBlocFlagged(x, y);
         field[y][x].Revealed = true;
         text = field[y][x].Symbol;
     }
     else if (field[y][x].Status !== BlocksType.Flagged) {
         if (field[y][x].Status === BlocksType.explosive) {
             text = field[y][x].Symbol;
-            cringe.RevealField(field);
+            renderer.RevealField(field);
             allowClick = false;
             gamestate.innerText = "You loose!";
+            document.getElementById("Time").innerHTML = ("<p>Time: </p>" + totalTime);
         }
         else {
             field[y][x].Revealed = true;
@@ -251,11 +302,16 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     if (text != undefined) {
         writeOnBlock(x, y, context, text);
     }
-    let gameFinished = cringe.AllFieldRevealed();
+    let gameFinished = renderer.AllFieldRevealed();
     if (gameFinished === true) {
         allowClick = false;
-        cringe.RevealField(field);
-        gamestate.innerText = "You loose!";
+        renderer.RevealField(field);
+        document.getElementById("Time").innerHTML = ("<p>Time: </p>" + totalTime);
+        PostResults(totalTime);
+        gamestate.innerText = "You Won!";
     }
+    totalTime = totalTime + (Math.round(time / 1000));
 });
+//let render: rendrerScores = new rendrerScores();
+//render.ScoreTable();
 //# sourceMappingURL=Minesweeper.js.map
