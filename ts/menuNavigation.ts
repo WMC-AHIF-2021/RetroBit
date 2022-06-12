@@ -1,11 +1,11 @@
 class MenuNavigator {
-    private isVertical: boolean = false;
+    private readonly isVertical: boolean = false;
 
     private readonly menuElements: HTMLElement[];
     private selectedIndex: number;
 
     private arrowElement: HTMLImageElement;
-    private navbar: HTMLElement;
+    private readonly navbar: HTMLElement;
 
     constructor() {
         this.navbar = document.getElementById("navbar");

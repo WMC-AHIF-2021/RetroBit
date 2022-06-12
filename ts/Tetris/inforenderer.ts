@@ -10,6 +10,7 @@ export class InfoRenderer {
     private scoreboard: HTMLTableElement = document.getElementById("scoreboard") as HTMLTableElement;
     private currentScore: HTMLHeadElement = document.getElementById("currentScore") as HTMLHeadElement;
     private image: HTMLImageElement = document.getElementById("nextBlock") as HTMLImageElement;
+    public static data;
 
     constructor() {
         this.renderScoreboard().then(_ => {});
@@ -48,8 +49,12 @@ export class InfoRenderer {
     }
 
     private async renderScoreboard() {
-        let input = await $.get("http://localhost:5000/api/scores");
-        let scores = input.scores;
+        InfoRenderer.data = await $.ajax({
+            url: "http://45.85.219.167:5000/tetrisScores",
+            type: 'GET'
+        })
+        let scores = InfoRenderer.data;
+        console.log(scores)
         let sort = (a: Score[]): Score[] => {
             for(let i = 0; i < a.length; i++){
                 for(let j = 0; j < a.length - 1; j++){

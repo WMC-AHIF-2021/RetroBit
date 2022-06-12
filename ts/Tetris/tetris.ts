@@ -126,10 +126,16 @@ export class TetrisGame {
                 clearInterval(this.interval);
                 this.renderer.gameOver();
                 let d: Date = new Date();
-                $.post("http://localhost:5000/api/scores", {
+                let data = {
                     "name": TetrisGame.inputName,
                     "score": this.score,
                     "time": `${d.toLocaleDateString("en-GB")}`
+                }
+                $.ajax({
+                    url: "http://45.85.219.167:5000/tetrisScores",
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json'
                 });
             }
             this.addBlock();
