@@ -7,10 +7,11 @@ export const GAMESIZE = {height: 20, width: 14};
 let tetris: TetrisGame;
 let inforenderer: InfoRenderer;
 
-class TetrisGame {
+export class TetrisGame {
     public game: Tile[][] = [];
     public currentBlock: Block;
     public speed: number = 30;
+    public static inputName: string = "";
     private renderer: Renderer = new Renderer();
     private queue: Block[] = [];
     private interval: number;
@@ -19,7 +20,7 @@ class TetrisGame {
     constructor() {
         this.initGameArray();
         this.addBlock();
-        this.start();
+        this.start()
         inforenderer.renderCurrentScore(this.score);
     }
 
@@ -39,7 +40,7 @@ class TetrisGame {
                     this.currentBlock.move(Direction.Down);
                     break;
                 case "Space":
-                    while (this.currentBlock.isAbleToMove()) {
+                    while (this.currentBlock.isAbleToFall()) {
                         this.currentBlock.move(Direction.Down);
                     }
                     break;
@@ -57,7 +58,7 @@ class TetrisGame {
     }
 
     public addBlock(): void {
-        this.speed = this.speed * 0.95;
+        this.speed = this.speed * 0.98;
         let lengthIsZero = () => {
             if (this.queue.length === 0) {
                 this.queue.push(new TBlock());
@@ -102,32 +103,34 @@ class TetrisGame {
                         this.game[col][row].color = this.game[col][row - 1].color;
                     }
                 }
-                this.score += 100;
-                inforenderer.renderCurrentScore(this.score);
+                return true;
+            }
+            return false;
+        }
+        let add: number = 0;
+        for (let i = 0; i < 4; i++){
+            if (checkIntact()){
+                add += 100;
+                this.score += add;
             }
         }
-
-        for (let i = 0; i < 4; i++){
-            checkIntact();
-        }
-
-        if (this.currentBlock.isAbleToMove()) {
+        inforenderer.renderCurrentScore(this.score);
+        if (this.currentBlock.isAbleToFall()) {
             this.currentBlock.move(Direction.Down);
         } else {
             for (let t of this.currentBlock.tiles) {
                 this.game[t.col][t.row].containsBlock = true;
                 this.game[t.col][t.row].color = this.currentBlock.color;
             }
-            if (this.game[6][1].containsBlock) {
+            if (this.game[6][2].containsBlock) {
                 clearInterval(this.interval);
-                if (this.score != 0) {
-                    let d: Date = new Date();
-                    $.post("http://localhost:3000/scores", {
-                        "score": this.score,
-                        "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()} ${d.getHours() < 10 ? "0" : ""}${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}`
-                    });
-                }
                 this.renderer.gameOver();
+                let d: Date = new Date();
+                $.post("http://localhost:5000/api/scores", {
+                    "name": TetrisGame.inputName,
+                    "score": this.score,
+                    "time": `${d.toLocaleDateString("en-GB")}`
+                });
             }
             this.addBlock();
         }
