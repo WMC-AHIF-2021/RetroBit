@@ -56,13 +56,6 @@ class DrawBlocks {
         this.context.fillRect(x * 50 + 1, y * 50 + 1, 48, 48);
         this.context.stroke();
     }
-    getMousePos(canvas, evt) {
-        let rect = canvas.getBoundingClientRect();
-        return {
-            x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top
-        };
-    }
     RevealField(Fields) {
         let x = 0;
         let y = 0;
@@ -99,11 +92,14 @@ class DrawBlocks {
             }
         }
         while (bombCount > 0) {
-            let randomX = Math.floor(Math.random() * 10);
-            let randomY = Math.floor(Math.random() * 10);
-            if (Blocks[randomY][randomX].Status === BlocksType.hidden) {
-                Blocks[randomY][randomX] = new Mine(BlocksType.explosive);
-                bombCount = bombCount - 1;
+            let rand = Math.random() > 0.4;
+            if (rand == true) {
+                let randomX = Math.floor(Math.random() * 10);
+                let randomY = Math.floor(Math.random() * 10);
+                if (Blocks[randomY][randomX].Status === BlocksType.hidden) {
+                    Blocks[randomY][randomX] = new Mine(BlocksType.explosive);
+                    bombCount = bombCount - 1;
+                }
             }
         }
         return Blocks;
@@ -154,23 +150,20 @@ class DrawBlocks {
         return true;
     }
 }
-function buttonHandler() {
-    window.location.reload();
-}
-let cringe = new DrawBlocks();
+let renderer = new DrawBlocks();
 let x = 0;
 let y = 0;
 for (let d = 0; d < 10; d++) {
     for (let i = 0; i < 10; i++) {
-        cringe.drawRoster(x, y);
-        cringe.MakeBlocHidden(x, y);
+        renderer.drawRoster(x, y);
+        renderer.MakeBlocHidden(x, y);
         x = x + 50;
     }
     y = y + 50;
     x = 0;
 }
-field = cringe.Create2dArray(10, 10);
-cringe.GiveBlocksNumbers();
+field = renderer.Create2dArray(10, 10);
+renderer.GiveBlocksNumbers();
 function findEmptyFields(x, y, context) {
     let XCoordinate = x - 1;
     let YCoordinate = y - 1;
@@ -207,7 +200,7 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     if (!allowClick) {
         return;
     }
-    const gamestate = document.getElementById("gameState");
+    const gameState = document.getElementById("gameState");
     const canvas = document.getElementById("myCanvas");
     const context = canvas.getContext("2d");
     const canvasPos = canvas.getBoundingClientRect();
@@ -223,16 +216,16 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     //right click
     if (e.button === 2) {
         field[y][x] = new Field(BlocksType.Flagged);
-        cringe.MakeBlocFlagged(x, y);
+        renderer.MakeBlocFlagged(x, y);
         field[y][x].Revealed = true;
         text = field[y][x].Symbol;
     }
     else if (field[y][x].Status !== BlocksType.Flagged) {
         if (field[y][x].Status === BlocksType.explosive) {
             text = field[y][x].Symbol;
-            cringe.RevealField(field);
+            renderer.RevealField(field);
             allowClick = false;
-            gamestate.innerText = "You loose!";
+            gameState.innerText = "You loose!";
         }
         else {
             field[y][x].Revealed = true;
@@ -251,11 +244,11 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     if (text != undefined) {
         writeOnBlock(x, y, context, text);
     }
-    let gameFinished = cringe.AllFieldRevealed();
+    let gameFinished = renderer.AllFieldRevealed();
     if (gameFinished === true) {
         allowClick = false;
-        cringe.RevealField(field);
-        gamestate.innerText = "You loose!";
+        renderer.RevealField(field);
+        gameState.innerText = "You loose!";
     }
 });
 //# sourceMappingURL=Minesweeper.js.map
