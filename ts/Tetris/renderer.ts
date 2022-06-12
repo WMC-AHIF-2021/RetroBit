@@ -1,6 +1,5 @@
 import tetris, {GAMESIZE, TetrisGame} from "./tetris.js";
 import {Block} from "./blocks.js";
-import Tetris from "./tetris.js";
 
 export class Renderer {
     private static SCALINGFACTOR: number = 50;
@@ -26,12 +25,16 @@ export class Renderer {
         this.context.fillText("Enter", 11, 600);
         this.context.fillText("To", 11, 700);
         this.context.fillText("Restart", 11, 800);
+        let input: HTMLInputElement = document.getElementById("usernameInput") as HTMLInputElement;
+        if (!input.value){
+            TetrisGame.inputName = "Player" + Math.floor(Math.random() * 100000) + 1;
+        }
+        else{
+            TetrisGame.inputName = input.value;
+        }
         document.addEventListener("keydown", (e: KeyboardEvent) => {
             if (e.code === "Enter"){
-                if (TetrisGame.checkUserName()){
-                    location.reload();
-                }
-                alert("Please enter a valid Username");
+                location.reload();
             }
         });
     }

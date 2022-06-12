@@ -9,7 +9,7 @@ export class Block {
     move(dir) {
         switch (dir) {
             case Direction.Down:
-                if (this.isAbleToMove()) {
+                if (this.isAbleToFall()) {
                     for (let t of this.tiles) {
                         t.row++;
                     }
@@ -37,7 +37,7 @@ export class Block {
                 return;
         }
     }
-    isAbleToMove() {
+    isAbleToFall() {
         for (let t of this.tiles) {
             if (t.row == GAMESIZE.height - 1 || tetris.game[t.col][t.row + 1].containsBlock) {
                 return false;

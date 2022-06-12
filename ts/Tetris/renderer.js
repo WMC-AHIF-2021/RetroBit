@@ -19,12 +19,16 @@ export class Renderer {
         this.context.fillText("Enter", 11, 600);
         this.context.fillText("To", 11, 700);
         this.context.fillText("Restart", 11, 800);
+        let input = document.getElementById("usernameInput");
+        if (!input.value) {
+            TetrisGame.inputName = "Player" + Math.floor(Math.random() * 100000) + 1;
+        }
+        else {
+            TetrisGame.inputName = input.value;
+        }
         document.addEventListener("keydown", (e) => {
             if (e.code === "Enter") {
-                if (TetrisGame.checkUserName()) {
-                    location.reload();
-                }
-                alert("Please enter a valid Username");
+                location.reload();
             }
         });
     }

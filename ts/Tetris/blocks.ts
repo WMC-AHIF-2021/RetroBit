@@ -15,7 +15,7 @@ export abstract class Block {
     public move(dir: Direction): void {
         switch (dir) {
             case Direction.Down:
-                if (this.isAbleToMove()) {
+                if (this.isAbleToFall()) {
                     for (let t of this.tiles) {
                         t.row++;
                     }
@@ -44,7 +44,7 @@ export abstract class Block {
         }
     }
 
-    public isAbleToMove(): boolean {
+    public isAbleToFall(): boolean {
         for (let t of this.tiles) {
             if (t.row == GAMESIZE.height - 1 || tetris.game[t.col][t.row + 1].containsBlock) {
                 return false;

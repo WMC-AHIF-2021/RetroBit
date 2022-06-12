@@ -20,8 +20,7 @@
     <div class="grid-container">
         <div class="grid-item">
             <h1 id="tetris-header">Highscores</h1>
-            <input id="usernameInput" type="text" placeholder="Enter username">
-
+            <label for="usernameInput"></label><input id="usernameInput" type="text" placeholder="Enter username">
             <table id="scoreboard">
                 <tr id="table-header">
                     <th>Name</th>
@@ -37,6 +36,8 @@
             <br><br>
             <h1>Next Block</h1>
             <img alt="Image of next Block" id="nextBlock" src="">
+            <br><br>
+            <p id="aspectwarning">Play in Fullscreen Mode to prevent screen cropping</p>
         </div>
     </div>
 </div>
@@ -44,7 +45,7 @@
 
 <audio autoplay loop>
     <source src="audio/tetris.mp3" type="audio/mpeg">
-    Don't use Internet Explorer Grandma
+    Don't use Internet Explorer Grandma. Use Netscape
 </audio>
 
 <script src="ts/Tetris/tetris.js" type="module"></script>

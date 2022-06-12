@@ -13,10 +13,11 @@ export class TetrisGame {
         this.score = 0;
         this.initGameArray();
         this.addBlock();
-        this.start();
         inforenderer.renderCurrentScore(this.score);
+        this.start();
     }
     start() {
+        console.log("test");
         document.addEventListener("keydown", (e) => {
             switch (e.code) {
                 case "ArrowLeft":
@@ -32,7 +33,7 @@ export class TetrisGame {
                     this.currentBlock.move(Direction.Down);
                     break;
                 case "Space":
-                    while (this.currentBlock.isAbleToMove()) {
+                    while (this.currentBlock.isAbleToFall()) {
                         this.currentBlock.move(Direction.Down);
                     }
                     break;
@@ -98,15 +99,15 @@ export class TetrisGame {
             }
             return false;
         };
-        let adder = 0;
+        let add = 0;
         for (let i = 0; i < 4; i++) {
             if (checkIntact()) {
-                adder += 100;
-                this.score += adder;
+                add += 100;
+                this.score += add;
             }
         }
         inforenderer.renderCurrentScore(this.score);
-        if (this.currentBlock.isAbleToMove()) {
+        if (this.currentBlock.isAbleToFall()) {
             this.currentBlock.move(Direction.Down);
         }
         else {
@@ -114,14 +115,14 @@ export class TetrisGame {
                 this.game[t.col][t.row].containsBlock = true;
                 this.game[t.col][t.row].color = this.currentBlock.color;
             }
-            if (this.game[6][1].containsBlock) {
+            if (this.game[6][2].containsBlock) {
                 clearInterval(this.interval);
                 this.renderer.gameOver();
                 let d = new Date();
-                $.post("http://localhost:3000/scores", {
+                $.post("http://localhost:5000/api/scores", {
                     "name": TetrisGame.inputName,
                     "score": this.score,
-                    "time": `${d.getDay()}.${d.getMonth()}.${d.getFullYear()}` //${d.getHours() < 10 ? "0" : "" ${d.getHours()}:${d.getUTCMinutes() < 10 ? "0" : ""}${d.getUTCMinutes()}
+                    "time": `${d.toLocaleDateString("en-GB")}`
                 });
             }
             this.addBlock();
@@ -134,15 +135,6 @@ export class TetrisGame {
                 this.game[col].push(new Tile(row, col));
             }
         }
-    }
-    static checkUserName() {
-        // @ts-ignore
-        TetrisGame.inputName = document.getElementById("usernameInput").value;
-        console.log(TetrisGame.inputName);
-        if (!TetrisGame.inputName || TetrisGame.inputName.length > 20) {
-            return false;
-        }
-        return true;
     }
 }
 TetrisGame.inputName = "";
