@@ -26,6 +26,9 @@ class Field {
         }
     }
 }
+function buttonHandler() {
+    window.location.reload();
+}
 let totalTime = 0;
 let field;
 let allowClick = true;
@@ -155,43 +158,18 @@ class Renderer {
         return true;
     }
 }
-/*class rendrerScores{
-
-    private table = document.getElementById("HighScoreTable") as HTMLCanvasElement;
-
-    public ScoreTable(): void {
-        let data = $.ajax({
-            url: "http://localhost:3000/minesweeperScores",
-            type: 'GET'
-        })
-        let scores: any = data;
-        console.log(scores)
-        let sort = (a: ScoureData[]): ScoureData[] => {
-            for(let i = 0; i < a.length; i++){
-                for(let j = 0; j < a.length - 1; j++){
-                    if (parseInt(a[j].score) > parseInt(a[j + 1].score)){
-                        let temperate: ScoureData = a[j];
-                        a[j] = a[j + 1];
-                        a[j + 1] = temperate;
-                    }
-                }
-            }
-            return a;
+function getDataTable() {
+    let table = document.getElementById("HighScoresTable");
+    $.get("http://45.85.219.167:5000/pongScores", function (data, status) {
+        //$("HighScoresTable").html(data);
+        for (let i = 0; i < data.length; i++) {
+            table.innerHTML +=
+                (`<tr>
+                    <td>${data[i].score}</td>
+                    <td>${data[i].time}</td>
+                 </tr>`);
         }
-        scores = sort(scores);
-        for (let i = 0; i < 5; i++) {
-            let s: ScoureData = scores[i];
-            this.table.innerHTML +=
-                `<tr>
-                    <td>${s.score}</td>
-                    <td>${s.time}</td>
-                </tr>`;
-        }
-    }
-
-}*/
-function buttonHandler() {
-    window.location.reload();
+    });
 }
 let renderer = new Renderer();
 let x = 0;
@@ -246,7 +224,7 @@ function PostResults(score) {
         "time": `${d.toLocaleDateString("en-GB")}`
     };
     jQuery.ajax({
-        url: "http://localhost:3000/minesweeperScores",
+        url: "http://45.85.219.167:5000/pongScores",
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json'
@@ -255,6 +233,9 @@ function PostResults(score) {
 document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     let time = performance.now();
     if (!allowClick) {
+        renderer.RevealField(field);
+        document.getElementById("Time").innerHTML = ("<p>Time: </p>" + totalTime);
+        PostResults(totalTime);
         return;
     }
     const gamestate = document.getElementById("gameState");
@@ -312,6 +293,5 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
     }
     totalTime = totalTime + (Math.round(time / 1000));
 });
-//let render: rendrerScores = new rendrerScores();
-//render.ScoreTable();
+getDataTable();
 //# sourceMappingURL=Minesweeper.js.map

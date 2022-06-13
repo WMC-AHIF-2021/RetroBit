@@ -17,6 +17,7 @@
 
 </head>
     <body>
+    <div class="grid-container">
         <h1>Minesweeper</h1>
         <br>
         <h2 id="gameState">Click any field!</h2>
@@ -24,14 +25,21 @@
         <br> <br>
         <button onClick="buttonHandler()">Restart game</button>
         <a id="Time"></a>
+        <br>
         <a href="gameSelection.html" >Back</a>
-        <table id="HighScoresTable">
-            <tr id="table-header">
-                <ul>Score</ul>
-                <ul>Time</ul>
-            </tr>
-        </table>
-        <script id="mineCanvas" src="ts/Minesweeper.js"></script>
-
+        <br> <br>
+        <h2 id="Highsoreh2">Highscoretable</h2>
+        <div class="grid-item">
+            <div class="grid-item">
+                <table id="HighScoresTable">
+                    <tr id="table-header">
+                        <td>seconds</td>
+                        <td>Time</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script id="mineCanvas" src="ts/Minesweeper.js"></script>
     </body>
 </html>
