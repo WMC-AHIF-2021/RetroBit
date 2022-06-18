@@ -1,4 +1,4 @@
-import {field} from "./Minesweeper.js";
+import {field} from "./minesweeper.js";
 import {Field, BlocksType} from "./field.js";
 import {Mine} from "./mine.js";
 

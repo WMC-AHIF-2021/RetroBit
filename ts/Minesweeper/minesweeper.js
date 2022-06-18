@@ -177,4 +177,4 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
 getDataTable();
 buttonHandler();
 //deleteAllData(); geht nicht
-//# sourceMappingURL=Minesweeper.js.map
+//# sourceMappingURL=minesweeper.js.map
