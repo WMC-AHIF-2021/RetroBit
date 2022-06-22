@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var serverIP = "wss://fos.the-changer.net";
 // @ts-ignore
-var socket = io(serverIP);
+var socket = io(serverIP, { secure: true });
 var Cursor = /** @class */ (function () {
     function Cursor() {
         var _this = this;

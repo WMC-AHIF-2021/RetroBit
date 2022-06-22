@@ -1,6 +1,6 @@
 const serverIP = "wss://fos.the-changer.net";
 // @ts-ignore
-let socket = io(serverIP);
+let socket = io(serverIP, {secure: true});
 
 class Cursor {
     public static _instance : Cursor = new Cursor();
