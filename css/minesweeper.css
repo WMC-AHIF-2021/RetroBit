@@ -16,7 +16,15 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 80px;
+    outline: #ffffff 3px solid;
+    align-items: center;
 
+}
+
+grid-container {
+    display: block;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
 }
 
 h1 {
@@ -27,6 +35,18 @@ h1 {
 
 h2 {
     text-align: center;
+    color: #2e1fff;
+}
+
+a{
+    position: center;
+    display: flex;
+    font-size: xx-large;
+    color: #8C1EFFFF;
+    margin-left: 46%;
+    margin-top: 30px;
+    background-size: auto;
+
 }
 
 button{
@@ -35,6 +55,21 @@ button{
     color: #ff901f;
     margin-left: auto;
     margin-right: auto;
-
+    text-decoration: underline;
+    text-underline: #ff901f;
 }
 
+#HighScoresTable{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: x-large;
+    width: 2%;
+}
+
+#Highsoreh2{
+    color: green;
+    text-decoration: underline green;
+    margin: 2%;
+    font-size: xx-large
+}

@@ -1,7 +1,7 @@
 import {Block, BlockColor} from "./blocks.js";
 
 export interface Score {
-    id: number;
+    name: string;
     score: string;
     time: string;
 }
@@ -10,9 +10,11 @@ export class InfoRenderer {
     private scoreboard: HTMLTableElement = document.getElementById("scoreboard") as HTMLTableElement;
     private currentScore: HTMLHeadElement = document.getElementById("currentScore") as HTMLHeadElement;
     private image: HTMLImageElement = document.getElementById("nextBlock") as HTMLImageElement;
+    public static data;
 
     constructor() {
         this.renderScoreboard().then(_ => {});
+        InfoRenderer.checkAspectRatio();
     }
 
     public renderCurrentScore(score: number): void {
@@ -47,19 +49,41 @@ export class InfoRenderer {
     }
 
     private async renderScoreboard() {
-        let scores: Score[] = <Score[]><unknown>await $.get("http://localhost:3000/scores/");
-        scores.sort((a, b) => {
-            if (parseInt(a.score) > parseInt(b.score)) return -1;
-            else if (parseInt(a.score) < parseInt(b.score)) return 1;
-            return 0;
-        });
-        let counter: number = 0;
-        for (let s of scores) {
-            this.scoreboard.innerHTML += `<tr>
-                        <td>${++counter}</td>
-                        <td>${s.score}</td>
-                        <td>${s.time}</td>
-                    </tr>`;
+        InfoRenderer.data = await $.ajax({
+            url: "http://45.85.219.167:5000/tetrisScores",
+            type: 'GET'
+        })
+        let scores = InfoRenderer.data;
+        console.log(scores)
+        let sort = (a: Score[]): Score[] => {
+            for(let i = 0; i < a.length; i++){
+                for(let j = 0; j < a.length - 1; j++){
+                    if (parseInt(a[j].score) < parseInt(a[j + 1].score)){
+                        let temp: Score = a[j];
+                        a[j] = a[j + 1];
+                        a[j + 1] = temp;
+                    }
+                }
+            }
+            return a;
+        }
+        scores = sort(scores);
+        for (let i = 0; i < Math.min(scores.length, 10); i++) {
+            let s: Score = scores[i];
+            this.scoreboard.innerHTML +=
+                `<tr>
+                    <td>${s.name}</td>
+                    <td>${s.score}</td>
+                    <td>${s.time}</td>
+                </tr>`;
+        }
+    }
+
+    private static checkAspectRatio(): void{
+        let warning: HTMLParagraphElement = document.getElementById("aspectwarning") as HTMLParagraphElement;
+        let ratio = window.innerWidth / window.innerHeight;
+        if (ratio === 1536 / 739 || ratio === 1536 / 864){
+            warning.hidden = true;
         }
     }
 }

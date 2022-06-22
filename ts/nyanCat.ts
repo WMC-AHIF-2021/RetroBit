@@ -2,7 +2,6 @@ document.getElementById("warning").hidden = true;
 
 function enableNyanCat() {
     document.getElementById("header").innerHTML = "NYAN CAT!!!";
-
     let body = document.getElementsByTagName("body")[0];
     body.style.animation = randomInRange(1, 2) + "s rainbowBg infinite linear";
     // noinspection JSIgnoredPromiseFromCall

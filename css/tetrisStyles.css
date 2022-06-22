@@ -4,6 +4,8 @@
     color: white;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    text-align: center;
 }
 
 canvas {
@@ -22,4 +24,28 @@ canvas {
 
 .grid-item {
     margin: 5%;
+}
+
+#message {
+    display: none;
+}
+
+@media (max-width: 500px){
+    #mobileBlocker {
+        display: none;
+    }
+
+    #message {
+        display: block;
+    }
+}
+
+#scoreboard{
+    width: 100%;
+}
+
+#usernameInput{
+    height: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
