@@ -3,7 +3,6 @@ var Player = /** @class */ (function () {
     }
     return Player;
 }());
-// noinspection TypeScriptUnresolvedVariable
 var SocketClient = /** @class */ (function () {
     function SocketClient() {
     }
@@ -17,7 +16,6 @@ var SocketClient = /** @class */ (function () {
     };
     SocketClient.prototype.registerSocketEvents = function () {
         var _this = this;
-        // @ts-ignore
         socket.on("connect", function () {
             console.log("Connected to server");
         });
@@ -129,6 +127,11 @@ var RoomManager = /** @class */ (function () {
         }
         document.getElementById("joinedRoom_playerCount").innerText = players.length + " / 2";
         document.getElementById("joinedRoom_playerList").innerHTML = listHTML;
+        var startGameButtonEl = document.getElementById("joinedRoomPanel_startGameButton");
+        if (startGameButtonEl) {
+            startGameButtonEl.disabled = players.length != 2;
+        }
     };
     return RoomManager;
 }());
+//# sourceMappingURL=communication.js.map

@@ -5,7 +5,6 @@ class Player
     public name: string;
 }
 
-// noinspection TypeScriptUnresolvedVariable
 class SocketClient
 {
     private roomManager: RoomManager;
@@ -23,7 +22,6 @@ class SocketClient
     }
     private registerSocketEvents(): void
     {
-        // @ts-ignore
         socket.on("connect", () =>
         {
             console.log("Connected to server");
@@ -156,5 +154,10 @@ class RoomManager
         }
         document.getElementById("joinedRoom_playerCount").innerText = players.length + " / 2";
         document.getElementById("joinedRoom_playerList").innerHTML = listHTML;
+
+        let startGameButtonEl = <HTMLButtonElement>document.getElementById("joinedRoomPanel_startGameButton");
+        if (startGameButtonEl) {
+            startGameButtonEl.disabled = players.length != 2;
+        }
     }
 }

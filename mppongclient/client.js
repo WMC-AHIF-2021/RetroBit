@@ -1,4 +1,3 @@
-// noinspection TypeScriptUnresolvedVariable,TypeScriptUnresolvedFunction
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,9 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var serverIP = "https://fos.the-changer.net:3000";
+var serverIP = "wss://fos.the-changer.net";
 // @ts-ignore
-var socket = io(serverIP, { secure: true });
+var socket = io(serverIP);
 var Cursor = /** @class */ (function () {
     function Cursor() {
         var _this = this;
@@ -64,24 +63,53 @@ var Position = /** @class */ (function () {
     return Position;
 }());
 var Entity = /** @class */ (function () {
-    function Entity(x, y, width, height, color) {
+    function Entity(x, y, width, height, color, moveSmoothMode) {
+        var _this = this;
+        if (moveSmoothMode === void 0) { moveSmoothMode = false; }
+        this._nextX = 0;
+        this._nextY = 0;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.color = color;
+        if (moveSmoothMode) {
+            // 6 ballStep in server, every 10 ms gameloop
+            var step_1 = 6;
+            setInterval(function () {
+                var vecX = _this._nextX - _this.x;
+                var vecY = _this._nextY - _this.y;
+                var distance = Math.sqrt(Math.pow(vecX, 2) + Math.pow(vecY, 2));
+                if (distance > 20 && _this._nextY && _this._nextY) {
+                    _this.x = _this._nextX;
+                    _this.y = _this._nextY;
+                    return;
+                }
+                var vecXNormalized = vecX / distance;
+                var vecYNormalized = vecY / distance;
+                console.log(vecX);
+                console.log(vecY);
+                if (!isNaN(vecXNormalized) && !isNaN(vecYNormalized)) {
+                    _this.x += step_1 * vecXNormalized;
+                    _this.y += step_1 * vecYNormalized;
+                }
+            }, 1);
+        }
     }
+    Entity.prototype.moveSmooth = function (nextX, nextY) {
+        this._nextX = nextX;
+        this._nextY = nextY;
+    };
     return Entity;
 }());
 var Game = /** @class */ (function () {
     function Game() {
         var _this = this;
         // updated by RoomManager
-        // @ts-ignore
         this.players = [];
         this.playerBats = [];
         this.playerBatIndex = -1;
-        this.ball = new Entity(500, 500, 20, 20, "gray");
+        this.ball = new Entity(500, 500, 20, 20, "gray", true);
         this.playerBatFollowCursorInterval = setInterval(function () {
             if (game.playerBatIndex !== -1) {
                 game.playerBats[game.playerBatIndex].y = (Cursor._instance.Y / window.screen.height) * game.renderer.canvas.height;
@@ -91,30 +119,25 @@ var Game = /** @class */ (function () {
         this.LastScoreP1 = 0;
         this.LastScoreP2 = 0;
         this.gameState = GameState.NotStarted;
-        // @ts-ignore
         this.socketClient = new SocketClient();
-        // @ts-ignore
         this.roomManager = new RoomManager(this.socketClient);
         this.renderer = new Renderer();
         this.init();
     }
     Game.prototype.init = function () {
         var _this = this;
-        // @ts-ignore
         document.getElementById("options_createButton").addEventListener("click", function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.roomManager.createRoom();
                 return [2 /*return*/];
             });
         }); });
-        // @ts-ignore
         document.getElementById("options_joinButton").addEventListener("click", function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.roomManager.joinRoom();
                 return [2 /*return*/];
             });
         }); });
-        // @ts-ignore
         document.getElementById("joinedRoomPanel_startGameButton").addEventListener("click", function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 game.startGame(true);
@@ -160,9 +183,7 @@ var Game = /** @class */ (function () {
                 this.playerBats[i].y = players[i].playerPos[1];
             }
         }
-        this.ball.x = data["ballPos"][0];
-        this.ball.y = data["ballPos"][1];
-        console.log(players);
+        this.ball.moveSmooth(parseFloat(data["ballPos"][0]), parseFloat(data["ballPos"][1]));
         this.LastScoreP1 = players[0].score;
         this.LastScoreP2 = players[1].score;
         this.renderer.drawScores(data["players"][0].score, data["players"][1].score);
@@ -223,3 +244,4 @@ function pad(n, width, z) {
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
+//# sourceMappingURL=client.js.map

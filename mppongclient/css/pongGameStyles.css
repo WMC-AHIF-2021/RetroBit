@@ -57,6 +57,11 @@ input[type=checkbox]:checked {
 #options_createButton:hover, #options_joinButton:hover, #joinedRoomPanel_startGameButton:hover, #gameReloadButton:hover {
     animation: 0.5s hover infinite step-end;
 }
+button:disabled {
+    opacity: 0.5;
+    cursor: default !important;
+    animation: none !important;
+}
 
 #joinedRoomInfoPanel {
     visibility: hidden;
