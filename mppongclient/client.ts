@@ -55,7 +55,7 @@ class Entity {
                 let vecX = this._nextX - this.x;
                 let vecY = this._nextY - this.y;
                 let distance = Math.sqrt(Math.pow(vecX, 2) + Math.pow(vecY, 2));
-                if (distance > 20 && this._nextY && this._nextY) {
+                if (distance > 100 && this._nextY && this._nextY) {
                     this.x = this._nextX;
                     this.y = this._nextY;
                     return;

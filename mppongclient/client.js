@@ -80,7 +80,7 @@ var Entity = /** @class */ (function () {
                 var vecX = _this._nextX - _this.x;
                 var vecY = _this._nextY - _this.y;
                 var distance = Math.sqrt(Math.pow(vecX, 2) + Math.pow(vecY, 2));
-                if (distance > 20 && _this._nextY && _this._nextY) {
+                if (distance > 100 && _this._nextY && _this._nextY) {
                     _this.x = _this._nextX;
                     _this.y = _this._nextY;
                     return;
