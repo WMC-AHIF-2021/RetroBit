@@ -3,7 +3,6 @@ var Player = /** @class */ (function () {
     }
     return Player;
 }());
-// noinspection TypeScriptUnresolvedVariable
 var SocketClient = /** @class */ (function () {
     function SocketClient() {
     }
@@ -17,7 +16,6 @@ var SocketClient = /** @class */ (function () {
     };
     SocketClient.prototype.registerSocketEvents = function () {
         var _this = this;
-        // @ts-ignore
         socket.on("connect", function () {
             console.log("Connected to server");
         });
@@ -36,9 +34,29 @@ var SocketClient = /** @class */ (function () {
         socket.on("game:start:sending", function () {
             game.startGame(false);
         });
+        var nextSendingReceived = true;
+        var nextSendingCheckTimeout = null;
         socket.on("game:update:sending", function (data) {
             game.updateGame(data);
+            clearTimeout(nextSendingCheckTimeout);
+            nextSendingCheckTimeout = setTimeout(function () {
+                nextSendingReceived = false;
+            }, 300);
         });
+        var isBadConnectionPanelOpen = false;
+        setInterval(function () {
+            if (nextSendingReceived === false && !isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "visible";
+                isBadConnectionPanelOpen = true;
+                setTimeout(function () {
+                    nextSendingReceived = true;
+                }, 5000);
+            }
+            else if (nextSendingReceived && isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "hidden";
+                isBadConnectionPanelOpen = false;
+            }
+        }, 10);
         socket.on("game:youAreWinner", function () {
             game.gameState = GameState.Finished;
             document.getElementById("canvas").style.visibility = "hidden";
@@ -129,6 +147,11 @@ var RoomManager = /** @class */ (function () {
         }
         document.getElementById("joinedRoom_playerCount").innerText = players.length + " / 2";
         document.getElementById("joinedRoom_playerList").innerHTML = listHTML;
+        var startGameButtonEl = document.getElementById("joinedRoomPanel_startGameButton");
+        if (startGameButtonEl) {
+            startGameButtonEl.disabled = players.length != 2;
+        }
     };
     return RoomManager;
 }());
+//# sourceMappingURL=communication.js.map

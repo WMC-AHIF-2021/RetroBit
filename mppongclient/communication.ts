@@ -5,7 +5,6 @@ class Player
     public name: string;
 }
 
-// noinspection TypeScriptUnresolvedVariable
 class SocketClient
 {
     private roomManager: RoomManager;
@@ -23,7 +22,6 @@ class SocketClient
     }
     private registerSocketEvents(): void
     {
-        // @ts-ignore
         socket.on("connect", () =>
         {
             console.log("Connected to server");
@@ -46,9 +44,28 @@ class SocketClient
             game.startGame(false);
         });
 
+        let nextSendingReceived = true;
+        let nextSendingCheckTimeout = null;
         socket.on("game:update:sending", (data: any) => {
             game.updateGame(data);
+            clearTimeout(nextSendingCheckTimeout);
+            nextSendingCheckTimeout = setTimeout(() => {
+                nextSendingReceived = false;
+            }, 300);
         });
+        let isBadConnectionPanelOpen = false;
+        setInterval(() => {
+            if (nextSendingReceived === false && !isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "visible";
+                isBadConnectionPanelOpen = true;
+                setTimeout(() => {
+                    nextSendingReceived = true;
+                }, 5000);
+            } else if (nextSendingReceived && isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "hidden";
+                isBadConnectionPanelOpen = false;
+            }
+        }, 10)
 
         socket.on("game:youAreWinner", () => {
             game.gameState = GameState.Finished;
@@ -156,5 +173,10 @@ class RoomManager
         }
         document.getElementById("joinedRoom_playerCount").innerText = players.length + " / 2";
         document.getElementById("joinedRoom_playerList").innerHTML = listHTML;
+
+        let startGameButtonEl = <HTMLButtonElement>document.getElementById("joinedRoomPanel_startGameButton");
+        if (startGameButtonEl) {
+            startGameButtonEl.disabled = players.length != 2;
+        }
     }
 }

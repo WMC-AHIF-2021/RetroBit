@@ -21,7 +21,7 @@
 <div id="options">
     <br>
     <div id="navbar">
-        <a href="../gameSelection.html" style="padding-top: 20px;">&lt; Back</a>
+        <a href="gameSelection.html" style="padding-top: 20px;">&lt; Back</a>
     </div>
     <h2>2P PONG</h2>
     <h3>Create game</h3>
@@ -49,6 +49,10 @@
 <div id="gameEndPanel">
     <h2 id="gameEndPanel_winnerOrLoser"></h2>
     <button id="gameReloadButton" onclick="window.location.reload();">Reload</button>
+</div>
+<div id="badConnectionPanel" style="visibility: hidden">
+    <h3 style="color: red;">Poor internet connection</h3>
+    <p>May impact game performance</p>
 </div>
 
 <script src="https://fos.the-changer.net/socket.io/socket.io.js"></script>

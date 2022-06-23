@@ -1,6 +1,4 @@
-// noinspection TypeScriptUnresolvedVariable,TypeScriptUnresolvedFunction
-
-const serverIP = "https://fos.the-changer.net";
+const serverIP = "wss://fos.the-changer.net";
 // @ts-ignore
 let socket = io(serverIP, {secure: true});
 
@@ -37,56 +35,78 @@ class Position
 class Entity {
     public x: number;
     public y: number;
+    private _nextX: number = 0;
+    private _nextY: number = 0;
     public width: number;
     public height: number;
     public color: string;
 
-    constructor(x: number, y: number, width: number, height: number, color: string) {
+    constructor(x: number, y: number, width: number, height: number, color: string, moveSmoothMode: boolean = false) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.color = color;
+
+        if (moveSmoothMode) {
+            // 6 ballStep in server, every 10 ms gameloop
+            const step = 6;
+            setInterval(() => {
+                let vecX = this._nextX - this.x;
+                let vecY = this._nextY - this.y;
+                let distance = Math.sqrt(Math.pow(vecX, 2) + Math.pow(vecY, 2));
+                if (distance > 100 && this._nextY && this._nextY) {
+                    this.x = this._nextX;
+                    this.y = this._nextY;
+                    return;
+                }
+                let vecXNormalized = vecX / distance;
+                let vecYNormalized = vecY / distance;
+                console.log(vecX);
+                console.log(vecY);
+                if (!isNaN(vecXNormalized) && !isNaN(vecYNormalized)) {
+                    this.x += step * vecXNormalized;
+                    this.y += step * vecYNormalized;
+                }
+            }, 1)
+        }
+    }
+
+    public moveSmooth(nextX: number, nextY: number): void {
+        this._nextX = nextX;
+        this._nextY = nextY;
     }
 }
 class Game {
     public gameState: GameState;
     // updated by RoomManager
-    // @ts-ignore
     public players: Player[] = [];
 
-    // @ts-ignore
     private socketClient: SocketClient;
-    // @ts-ignore
     private roomManager: RoomManager;
     private renderer: Renderer;
 
     private playerBats: Entity[] = [];
     private playerBatIndex: number = -1;
-    private ball: Entity = new Entity(500, 500, 20, 20, "gray");
+    private ball: Entity = new Entity(500, 500, 20, 20, "gray", true);
 
     constructor() {
         this.gameState = GameState.NotStarted;
 
-        // @ts-ignore
         this.socketClient = new SocketClient();
-        // @ts-ignore
         this.roomManager = new RoomManager(this.socketClient);
         this.renderer = new Renderer();
 
         this.init();
     }
     private init() {
-        // @ts-ignore
         document.getElementById("options_createButton").addEventListener("click", async () => {
             this.roomManager.createRoom();
         });
-        // @ts-ignore
         document.getElementById("options_joinButton").addEventListener("click", async () => {
             this.roomManager.joinRoom();
         });
 
-        // @ts-ignore
         document.getElementById("joinedRoomPanel_startGameButton").addEventListener("click", async () => {
             game.startGame(true);
         });
@@ -137,9 +157,7 @@ class Game {
                 this.playerBats[i].y = players[i].playerPos[1];
             }
         }
-        this.ball.x = data["ballPos"][0];
-        this.ball.y = data["ballPos"][1];
-        console.log(players);
+        this.ball.moveSmooth(parseFloat(data["ballPos"][0]), parseFloat(data["ballPos"][1]));
         this.LastScoreP1 = players[0].score;
         this.LastScoreP2 = players[1].score;
         this.renderer.drawScores(data["players"][0].score, data["players"][1].score);
