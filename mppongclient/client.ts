@@ -50,12 +50,12 @@ class Entity {
 
         if (moveSmoothMode) {
             // 6 ballStep in server, every 10 ms gameloop
-            const step = 6;
+            const step = 0.6;
             setInterval(() => {
                 let vecX = this._nextX - this.x;
                 let vecY = this._nextY - this.y;
                 let distance = Math.sqrt(Math.pow(vecX, 2) + Math.pow(vecY, 2));
-                if (distance > 100 && this._nextY && this._nextY) {
+                if (distance > 6 && this._nextY && this._nextY) {
                     this.x = this._nextX;
                     this.y = this._nextY;
                     return;

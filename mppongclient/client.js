@@ -64,8 +64,8 @@ var Position = /** @class */ (function () {
 }());
 var Entity = /** @class */ (function () {
     function Entity(x, y, width, height, color, moveSmoothMode) {
-        var _this = this;
         if (moveSmoothMode === void 0) { moveSmoothMode = false; }
+        var _this = this;
         this._nextX = 0;
         this._nextY = 0;
         this.x = x;
@@ -75,12 +75,12 @@ var Entity = /** @class */ (function () {
         this.color = color;
         if (moveSmoothMode) {
             // 6 ballStep in server, every 10 ms gameloop
-            var step_1 = 6;
+            var step_1 = 0.6;
             setInterval(function () {
                 var vecX = _this._nextX - _this.x;
                 var vecY = _this._nextY - _this.y;
                 var distance = Math.sqrt(Math.pow(vecX, 2) + Math.pow(vecY, 2));
-                if (distance > 100 && _this._nextY && _this._nextY) {
+                if (distance > 6 && _this._nextY && _this._nextY) {
                     _this.x = _this._nextX;
                     _this.y = _this._nextY;
                     return;

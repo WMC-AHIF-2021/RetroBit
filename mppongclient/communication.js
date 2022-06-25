@@ -41,7 +41,7 @@ var SocketClient = /** @class */ (function () {
             clearTimeout(nextSendingCheckTimeout);
             nextSendingCheckTimeout = setTimeout(function () {
                 nextSendingReceived = false;
-            }, 300);
+            }, 100);
         });
         var isBadConnectionPanelOpen = false;
         setInterval(function () {
