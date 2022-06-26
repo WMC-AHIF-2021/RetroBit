@@ -73,3 +73,16 @@ button{
     margin: 2%;
     font-size: xx-large
 }
+
+#SetInputCenter{
+    padding-top: 20px;
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: x-large;
+}
+input{
+    font-size: x-large;
+    padding: 10px;
+    text-align: center;
+}
+

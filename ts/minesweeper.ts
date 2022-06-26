@@ -6,6 +6,20 @@ export let field: Field[][];
 let allowClick: boolean = true;
 let renderer = new Renderer();
 
+function getUsername() : string {
+    let username = document.getElementById("usernameInput") as HTMLInputElement;
+
+    if(username.value.length){
+
+    }
+    if(!username.value){
+        return `User${Math.floor(Math.random() * 999999)+100000}`;
+    }
+    else
+
+    return "";
+}
+
 function buttonHandler() : void {
     document.getElementById('reloadGame').onclick = function() {
         window.location.reload();
