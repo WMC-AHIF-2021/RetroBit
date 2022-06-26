@@ -19,13 +19,9 @@
 <body>
     <h1>Minesweeper</h1>
     <br>
-    <div id="SetInputCenter">
-        <label for="InputName"></label>
-        <input id="InputName" type="text" placeholder="Enter username">
-    </div>
     <br>
     <h2 id="gameState">Click any field!</h2>
-    <canvas height="500" id="myCanvas" width="500"></canvas>
+    <canvas height="500" id="myCanvas" width="500" oncontextmenu="return false;"></canvas>
     <br> <br>
     <a id="Time"></a>
     <button id="reloadGame">Restart game</button>

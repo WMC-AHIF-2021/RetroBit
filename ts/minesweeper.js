@@ -154,7 +154,7 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
             text = field[y][x].Symbol;
             renderer.RevealField(field);
             allowClick = false;
-            gamestate.innerText = "You loose!";
+            gamestate.innerText = "You lose!";
             document.getElementById("Time").innerHTML = ("<p>Time: </p>" + totalTime);
         }
         else {

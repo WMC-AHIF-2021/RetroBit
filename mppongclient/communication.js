@@ -154,4 +154,3 @@ var RoomManager = /** @class */ (function () {
     };
     return RoomManager;
 }());
-//# sourceMappingURL=communication.js.map
