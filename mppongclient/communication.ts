@@ -44,9 +44,28 @@ class SocketClient
             game.startGame(false);
         });
 
+        let nextSendingReceived = true;
+        let nextSendingCheckTimeout = null;
         socket.on("game:update:sending", (data: any) => {
             game.updateGame(data);
+            clearTimeout(nextSendingCheckTimeout);
+            nextSendingCheckTimeout = setTimeout(() => {
+                nextSendingReceived = false;
+            }, 100);
         });
+        let isBadConnectionPanelOpen = false;
+        setInterval(() => {
+            if (nextSendingReceived === false && !isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "visible";
+                isBadConnectionPanelOpen = true;
+                setTimeout(() => {
+                    nextSendingReceived = true;
+                }, 5000);
+            } else if (nextSendingReceived && isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "hidden";
+                isBadConnectionPanelOpen = false;
+            }
+        }, 10)
 
         socket.on("game:youAreWinner", () => {
             game.gameState = GameState.Finished;

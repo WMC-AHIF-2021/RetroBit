@@ -34,9 +34,29 @@ var SocketClient = /** @class */ (function () {
         socket.on("game:start:sending", function () {
             game.startGame(false);
         });
+        var nextSendingReceived = true;
+        var nextSendingCheckTimeout = null;
         socket.on("game:update:sending", function (data) {
             game.updateGame(data);
+            clearTimeout(nextSendingCheckTimeout);
+            nextSendingCheckTimeout = setTimeout(function () {
+                nextSendingReceived = false;
+            }, 100);
         });
+        var isBadConnectionPanelOpen = false;
+        setInterval(function () {
+            if (nextSendingReceived === false && !isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "visible";
+                isBadConnectionPanelOpen = true;
+                setTimeout(function () {
+                    nextSendingReceived = true;
+                }, 5000);
+            }
+            else if (nextSendingReceived && isBadConnectionPanelOpen) {
+                document.getElementById("badConnectionPanel").style.visibility = "hidden";
+                isBadConnectionPanelOpen = false;
+            }
+        }, 10);
         socket.on("game:youAreWinner", function () {
             game.gameState = GameState.Finished;
             document.getElementById("canvas").style.visibility = "hidden";

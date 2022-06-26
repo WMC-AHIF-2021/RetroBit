@@ -54,7 +54,6 @@ export class InfoRenderer {
             type: 'GET'
         })
         let scores = InfoRenderer.data;
-        console.log(scores)
         let sort = (a: Score[]): Score[] => {
             for(let i = 0; i < a.length; i++){
                 for(let j = 0; j < a.length - 1; j++){
