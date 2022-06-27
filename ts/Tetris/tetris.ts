@@ -154,3 +154,10 @@ export class TetrisGame {
 
 inforenderer = new InfoRenderer();
 export default tetris = new TetrisGame();
+
+document.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.code === "Escape"){
+        history.back()
+        return false;
+    }
+})

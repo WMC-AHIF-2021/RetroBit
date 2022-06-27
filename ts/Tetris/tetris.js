@@ -145,4 +145,10 @@ export class TetrisGame {
 TetrisGame.inputName = "";
 inforenderer = new InfoRenderer();
 export default tetris = new TetrisGame();
+document.addEventListener("keydown", (e) => {
+    if (e.code === "Escape") {
+        history.back();
+        return false;
+    }
+});
 //# sourceMappingURL=tetris.js.map

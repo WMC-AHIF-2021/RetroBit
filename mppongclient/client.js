@@ -64,8 +64,8 @@ var Position = /** @class */ (function () {
 }());
 var Entity = /** @class */ (function () {
     function Entity(x, y, width, height, color, moveSmoothMode) {
-        var _this = this;
         if (moveSmoothMode === void 0) { moveSmoothMode = false; }
+        var _this = this;
         this._nextX = 0;
         this._nextY = 0;
         this.x = x;
@@ -244,4 +244,3 @@ function pad(n, width, z) {
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
-//# sourceMappingURL=client.js.map
