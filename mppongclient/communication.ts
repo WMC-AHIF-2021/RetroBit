@@ -51,7 +51,7 @@ class SocketClient
             clearTimeout(nextSendingCheckTimeout);
             nextSendingCheckTimeout = setTimeout(() => {
                 nextSendingReceived = false;
-            }, 300);
+            }, 100);
         });
         let isBadConnectionPanelOpen = false;
         setInterval(() => {

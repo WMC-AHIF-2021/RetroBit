@@ -13,6 +13,16 @@ let totalTime = 0;
 export let field;
 let allowClick = true;
 let renderer = new Renderer();
+function getUsername() {
+    let username = document.getElementById("usernameInput");
+    if (username.value.length) {
+    }
+    if (!username.value) {
+        return `User${Math.floor(Math.random() * 999999) + 100000}`;
+    }
+    else
+        return "";
+}
 function buttonHandler() {
     document.getElementById('reloadGame').onclick = function () {
         window.location.reload();
@@ -144,7 +154,7 @@ document.getElementById("myCanvas").addEventListener("mousedown", (e) => {
             text = field[y][x].Symbol;
             renderer.RevealField(field);
             allowClick = false;
-            gamestate.innerText = "You loose!";
+            gamestate.innerText = "You lose!";
             document.getElementById("Time").innerHTML = ("<p>Time: </p>" + totalTime);
         }
         else {

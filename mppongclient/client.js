@@ -75,12 +75,12 @@ var Entity = /** @class */ (function () {
         this.color = color;
         if (moveSmoothMode) {
             // 6 ballStep in server, every 10 ms gameloop
-            var step_1 = 6;
+            var step_1 = 0.6;
             setInterval(function () {
                 var vecX = _this._nextX - _this.x;
                 var vecY = _this._nextY - _this.y;
                 var distance = Math.sqrt(Math.pow(vecX, 2) + Math.pow(vecY, 2));
-                if (distance > 100 && _this._nextY && _this._nextY) {
+                if (distance > 6 && _this._nextY && _this._nextY) {
                     _this.x = _this._nextX;
                     _this.y = _this._nextY;
                     return;
