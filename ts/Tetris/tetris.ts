@@ -58,7 +58,7 @@ export class TetrisGame {
     }
 
     public addBlock(): void {
-        this.speed = this.speed * 0.98;
+        this.speed = this.speed * 0.99;
         let lengthIsZero = () => {
             if (this.queue.length === 0) {
                 this.queue.push(new TBlock());
